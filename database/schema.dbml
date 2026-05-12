@@ -1,0 +1,207 @@
+// MedControl - Modelo Fisico
+// Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
+
+Table Categoria {
+  idCategoria   integer      [pk, increment]
+  nomeCategoria varchar(100) [not null, unique]
+  descricao     text
+}
+
+Table Estado {
+  idEstado   integer     [pk, increment]
+  nomeEstado varchar(50) [not null, unique, check: `char_length(trim(nomeEstado)) > 0`]
+}
+
+Table Criticidade {
+  idCriticidade   integer     [pk, increment]
+  nomeCriticidade varchar(50) [not null, unique, check: `char_length(trim(nomeCriticidade)) > 0`]
+  descricao       text
+}
+
+Table Localizacao {
+  idLocalizacao   integer      [pk, increment]
+  nomeLocalizacao varchar(100) [not null, unique]
+  piso            integer
+  ala             varchar(50)
+  descricao       text
+  dataRegisto     datetime     [default: `CURRENT_TIMESTAMP`]
+}
+
+Table Pais {
+  idPais    integer      [pk, increment]
+  nomePais  varchar(100) [not null, unique]
+  codigoISO varchar(2)
+}
+
+Table Fornecedor {
+  idFornecedor     integer      [pk, increment]
+  nomeEmpresa      varchar(100) [not null]
+  nif              varchar(20)  [not null, unique]
+  tipoFornecedor   varchar(50)  [not null, check: `UPPER(tipoFornecedor) IN ('FABRICANTE', 'DISTRIBUIDOR', 'FORNECEDOR')`]
+  idPais           integer
+  website          varchar(255)
+  morada           text         [not null]
+  nomeContacto     varchar(100)
+  cargoContacto    varchar(100)
+  telefoneContacto varchar(20)
+  emailContacto    varchar(100) [not null, unique, check: `regexp_like(emailContacto, '^([[:alnum:]]+\.)+@([[:alnum:]]+\.)+[[:alpha:]]{2,}$', 'i')`]
+  observacoes      text
+  dataCriacao      datetime     [default: `CURRENT_TIMESTAMP`]
+}
+
+Table Utilizador {
+  idUtilizador   integer      [pk, increment]
+  nomeUtilizador varchar(100) [not null, unique]
+  password       varchar(255) [not null]
+  nomeCompleto   varchar(150) [not null]
+  email          varchar(100) [not null, unique, check: `regexp_like(email, '^([[:alnum:]]+\.)+@([[:alnum:]]+\.)+[[:alpha:]]{2,}$', 'i')`]
+  tipoUtilizador varchar(50)  [check: `UPPER(tipoUtilizador) IN ('ADMINISTRADOR', 'TECNICO', 'GESTOR', 'CONSULTOR')`]
+  ativo          boolean      [default: true]
+  dataCriacao    datetime     [default: `CURRENT_TIMESTAMP`]
+}
+
+Table Equipamento {
+  idEquipamento     integer      [pk, increment]
+  codigoEquipamento varchar(50)  [not null, unique]
+  designacao        varchar(200) [not null]
+  idCategoria       integer      [not null]
+  marca             varchar(100)
+  modelo            varchar(100)
+  numeroSerie       varchar(100) [unique]
+  anoFabrico        integer      [check: `anoFabrico > 1900`]
+  idEstado          integer      [not null]
+  idCriticidade     integer      [not null]
+  idLocalizacao     integer      [not null]
+  observacoes       text
+  dataCriacao       datetime     [default: `CURRENT_TIMESTAMP`]
+  dataAtualizacao   datetime     [default: `CURRENT_TIMESTAMP`]
+}
+
+Table Aquisicao {
+  idAquisicao    integer       [pk, increment]
+  idEquipamento  integer       [not null]
+  dataAquisicao  date          [not null]
+  custoAquisicao decimal(10,2) [check: `custoAquisicao >= 0`]
+  tipoEntrada    varchar(50)   [check: `UPPER(tipoEntrada) IN ('COMPRA', 'LEASING', 'DOACAO')`]
+  idFornecedor   integer
+  observacoes    text
+}
+
+Table Garantia {
+  idGarantia    integer      [pk, increment]
+  idEquipamento integer      [not null]
+  dataInicio    date         [not null]
+  dataFim       date         [not null]
+  tipoGarantia  varchar(100)
+  condicoes     text
+  idFornecedor  integer
+  observacoes   text
+  dataCriacao   datetime     [default: `CURRENT_TIMESTAMP`]
+
+  checks {
+    dataFim > dataInicio
+  }
+}
+
+Table Manutencao {
+  idManutencao   integer       [pk, increment]
+  idEquipamento  integer       [not null]
+  dataManutencao date          [not null]
+  tipoManutencao varchar(100)  [check: `UPPER(tipoManutencao) IN ('PREVENTIVA', 'CORRETIVA', 'CALIBRACAO')`]
+  descricao      text
+  idFornecedor   integer
+  custo          decimal(10,2) [check: `custo >= 0`]
+  observacoes    text
+}
+
+Table Documento {
+  idDocumento    integer      [pk, increment]
+  idEquipamento  integer      [not null]
+  nomeDocumento  varchar(200) [not null]
+  tipoDocumento  varchar(100) [check: `UPPER(tipoDocumento) IN ('MANUAL', 'CERTIFICADO', 'CONTRATO', 'ESPECIFICACAO', 'OUTRO')`]
+  caminhoArquivo varchar(500)
+  dataUpload     datetime     [default: `CURRENT_TIMESTAMP`]
+  observacoes    text
+}
+
+Table EquipamentoFornecedor {
+  idEquipamento  integer  [not null]
+  idFornecedor   integer  [not null]
+  dataAssociacao datetime [default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    (idEquipamento, idFornecedor) [pk]
+  }
+}
+
+Table HistoricoAlteracoes {
+  idHistorico        integer      [pk, increment]
+  tabela             varchar(100)
+  tipoOperacao       varchar(20)  [check: `UPPER(tipoOperacao) IN ('INSERT', 'UPDATE', 'DELETE')`]
+  idRegistro         integer
+  dataOperacao       datetime     [default: `CURRENT_TIMESTAMP`]
+  idUtilizador       integer
+  descricaoAlteracao text
+}
+
+// ─── CHAVES ESTRANGEIRAS ─────────────────────────────
+
+Ref fkFornecedorIdPaisPaisIdPais {
+  Fornecedor.idPais > Pais.idPais
+}
+
+Ref fkEquipamentoIdCategoriaCategoriaidCategoria {
+  Equipamento.idCategoria > Categoria.idCategoria
+}
+
+Ref fkEquipamentoIdEstadoEstadoIdEstado {
+  Equipamento.idEstado > Estado.idEstado
+}
+
+Ref fkEquipamentoIdCriticidadeCriticidadeIdCriticidade {
+  Equipamento.idCriticidade > Criticidade.idCriticidade
+}
+
+Ref fkEquipamentoIdLocalizacaoLocalizacaoIdLocalizacao {
+  Equipamento.idLocalizacao > Localizacao.idLocalizacao
+}
+
+Ref fkAquisicaoIdEquipamentoEquipamentoIdEquipamento {
+  Aquisicao.idEquipamento > Equipamento.idEquipamento
+}
+
+Ref fkAquisicaoIdFornecedorFornecedorIdFornecedor {
+  Aquisicao.idFornecedor > Fornecedor.idFornecedor
+}
+
+Ref fkGarantiaIdEquipamentoEquipamentoIdEquipamento {
+  Garantia.idEquipamento > Equipamento.idEquipamento
+}
+
+Ref fkGarantiaIdFornecedorFornecedorIdFornecedor {
+  Garantia.idFornecedor > Fornecedor.idFornecedor
+}
+
+Ref fkManutencaoIdEquipamentoEquipamentoIdEquipamento {
+  Manutencao.idEquipamento > Equipamento.idEquipamento
+}
+
+Ref fkManutencaoIdFornecedorFornecedorIdFornecedor {
+  Manutencao.idFornecedor > Fornecedor.idFornecedor
+}
+
+Ref fkDocumentoIdEquipamentoEquipamentoIdEquipamento {
+  Documento.idEquipamento > Equipamento.idEquipamento
+}
+
+Ref fkEquipamentoFornecedorIdEquipamentoEquipamentoIdEquipamento {
+  EquipamentoFornecedor.idEquipamento > Equipamento.idEquipamento
+}
+
+Ref fkEquipamentoFornecedorIdFornecedorFornecedorIdFornecedor {
+  EquipamentoFornecedor.idFornecedor > Fornecedor.idFornecedor
+}
+
+Ref fkHistoricoAlteracoesIdUtilizadorUtilizadorIdUtilizador {
+  HistoricoAlteracoes.idUtilizador > Utilizador.idUtilizador
+}
