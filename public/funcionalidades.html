@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funcionalidades | MedControl</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/1241446.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bng-navbar sticky-top">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand" href="index.html">
+            <i class="fa-solid fa-hospital-user" style="color:#4fc3f7; font-size:1.4em; margin-right:8px;"></i>
+            Med<span>Control</span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-label="Abrir menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <div class="container-navegacao mx-auto">
+                <a href="index.html">Quem Somos</a>
+                <a href="solucao.html">A Solução</a>
+                <a href="funcionalidades.html" class="active">Funcionalidades</a>
+                <a href="clientes.html">Clientes</a>
+                <a href="contacto.html">Contacto</a>
+            </div>
+            <div class="nav-cliente">
+                <a href="login.html"><i class="fa-solid fa-right-to-bracket"></i> Área Restrita</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="hero-section" style="padding:70px 40px;">
+    <h1>Funcionalidades <span>Principais</span></h1>
+    <p>Explore todas as funcionalidades que o sistema MedControl oferece para otimizar a gestão do seu inventário hospitalar.</p>
+</div>
+
+<h2 class="section-title">Perguntas Frequentes</h2>
+<div class="section-divider"></div>
+
+<div style="max-width: 1000px; margin: 0 auto; padding: 40px 20px;">
+    <div id="faqAccordion">
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <span>Como registar um novo equipamento?</span>
+                <span class="icon"><i class="fa-solid fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-body">
+                Para registar um novo equipamento, aceda ao módulo de Equipamentos na área restrita, clique em "Novo Equipamento" e preencha os campos obrigatórios: código único, marca, modelo, número de série, localização física e dados técnicos. O sistema irá gerar um identificador único para rastreabilidade.
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <span>É possível importar equipamentos em massa?</span>
+                <span class="icon"><i class="fa-solid fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-body">
+                Sim! O sistema MedControl permite importar dados em bulk através de ficheiro CSV ou Excel. Basta seguir o modelo de template fornecido e fazer upload do ficheiro na secção de Importação. O sistema valida automaticamente os dados antes de confirmar a importação.
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <span>Como consultar o histórico de um equipamento?</span>
+                <span class="icon"><i class="fa-solid fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-body">
+                Aceda à página de Detalhes do equipamento e navegue até à aba "Histórico". Aqui encontrará um registo completo de todas as ações efectuadas no equipamento: alterações de localização, manutenções, reparações, substituições de peças e mais.
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <span>Consigo receber alertas sobre garantias que expiram?</span>
+                <span class="icon"><i class="fa-solid fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-body">
+                Absolutamente! O sistema envia alertas automáticos quando uma garantia está perto de expirar (30 dias, 15 dias e no dia da expiração). Pode também consultar a página de Garantias para ter uma visão global de todos os equipamentos com garantias a terminar.
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <span>Como organizar os equipamentos por localização?</span>
+                <span class="icon"><i class="fa-solid fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-body">
+                O módulo de Localizações permite estruturar a instituição por edifícios, pisos, serviços e salas. Cada equipamento é associado a uma localização específica, permitindo rastreabilidade total e visualização de onde está cada item.
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <span>Posso exportar relatórios em PDF ou Excel?</span>
+                <span class="icon"><i class="fa-solid fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-body">
+                Sim! O sistema permite exportar qualquer tabela ou relatório em formatos PDF, Excel ou CSV. Existem também modelos de relatórios pré-definidos (Inventário Completo, Equipamentos em Garantia, Equipamentos em Manutenção, etc).
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <span>Como funciona o sistema de permissões?</span>
+                <span class="icon"><i class="fa-solid fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-body">
+                O MedControl permite definir permissões granulares por utilizador. Cada utilizador tem um perfil (Administrador, Gestor, Técnico, Visualizador) com diferentes níveis de acesso. Os administradores podem personalizar completamente as permissões por utilizador.
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <span>O sistema integra-se com outros sistemas hospitalares?</span>
+                <span class="icon"><i class="fa-solid fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-body">
+                Sim! O MedControl possui API REST bem documentada que permite integração com sistemas de gestão hospitalar, sistemas ERP, e outras aplicações. Oferecemos suporte técnico completo para implementação de integrações customizadas.
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <span>Como gero alertas para manutenções preventivas?</span>
+                <span class="icon"><i class="fa-solid fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-body">
+                Defina intervalos de manutenção preventiva para cada equipamento. O sistema enviará automaticamente lembretes quando a manutenção estiver devida, com base na data da última manutenção ou de acordo com um cronograma pré-definido.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Funcionalidades Principais -->
+<div style="background: white; padding: 60px 40px; margin-top: 40px;">
+    <h2 class="section-title" style="padding-top: 0;">Funcionalidades Principais</h2>
+    <div class="section-divider"></div>
+
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="feature-card">
+                    <div class="icon"><i class="fa-solid fa-qrcode"></i></div>
+                    <h3>Rastreamento por Código QR</h3>
+                    <p>Cada equipamento possui um código QR único que permite acesso rápido aos dados via smartphone, facilitando inventários físicos e localização imediata.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="feature-card">
+                    <div class="icon"><i class="fa-solid fa-bell"></i></div>
+                    <h3>Notificações em Tempo Real</h3>
+                    <p>Receba alertas instantâneos sobre eventos críticos: garantias expirando, manutenções vencidas, equipamentos avariados e muito mais.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="feature-card">
+                    <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <h3>Dashboard Avançado</h3>
+                    <p>Visualize KPIs em tempo real com gráficos interativos: estado dos equipamentos, distribuição por criticalidade, equipamentos em garantia e indicadores financeiros.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="feature-card">
+                    <div class="icon"><i class="fa-solid fa-file-pdf"></i></div>
+                    <h3>Gestão de Documentação</h3>
+                    <p>Centralize toda a documentação técnica: manuais, certificados, contratos e relatórios de calibração. Acesso rápido e organizado.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="feature-card">
+                    <div class="icon"><i class="fa-solid fa-lock"></i></div>
+                    <h3>Controlo de Acesso Avançado</h3>
+                    <p>Sistema de permissões granular com registos de auditoria completos. Saiba quem acedeu, modificou ou eliminado cada registro.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="feature-card">
+                    <div class="icon"><i class="fa-solid fa-globe"></i></div>
+                    <h3>Acesso Multi-Local</h3>
+                    <p>Ideal para instituições com múltiplos edifícios ou campi. Gerencie todo o inventário de um ponto centralizado com visualização por localização.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer-container">
+    <div class="footer-section">
+        <strong><i class="fa-solid fa-hospital-user"></i> MedControl</strong>
+        <p>Sistemas de Informação Hospitalar, Lda.</p>
+    </div>
+    <div class="footer-section">
+        <strong><i class="fa-solid fa-location-dot"></i> Localização</strong>
+        <p>Rua do Hospital Escolar, 123<br>4200-072, Porto<br>Portugal</p>
+    </div>
+    <div class="footer-section">
+        <strong><i class="fa-solid fa-clock"></i> Horário</strong>
+        <p>2ª a 6ª Feira: 9h — 18h</p>
+    </div>
+    <div class="footer-section">
+        <strong><i class="fa-solid fa-address-book"></i> Contactos</strong>
+        <p><a href="mailto:geral@MedControl.pt">geral@MedControl.pt</a><br>+351 220 xxx xxx</p>
+    </div>
+</footer>
+<div class="footer-bottom">
+    &copy; 2025 MedControl — Sistemas de Informação Hospitalar, Lda.
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/1241446.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeAccordion('faqAccordion');
+    });
+</script>
+</body>
+</html>
