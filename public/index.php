@@ -1,19 +1,33 @@
+﻿<?php
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../private/includes/funcoes.php';
+
+$noticias = [];
+try {
+    $pdo      = get_pdo();
+    $noticias = $pdo->query("SELECT * FROM Noticia WHERE publicada = 1 AND destaque = 1 ORDER BY dataCriacao DESC LIMIT 3")->fetchAll(PDO::FETCH_OBJ);
+    $pdo      = null;
+} catch (PDOException $e) {
+    $noticias = [];
+}
+?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedControl - Sistemas de Informação Hospitalar</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/1241446.css">
+    <meta name="description" content="MedControl - Sistema de Gestão de Inventário Hospitalar. Controlo total de equipamentos médicos, fornecedores, garantias e documentação.">
+    <title><?= APP_NAME ?> - Sistemas de Informação Hospitalar</title>
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/css/1241446.css">
 </head>
 <body>
 
 <!-- Navegação Bootstrap Responsiva -->
 <nav class="navbar navbar-expand-lg bng-navbar sticky-top">
     <div class="container-fluid px-4">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="<?= APP_BASE ?>/public/index.php">
             <i class="fa-solid fa-hospital-user" style="color:#4fc3f7; font-size:1.4em; margin-right:8px;"></i>
             Med<span>Control</span>
         </a>
@@ -22,14 +36,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarMain">
             <div class="container-navegacao mx-auto">
-                <a href="index.html" class="active">Quem Somos</a>
-                <a href="solucao.html">A Solução</a>
-                <a href="funcionalidades.html">Funcionalidades</a>
-                <a href="clientes.html">Clientes</a>
-                <a href="contacto.html">Contacto</a>
+                <a href="<?= APP_BASE ?>/public/index.php" class="active">Quem Somos</a>
+                <a href="<?= APP_BASE ?>/public/solucao.php">A Solução</a>
+                <a href="<?= APP_BASE ?>/public/funcionalidades.php">Funcionalidades</a>
+                <a href="<?= APP_BASE ?>/public/clientes.php">Clientes</a>
+                <a href="<?= APP_BASE ?>/public/contacto.php">Contacto</a>
             </div>
             <div class="nav-cliente">
-                <a href="login.html"><i class="fa-solid fa-right-to-bracket"></i> Área Restrita</a>
+                <a href="<?= APP_BASE ?>/public/login.php"><i class="fa-solid fa-right-to-bracket"></i> Área Restrita</a>
             </div>
         </div>
     </div>
@@ -137,6 +151,33 @@
     </div>
 </div>
 
+<!-- Notícias em Destaque (carregadas da BD via gestao.php) -->
+<?php if (!empty($noticias)): ?>
+<div style="background:#f8f9fa; padding:60px 40px;">
+    <h2 class="section-title" style="padding-top:0;">Últimas Notícias</h2>
+    <div class="section-divider"></div>
+    <div class="container" style="margin-top:30px;">
+        <div class="row g-4 justify-content-center">
+            <?php foreach ($noticias as $n): ?>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card" style="height:100%; text-align:left;">
+                    <div style="margin-bottom:12px;">
+                        <span style="background:#e3f2fd; color:#1565c0; padding:4px 10px; border-radius:20px; font-size:0.8em; font-weight:600;">
+                            <i class="fa-solid fa-newspaper me-1"></i>Destaque
+                        </span>
+                    </div>
+                    <h3 style="font-size:1.05em;"><?= htmlspecialchars($n->titulo) ?></h3>
+                    <p style="color:#7f8c8d; font-size:0.9em; margin-top:10px;">
+                        <?= htmlspecialchars($n->resumo) ?>
+                    </p>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
 <!-- Rodapé -->
 <footer class="footer-container">
     <div class="footer-section">
@@ -157,9 +198,9 @@
     </div>
 </footer>
 <div class="footer-bottom">
-    &copy; 2025 MedControl — Sistemas de Informação Hospitalar, Lda. Todos os direitos reservados.
+    <?= APP_COPYRIGHT ?> Todos os direitos reservados.
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="<?= APP_BASE ?>/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
