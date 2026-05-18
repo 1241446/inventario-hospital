@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipamentos | MedControl</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../../assets/css/1241446.css">
+    <style>
+        :root {
+            --primary-color: #4fc3f7;
+            --primary-dark: #0097a7;
+            --bg-dark: #0a2540;
+            --bg-light: #f5f5f5;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --border-color: #ecf0f1;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-light);
+        }
+
+        .container-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #0d3d5c 100%);
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(79, 195, 247, 0.3);
+        }
+
+        .sidebar-header a {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-header a span {
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 12px 15px;
+            color: #b0c4de;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(79, 195, 247, 0.2);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .sidebar-menu a i {
+            margin-right: 12px;
+            width: 20px;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 20px;
+        }
+
+        .topbar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .topbar h1 {
+            font-size: 1.3em;
+            color: var(--bg-dark);
+            margin: 0;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            margin-bottom: 8px;
+            color: var(--bg-dark);
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95em;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--bg-dark);
+        }
+
+        .btn-secondary:hover {
+            background: #d5dbdb;
+        }
+
+        .table-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table thead {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #0d3d5c 100%);
+            color: white;
+        }
+
+        table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        table tbody tr:hover {
+            background: var(--bg-light);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .actions a,
+        .actions button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view {
+            background: var(--primary-color);
+            color: var(--bg-dark);
+        }
+
+        .btn-view:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        .btn-edit {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #e08000;
+        }
+
+        .btn-delete {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+            }
+
+            .main-content {
+                margin-left: 250px;
+                padding: 15px;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.85em;
+            }
+
+            table th,
+            table td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <a href="../../index.html">
+                <i class="fa-solid fa-hospital-user" style="color: var(--primary-color);"></i>
+                Med<span>Control</span>
+            </a>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li><a href="../../index.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+            <li><a href="lista.html" class="active"><i class="fa-solid fa-stethoscope"></i> Equipamentos</a></li>
+            <li><a href="../localizacoes/lista.html"><i class="fa-solid fa-map-location-dot"></i> Localizações</a></li>
+            <li><a href="../fornecedores/lista.html"><i class="fa-solid fa-truck-medical"></i> Fornecedores</a></li>
+            <li><a href="../documentos/lista.html"><i class="fa-solid fa-file-pdf"></i> Documentação</a></li>
+            <li><a href="../garantias/lista.html"><i class="fa-solid fa-file-contract"></i> Garantias</a></li>
+            <li><a href="../conteudos/gestao.html"><i class="fa-solid fa-newspaper"></i> Conteúdos</a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket" style="margin-right: 8px;"></i>
+                Sair
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="topbar">
+            <h1><i class="fa-solid fa-stethoscope" style="margin-right: 10px;"></i>Gestão de Equipamentos</h1>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="filters">
+            <div class="filter-group">
+                <label>Pesquisar</label>
+                <input type="text" id="searchInput" placeholder="Código, nome ou marca...">
+            </div>
+            <div class="filter-group">
+                <label>Estado</label>
+                <select id="filterEstado">
+                    <option value="">Todos os estados</option>
+                    <option value="Operacional">Operacional</option>
+                    <option value="Manutenção">Manutenção</option>
+                    <option value="Avariado">Avariado</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Criticidade</label>
+                <select id="filterCriticidade">
+                    <option value="">Todas as criticidades</option>
+                    <option value="Crítica">Crítica</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Média">Média</option>
+                    <option value="Baixa">Baixa</option>
+                </select>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="novoEquipamento()">
+                    <i class="fa-solid fa-plus" style="margin-right: 8px;"></i> Novo
+                </button>
+                <button class="btn btn-secondary" onclick="exportarCSV()">
+                    <i class="fa-solid fa-download" style="margin-right: 8px;"></i> Exportar
+                </button>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-box">
+            <div class="table-responsive">
+                <table id="equipamentosTable">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>Marca/Modelo</th>
+                            <th>Localização</th>
+                            <th>Estado</th>
+                            <th>Criticidade</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="equipamentosBody">
+                        <tr>
+                            <td>EQ-001</td>
+                            <td>Ventilador Pulmonar</td>
+                            <td>Siemens SERVO-i</td>
+                            <td>UCI-01</td>
+                            <td><span class="badge badge-success">Operacional</span></td>
+                            <td><span class="badge badge-danger">Crítica</span></td>
+                            <td class="actions">
+                                <a href="detalhes.html?id=1" class="btn-view"><i class="fa-solid fa-eye"></i> Ver</a>
+                                <a href="editar.html?id=1" class="btn-edit"><i class="fa-solid fa-pen"></i> Editar</a>
+                                <button class="btn-delete" onclick="deletarEquipamento(1)"><i class="fa-solid fa-trash"></i> Deletar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>EQ-002</td>
+                            <td>Monitor Cardíaco</td>
+                            <td>Philips IntelliVue MP50</td>
+                            <td>Urgência</td>
+                            <td><span class="badge badge-success">Operacional</span></td>
+                            <td><span class="badge badge-danger">Crítica</span></td>
+                            <td class="actions">
+                                <a href="detalhes.html?id=2" class="btn-view"><i class="fa-solid fa-eye"></i> Ver</a>
+                                <a href="editar.html?id=2" class="btn-edit"><i class="fa-solid fa-pen"></i> Editar</a>
+                                <button class="btn-delete" onclick="deletarEquipamento(2)"><i class="fa-solid fa-trash"></i> Deletar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>EQ-003</td>
+                            <td>Bomba de Infusão</td>
+                            <td>Fresenius Volumat Agilia</td>
+                            <td>UCI-02</td>
+                            <td><span class="badge badge-success">Operacional</span></td>
+                            <td><span class="badge badge-info">Alta</span></td>
+                            <td class="actions">
+                                <a href="detalhes.html?id=3" class="btn-view"><i class="fa-solid fa-eye"></i> Ver</a>
+                                <a href="editar.html?id=3" class="btn-edit"><i class="fa-solid fa-pen"></i> Editar</a>
+                                <button class="btn-delete" onclick="deletarEquipamento(3)"><i class="fa-solid fa-trash"></i> Deletar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>EQ-004</td>
+                            <td>Desfibrilhador</td>
+                            <td>Zoll X Series</td>
+                            <td>Bloco Operatório</td>
+                            <td><span class="badge badge-success">Operacional</span></td>
+                            <td><span class="badge badge-danger">Crítica</span></td>
+                            <td class="actions">
+                                <a href="detalhes.html?id=4" class="btn-view"><i class="fa-solid fa-eye"></i> Ver</a>
+                                <a href="editar.html?id=4" class="btn-edit"><i class="fa-solid fa-pen"></i> Editar</a>
+                                <button class="btn-delete" onclick="deletarEquipamento(4)"><i class="fa-solid fa-trash"></i> Deletar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>EQ-005</td>
+                            <td>Electrocardiograma</td>
+                            <td>GE Healthcare MAC 5000</td>
+                            <td>Cardio</td>
+                            <td><span class="badge badge-warning">Manutenção</span></td>
+                            <td><span class="badge badge-info">Alta</span></td>
+                            <td class="actions">
+                                <a href="detalhes.html?id=5" class="btn-view"><i class="fa-solid fa-eye"></i> Ver</a>
+                                <a href="editar.html?id=5" class="btn-edit"><i class="fa-solid fa-pen"></i> Editar</a>
+                                <button class="btn-delete" onclick="deletarEquipamento(5)"><i class="fa-solid fa-trash"></i> Deletar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../../../assets/js/1241446.js"></script>
+<script>
+    function logout() {
+        if (confirm('Tem a certeza que deseja sair?')) {
+            window.location.href = '../../public/login.html';
+        }
+    }
+
+    function novoEquipamento() {
+        window.location.href = 'novo.html';
+    }
+
+    function deletarEquipamento(id) {
+        if (confirm('Tem a certeza que deseja deletar este equipamento?')) {
+            showNotification('Equipamento deletado com sucesso!', 'success');
+            document.querySelector(`tr:has(td:first-child:contains("EQ-${String(id).padStart(3, '0')}"))`).remove();
+        }
+    }
+
+    function exportarCSV() {
+        exportTableToCSV('equipamentosTable', 'equipamentos.csv');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        filterTable('equipamentosTable', 'searchInput');
+    });
+</script>
+</body>
+</html>
