@@ -14,18 +14,12 @@
 
 USE `db1241446`;
 
-SET NAMES 'utf8mb4';
-SET CHARACTER SET utf8mb4;
-
 -- ─── LIMPEZA (script reexecutavel) ──────────────────
 -- Remove apenas as tabelas deste projeto, pela ordem
 -- inversa das dependencias, para nao deixar resto de
 -- execucoes anteriores nem afetar outras tabelas que
 -- eventualmente existam na BD.
 
-DROP TABLE IF EXISTS MensagemContacto;
-DROP TABLE IF EXISTS Testemunho;
-DROP TABLE IF EXISTS Noticia;
 DROP TABLE IF EXISTS HistoricoAlteracoes;
 DROP TABLE IF EXISTS EquipamentoFornecedor;
 DROP TABLE IF EXISTS Documento;
@@ -51,7 +45,7 @@ CREATE TABLE Categoria (
         UNIQUE,
     descricao     text,
     CONSTRAINT pkCategoriaIdCategoria PRIMARY KEY (idCategoria)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE Estado (
     idEstado   integer
@@ -61,7 +55,7 @@ CREATE TABLE Estado (
         UNIQUE
         CONSTRAINT ckEstadoNomeEstado CHECK (char_length(trim(nomeEstado)) > 0),
     CONSTRAINT pkEstadoIdEstado PRIMARY KEY (idEstado)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE Criticidade (
     idCriticidade   integer
@@ -72,7 +66,7 @@ CREATE TABLE Criticidade (
         CONSTRAINT ckCriticidadeNomeCriticidade CHECK (char_length(trim(nomeCriticidade)) > 0),
     descricao       text,
     CONSTRAINT pkCriticidadeIdCriticidade PRIMARY KEY (idCriticidade)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE Localizacao (
     idLocalizacao   integer
@@ -86,7 +80,7 @@ CREATE TABLE Localizacao (
     dataRegisto     datetime
         DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pkLocalizacaoIdLocalizacao PRIMARY KEY (idLocalizacao)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE Pais (
     idPais    integer
@@ -96,7 +90,7 @@ CREATE TABLE Pais (
         UNIQUE,
     codigoISO varchar(2),
     CONSTRAINT pkPaisIdPais PRIMARY KEY (idPais)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- ─── TABELAS COM DEPENDENCIAS ────────────────────────
 
@@ -132,7 +126,7 @@ CREATE TABLE Fornecedor (
     dataCriacao      datetime
         DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pkFornecedorIdFornecedor PRIMARY KEY (idFornecedor)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE Utilizador (
     idUtilizador   integer
@@ -161,7 +155,7 @@ CREATE TABLE Utilizador (
     dataCriacao    datetime
         DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pkUtilizadorIdUtilizador PRIMARY KEY (idUtilizador)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE Equipamento (
     idEquipamento     integer
@@ -192,7 +186,7 @@ CREATE TABLE Equipamento (
         DEFAULT CURRENT_TIMESTAMP
         ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT pkEquipamentoIdEquipamento PRIMARY KEY (idEquipamento)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE Aquisicao (
     idAquisicao   integer
@@ -208,7 +202,7 @@ CREATE TABLE Aquisicao (
     idFornecedor  integer,
     observacoes   text,
     CONSTRAINT pkAquisicaoIdAquisicao PRIMARY KEY (idAquisicao)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE Garantia (
     idGarantia    integer
@@ -227,7 +221,7 @@ CREATE TABLE Garantia (
         DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pkGarantiaIdGarantia    PRIMARY KEY (idGarantia),
     CONSTRAINT ckGarantiaDataFimInicio CHECK (dataFim > dataInicio)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE Manutencao (
     idManutencao   integer
@@ -244,7 +238,7 @@ CREATE TABLE Manutencao (
         CONSTRAINT ckManutencaoCusto CHECK (custo >= 0),
     observacoes    text,
     CONSTRAINT pkManutencaoIdManutencao PRIMARY KEY (idManutencao)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE Documento (
     idDocumento    integer
@@ -260,7 +254,7 @@ CREATE TABLE Documento (
         DEFAULT CURRENT_TIMESTAMP,
     observacoes    text,
     CONSTRAINT pkDocumentoIdDocumento PRIMARY KEY (idDocumento)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE EquipamentoFornecedor (
     idEquipamento  integer
@@ -270,7 +264,7 @@ CREATE TABLE EquipamentoFornecedor (
     dataAssociacao datetime
         DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pkEquipamentoFornecedor PRIMARY KEY (idEquipamento, idFornecedor)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 CREATE TABLE HistoricoAlteracoes (
     idHistorico        integer
@@ -284,55 +278,7 @@ CREATE TABLE HistoricoAlteracoes (
     idUtilizador       integer,
     descricaoAlteracao text,
     CONSTRAINT pkHistoricoAlteracoesIdHistorico PRIMARY KEY (idHistorico)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE Noticia (
-    idNoticia      integer
-        auto_increment,
-    titulo         varchar(200)
-        NOT NULL,
-    resumo         text,
-    destaque       boolean
-        DEFAULT FALSE,
-    publicada      boolean
-        DEFAULT TRUE,
-    dataPublicacao datetime
-        DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT pkNoticiaIdNoticia PRIMARY KEY (idNoticia)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE Testemunho (
-    idTestemunho integer
-        auto_increment,
-    nomeEmpresa  varchar(100)
-        NOT NULL,
-    nomeAutor    varchar(100),
-    cargoAutor   varchar(100),
-    texto        text
-        NOT NULL,
-    ativo        boolean
-        DEFAULT TRUE,
-    dataRegisto  datetime
-        DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT pkTestemunhoIdTestemunho PRIMARY KEY (idTestemunho)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE MensagemContacto (
-    idMensagem     integer
-        auto_increment,
-    nomeRemetente  varchar(100)
-        NOT NULL,
-    emailRemetente varchar(100)
-        NOT NULL,
-    assunto        varchar(200),
-    mensagem       text
-        NOT NULL,
-    lida           boolean
-        DEFAULT FALSE,
-    dataRecebida   datetime
-        DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT pkMensagemContactoIdMensagem PRIMARY KEY (idMensagem)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- ─── CHAVES ESTRANGEIRAS ─────────────────────────────
 
