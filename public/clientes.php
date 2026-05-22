@@ -1,18 +1,32 @@
+﻿<?php
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../private/includes/funcoes.php';
+
+$testemunhos = [];
+try {
+    $pdo = get_pdo();
+    $testemunhos = $pdo->query("SELECT * FROM Testemunho ORDER BY idTestemunho DESC")->fetchAll(PDO::FETCH_OBJ);
+    $pdo = null;
+} catch (PDOException $e) {
+    $testemunhos = [];
+}
+?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes | MedControl</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/1241446.css">
+    <meta name="description" content="Clientes MedControl - Hospitais e unidades de saúde que confiam no nosso sistema de gestão de inventário hospitalar.">
+    <title>Clientes | <?= APP_NAME ?></title>
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/css/1241446.css">
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg bng-navbar sticky-top">
     <div class="container-fluid px-4">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="<?= APP_BASE ?>/public/index.php">
             <i class="fa-solid fa-hospital-user" style="color:#4fc3f7; font-size:1.4em; margin-right:8px;"></i>
             Med<span>Control</span>
         </a>
@@ -21,14 +35,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarMain">
             <div class="container-navegacao mx-auto">
-                <a href="index.html">Quem Somos</a>
-                <a href="solucao.html">A Solução</a>
-                <a href="funcionalidades.html">Funcionalidades</a>
-                <a href="clientes.html" class="active">Clientes</a>
-                <a href="contacto.html">Contacto</a>
+                <a href="<?= APP_BASE ?>/public/index.php">Quem Somos</a>
+                <a href="<?= APP_BASE ?>/public/solucao.php">A Solução</a>
+                <a href="<?= APP_BASE ?>/public/funcionalidades.php">Funcionalidades</a>
+                <a href="<?= APP_BASE ?>/public/clientes.php" class="active">Clientes</a>
+                <a href="<?= APP_BASE ?>/public/contacto.php">Contacto</a>
             </div>
             <div class="nav-cliente">
-                <a href="login.html"><i class="fa-solid fa-right-to-bracket"></i> Área Restrita</a>
+                <a href="<?= APP_BASE ?>/public/login.php"><i class="fa-solid fa-right-to-bracket"></i> Área Restrita</a>
             </div>
         </div>
     </div>
@@ -137,71 +151,35 @@
     </div>
 </div>
 
-<!-- Testemunhos -->
+<!-- Testemunhos (carregados da BD via gestao.php) -->
+<?php if (!empty($testemunhos)): ?>
 <div style="background: linear-gradient(135deg, var(--bg-dark) 0%, #0d3d5c 100%); padding: 60px 40px; margin-top: 40px;">
     <h2 class="section-title" style="color: white; padding-top: 0;">O Que Dizem os Nossos Clientes</h2>
     <div class="section-divider"></div>
-
     <div class="container">
         <div class="row g-4" style="margin-top: 30px;">
+            <?php foreach ($testemunhos as $t): ?>
             <div class="col-lg-6">
                 <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
                     <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <?php for ($i = 0; $i < 5; $i++): ?>
                         <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
+                        <?php endfor; ?>
                     </div>
-                    <p style="margin-bottom: 15px; color: #0a2540; font-size: 0.95em; line-height: 1.8;">"Desde que implementámos o MedControl, temos visibilidade total do nosso parque de equipamentos. Os relatórios automáticos ajudam-nos nas auditorias internas."</p>
-                    <p style="color: #4fc3f7; font-weight: 700; margin: 0;">Dr. Carlos Ferreira, Diretor de Tecnologia<br><span style="font-size: 0.85em; color: #7f8c8d;">Hospital de São João</span></p>
+                    <p style="margin-bottom: 15px; color: #0a2540; font-size: 0.95em; line-height: 1.8;">
+                        "<?= htmlspecialchars($t->texto) ?>"
+                    </p>
+                    <p style="color: #4fc3f7; font-weight: 700; margin: 0;">
+                        <?= htmlspecialchars($t->nomeAutor) ?>, <?= htmlspecialchars($t->cargoAutor) ?><br>
+                        <span style="font-size: 0.85em; color: #7f8c8d;"><?= htmlspecialchars($t->nomeEmpresa) ?></span>
+                    </p>
                 </div>
             </div>
-
-            <div class="col-lg-6">
-                <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                    </div>
-                    <p style="margin-bottom: 15px; color: #0a2540; font-size: 0.95em; line-height: 1.8;">"O sistema é muito intuitivo. Os técnicos aprenderam a usar rapidamente, sem necessidade de formação extensiva. Ganhos de produtividade imediatos."</p>
-                    <p style="color: #4fc3f7; font-weight: 700; margin: 0;">Eng. Paula Ribeiro, Gestora de Infraestruturas<br><span style="font-size: 0.85em; color: #7f8c8d;">Hospital da Luz</span></p>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                    </div>
-                    <p style="margin-bottom: 15px; color: #0a2540; font-size: 0.95em; line-height: 1.8;">"Melhorou significativamente a gestão de garantias. Agora temos alertas automáticos e não perdemos nenhuma garantia por vencer."</p>
-                    <p style="color: #4fc3f7; font-weight: 700; margin: 0;">Dra. Marta Silva, Responsável Compras<br><span style="font-size: 0.85em; color: #7f8c8d;">Centro Hospitalar Covilhã</span></p>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                        <i class="fa-solid fa-star" style="color: #ffc107;"></i>
-                    </div>
-                    <p style="margin-bottom: 15px; color: #0a2540; font-size: 0.95em; line-height: 1.8;">"O suporte pós-venda é excelente. Sempre que precisámos, a equipa do MedControl responde rapidamente com soluções."</p>
-                    <p style="color: #4fc3f7; font-weight: 700; margin: 0;">Sr. João Neves, Coordenador Técnico<br><span style="font-size: 0.85em; color: #7f8c8d;">Hospital Amélia Lemos</span></p>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
+<?php endif; ?>
 
 <footer class="footer-container">
     <div class="footer-section">
@@ -222,9 +200,9 @@
     </div>
 </footer>
 <div class="footer-bottom">
-    &copy; 2025 MedControl — Sistemas de Informação Hospitalar, Lda.
+    <?= APP_COPYRIGHT ?>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="<?= APP_BASE ?>/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
