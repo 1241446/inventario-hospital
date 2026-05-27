@@ -1,6 +1,6 @@
 <?php
 // =====================================================
-// MedControl – Nova Localização
+// MedControl – Nova / Editar Localização
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
 // =====================================================
 
@@ -12,120 +12,60 @@ redirect_if_not_logged();
 
 $tituloPagina = 'Nova Localização';
 $paginaAtiva  = 'localizacoes';
-
-$erros        = [];
-$erro_sistema = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $nomeLocalizacao = trim($_POST['nomeLocalizacao'] ?? '');
-    $piso            = trim($_POST['piso']            ?? '');
-    $ala             = trim($_POST['ala']             ?? '');
-    $descricao       = trim($_POST['descricao']       ?? '');
-
-    if (empty($nomeLocalizacao)) {
-        $erros[] = 'O campo Nome da Localização é obrigatório.';
-    }
-
-    if (!empty($piso) && !is_numeric($piso)) {
-        $erros[] = 'O piso deve ser um número.';
-    }
-
-    if (empty($erros)) {
-        try {
-            $pdo = get_pdo();
-
-            $stmt = $pdo->prepare(
-                "INSERT INTO Localizacao (nomeLocalizacao, piso, ala, descricao) VALUES (:nome, :piso, :ala, :descricao)"
-            );
-            $stmt->execute([
-                ':nome'     => $nomeLocalizacao,
-                ':piso'     => $piso !== '' ? (int)$piso : null,
-                ':ala'      => $ala      ?: null,
-                ':descricao'=> $descricao ?: null,
-            ]);
-            $pdo = null;
-            registarLog('INSERIR_LOCALIZACAO', "nome=$nomeLocalizacao por " . ($_SESSION['utilizador'] ?? 'desconhecido'));
-            $_SESSION['toast'] = ['msg' => 'Localização criada com sucesso.', 'type' => 'success'];
-            header('Location: lista.php');
-            exit;
-        } catch (PDOException $err) {
-            registarLog('ERRO_INSERIR_LOCALIZACAO', $err->getMessage());
-            $erro_sistema = 'Erro ao guardar: ' . $err->getMessage();
-        }
-    }
-}
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/nav.php'; ?>
+<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
 
-<div class="container-fluid">
-    <div class="row">
-        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
-        <main class="col-md-9 col-lg-10 p-4">
+<?php
+$topbarTitulo    = '<i class="fa-solid fa-plus" style="color:var(--primary);margin-right:8px;"></i>Nova Localização';
+$topbarSubtitulo = 'Registar um novo departamento ou zona hospitalar';
+$topbarAcao      = '<a href="' . APP_BASE . '/private/views/localizacoes/lista.php" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Voltar</a>';
+include __DIR__ . '/../../includes/nav.php';
+?>
 
 <div class="page">
     <div class="content-box">
-
-        <h5 class="mb-4"><i class="fa-solid fa-map-location-dot me-2"></i>Nova Localização</h5>
-
-        <form action="#" method="post" novalidate>
-
-            <div class="row mb-3">
-                <div class="col-12">
-                    <label for="nomeLocalizacao" class="form-label">Nome da Localização *</label>
-                    <input type="text" class="form-control" id="nomeLocalizacao" name="nomeLocalizacao"
-                           value="<?= htmlspecialchars($_POST['nomeLocalizacao'] ?? '') ?>"
-                           placeholder="Ex: Bloco Operatório B">
+        <form id="novaLocalizacaoForm" method="POST" action="">
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label>Nome da Localização *</label>
+                    <input type="text" name="nomeLocalizacao" required placeholder="Ex: Bloco Operatório B">
+                </div>
+                <div class="form-group">
+                    <label>Piso</label>
+                    <input type="number" name="piso" placeholder="Ex: 2">
+                </div>
+                <div class="form-group">
+                    <label>Ala</label>
+                    <input type="text" name="ala" placeholder="Ex: Norte">
+                </div>
+                <div class="form-group full">
+                    <label>Descrição</label>
+                    <textarea name="descricao" placeholder="Breve descrição da localização..."></textarea>
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <label for="piso" class="form-label">Piso</label>
-                    <input type="number" class="form-control" id="piso" name="piso"
-                           value="<?= htmlspecialchars($_POST['piso'] ?? '') ?>"
-                           placeholder="Ex: 2">
-                </div>
-                <div class="col-md-3">
-                    <label for="ala" class="form-label">Ala</label>
-                    <input type="text" class="form-control" id="ala" name="ala"
-                           value="<?= htmlspecialchars($_POST['ala'] ?? '') ?>"
-                           placeholder="Ex: Norte">
-                </div>
-                <div class="col-md-6">
-                    <label for="descricao" class="form-label">Descrição</label>
-                    <input type="text" class="form-control" id="descricao" name="descricao"
-                           value="<?= htmlspecialchars($_POST['descricao'] ?? '') ?>"
-                           placeholder="Breve descrição da localização">
-                </div>
-            </div>
-
-            <?php if (!empty($erros)): ?>
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    <?php foreach ($erros as $erro): ?>
-                    <li><?= htmlspecialchars($erro) ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-            <?php endif; ?>
-
-            <?php if (!empty($erro_sistema)): ?>
-            <div class="alert alert-danger"><?= htmlspecialchars($erro_sistema) ?></div>
-            <?php endif; ?>
-
-            <div class="d-flex justify-content-end gap-2 mt-3">
+            <div class="form-actions">
                 <a href="<?= APP_BASE ?>/private/views/localizacoes/lista.php" class="btn btn-secondary">
-                    <i class="fa-solid fa-xmark me-1"></i> Cancelar
+                    <i class="fa-solid fa-xmark"></i> Cancelar
                 </a>
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-floppy-disk me-1"></i> Guardar
+                    <i class="fa-solid fa-check"></i> Guardar Localização
                 </button>
             </div>
-
         </form>
     </div>
-</div>
+</div><!-- /page -->
 
+<?php
+$scriptsExtra = '
+<script>
+    document.getElementById("novaLocalizacaoForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        showNotification("Localização registada com sucesso!", "success");
+        setTimeout(() => { window.location.href = "lista.php"; }, 1500);
+    });
+</script>
+';
+?>
 <?php include __DIR__ . '/../../includes/footer.php'; ?>

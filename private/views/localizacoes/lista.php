@@ -12,83 +12,123 @@ redirect_if_not_logged();
 
 $tituloPagina = 'Localizações';
 $paginaAtiva  = 'localizacoes';
-
-try {
-    $pdo = get_pdo();
-
-    $stmt = $pdo->query("
-        SELECT l.idLocalizacao, l.nomeLocalizacao, l.piso, l.ala, l.descricao,
-               COUNT(e.idEquipamento) AS totalEquipamentos
-          FROM Localizacao l
-          LEFT JOIN Equipamento e ON l.idLocalizacao = e.idLocalizacao
-         GROUP BY l.idLocalizacao
-         ORDER BY l.nomeLocalizacao
-    ");
-    $localizacoes = $stmt->fetchAll(PDO::FETCH_OBJ);
-    $pdo = null;
-} catch (PDOException $e) {
-    $dbErro      = $e->getMessage();
-    $localizacoes = [];
-}
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/nav.php'; ?>
+<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
 
-<div class="container-fluid">
-    <div class="row">
-        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
-        <main class="col-md-9 col-lg-10 p-4">
+<?php
+$topbarTitulo    = '<i class="fa-solid fa-map-location-dot" style="color:var(--primary);margin-right:8px;"></i>Gestão de Localizações';
+$topbarSubtitulo = 'Departamentos, salas e zonas do hospital';
+$topbarAcao      = '<a href="' . APP_BASE . '/private/views/localizacoes/novo.php" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nova Localização</a>';
+include __DIR__ . '/../../includes/nav.php';
+?>
 
-<?php if (!empty($dbErro)): ?>
-<div class="alert alert-danger">
-    <i class="fa-solid fa-triangle-exclamation me-2"></i>
-    Erro na ligação à base de dados: <?= htmlspecialchars($dbErro) ?>
-</div>
-<?php endif; ?>
+<div class="page">
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0"><i class="fa-solid fa-map-location-dot me-2"></i>Localizações</h4>
-    <a href="<?= APP_BASE ?>/private/views/localizacoes/novo.php" class="btn btn-primary btn-sm">
-        <i class="fa-solid fa-plus me-1"></i>Nova Localização
-    </a>
-</div>
+    <div class="filters">
+        <div class="filter-group">
+            <label>Pesquisar</label>
+            <input type="text" id="searchInput" placeholder="Nome ou ala...">
+        </div>
+        <div class="filter-group">
+            <label>Piso</label>
+            <select id="filterPiso">
+                <option value="">Todos os pisos</option>
+                <option value="0">Piso 0</option>
+                <option value="1">Piso 1</option>
+                <option value="2">Piso 2</option>
+            </select>
+        </div>
+    </div>
 
-<div class="table-responsive">
-    <table id="tabelaLocalizacoes" class="table table-striped table-hover table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th>Nome</th>
-                <th>Piso</th>
-                <th>Ala</th>
-                <th>Descrição</th>
-                <th>Equipamentos</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($localizacoes as $loc): ?>
-            <tr>
-                <td><?= htmlspecialchars($loc->nomeLocalizacao) ?></td>
-                <td><?= htmlspecialchars($loc->piso ?? '—') ?></td>
-                <td><?= htmlspecialchars($loc->ala ?? '—') ?></td>
-                <td><?= htmlspecialchars($loc->descricao ?? '—') ?></td>
-                <td><?= (int)$loc->totalEquipamentos ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
+    <div class="table-box">
+        <div class="table-responsive">
+            <table id="localizacoesTable">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Piso</th>
+                        <th>Ala</th>
+                        <th>Descrição</th>
+                        <th>Equipamentos</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bloco Operatório A</td>
+                        <td>2</td>
+                        <td>Norte</td>
+                        <td>Bloco operatório principal</td>
+                        <td>3</td>
+                        <td class="actions">
+                            <a href="<?= APP_BASE ?>/private/views/localizacoes/novo.php?id=1" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
+                            <button class="btn-action apagar" onclick="apagarLocalizacao(1)"><i class="fa-solid fa-trash"></i> Apagar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>UCI</td>
+                        <td>1</td>
+                        <td>Sul</td>
+                        <td>Unidade de Cuidados Intensivos</td>
+                        <td>2</td>
+                        <td class="actions">
+                            <a href="<?= APP_BASE ?>/private/views/localizacoes/novo.php?id=2" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
+                            <button class="btn-action apagar" onclick="apagarLocalizacao(2)"><i class="fa-solid fa-trash"></i> Apagar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Radiologia</td>
+                        <td>0</td>
+                        <td>Este</td>
+                        <td>Departamento de imagiologia e radiologia</td>
+                        <td>2</td>
+                        <td class="actions">
+                            <a href="<?= APP_BASE ?>/private/views/localizacoes/novo.php?id=3" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
+                            <button class="btn-action apagar" onclick="apagarLocalizacao(3)"><i class="fa-solid fa-trash"></i> Apagar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Laboratório Central</td>
+                        <td>0</td>
+                        <td>Oeste</td>
+                        <td>Laboratório de análises clínicas</td>
+                        <td>1</td>
+                        <td class="actions">
+                            <a href="<?= APP_BASE ?>/private/views/localizacoes/novo.php?id=4" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
+                            <button class="btn-action apagar" onclick="apagarLocalizacao(4)"><i class="fa-solid fa-trash"></i> Apagar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fisioterapia</td>
+                        <td>1</td>
+                        <td>Norte</td>
+                        <td>Departamento de reabilitação física</td>
+                        <td>0</td>
+                        <td class="actions">
+                            <a href="<?= APP_BASE ?>/private/views/localizacoes/novo.php?id=5" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
+                            <button class="btn-action apagar" onclick="apagarLocalizacao(5)"><i class="fa-solid fa-trash"></i> Apagar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div><!-- /page -->
 
 <?php
 $scriptsExtra = '
 <script>
-$(document).ready(function() {
-    $("#tabelaLocalizacoes").DataTable({
-        pageLength: 10,
-        language: {
-            url: "' . APP_BASE . '/private/assets/js/datatables-pt.json"
+    function apagarLocalizacao(id) {
+        if (confirm("Tem a certeza que deseja apagar esta localização?")) {
+            showNotification("Localização apagada com sucesso!", "success");
         }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        filterTable("localizacoesTable", "searchInput");
     });
-});
 </script>
 ';
 ?>

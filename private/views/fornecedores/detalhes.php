@@ -12,164 +12,130 @@ redirect_if_not_logged();
 
 $tituloPagina = 'Detalhes do Fornecedor';
 $paginaAtiva  = 'fornecedores';
-
-if (empty($_GET['id'])) {
-    header('Location: lista.php');
-    exit;
-}
-
-$idFornecedor = (int)$_GET['id'];
-$erro_sistema = '';
-$fornecedor   = null;
-$equipamentos = [];
-
-try {
-    $pdo = get_pdo();
-
-    $stmt = $pdo->prepare("
-        SELECT f.*, p.nomePais
-          FROM Fornecedor f
-          LEFT JOIN Pais p ON f.idPais = p.idPais
-         WHERE f.idFornecedor = :id
-    ");
-    $stmt->bindParam(':id', $idFornecedor, PDO::PARAM_INT);
-    $stmt->execute();
-    $fornecedor = $stmt->fetch(PDO::FETCH_OBJ);
-
-    if (!$fornecedor) {
-        header('Location: lista.php');
-        exit;
-    }
-
-    $stmtEq = $pdo->prepare("
-        SELECT e.codigoEquipamento, e.designacao, est.nomeEstado, l.nomeLocalizacao
-          FROM EquipamentoFornecedor ef
-          JOIN Equipamento e   ON ef.idEquipamento = e.idEquipamento
-          JOIN Estado est      ON e.idEstado        = est.idEstado
-          JOIN Localizacao l   ON e.idLocalizacao   = l.idLocalizacao
-         WHERE ef.idFornecedor = :id
-         ORDER BY e.codigoEquipamento
-    ");
-    $stmtEq->bindParam(':id', $idFornecedor, PDO::PARAM_INT);
-    $stmtEq->execute();
-    $equipamentos = $stmtEq->fetchAll(PDO::FETCH_OBJ);
-
-    $pdo = null;
-} catch (PDOException $e) {
-    $erro_sistema = $e->getMessage();
-}
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/nav.php'; ?>
+<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
 
-<div class="container-fluid">
-    <div class="row">
-        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
-        <main class="col-md-9 col-lg-10 p-4">
+<style>
+    .info-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 32px; }
+    .info-group { display: flex; flex-direction: column; gap: 4px; }
+    .info-label { font-size: 0.74em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+    .info-value { font-size: 0.92em; font-weight: 500; color: var(--text); }
+    @media (max-width: 700px) { .info-grid { grid-template-columns: 1fr; } }
+</style>
 
-<?php if (!empty($erro_sistema)): ?>
-<div class="alert alert-danger"><?= htmlspecialchars($erro_sistema) ?></div>
-<?php endif; ?>
+<?php
+$topbarTitulo    = '<i class="fa-solid fa-truck-medical" style="color:var(--primary);margin-right:8px;"></i>Siemens Healthineers';
+$topbarSubtitulo = 'Fabricante · FORN-001';
+$topbarAcao      = '<a href="' . APP_BASE . '/private/views/fornecedores/lista.php" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+    <a href="' . APP_BASE . '/private/views/fornecedores/novo.php?id=1" class="btn btn-primary"><i class="fa-solid fa-pen"></i> Editar</a>';
+include __DIR__ . '/../../includes/nav.php';
+?>
 
 <div class="page">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="mb-0"><i class="fa-solid fa-truck-medical me-2"></i><?= htmlspecialchars($fornecedor->nomeEmpresa ?? '') ?></h4>
-        <a href="lista.php" class="btn btn-secondary btn-sm">
-            <i class="fa-solid fa-arrow-left me-1"></i>Voltar
-        </a>
+    <div class="tab-buttons" style="margin-bottom:24px;">
+        <button class="tab-btn active" onclick="switchTab(this,0)">Informações Gerais</button>
+        <button class="tab-btn" onclick="switchTab(this,1)">Contacto</button>
+        <button class="tab-btn" onclick="switchTab(this,2)">Equipamentos Associados</button>
     </div>
 
-    <!-- Informações Gerais -->
-    <div class="content-box mb-3">
-        <h6 class="fw-bold mb-3 text-muted text-uppercase" style="font-size:0.78em;letter-spacing:.05em;">
-            <i class="fa-solid fa-building me-1"></i>Informações Gerais
-        </h6>
-        <div class="row g-3">
-            <div class="col-md-4">
-                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">NIF</div>
-                <div><?= htmlspecialchars($fornecedor->nif ?? '—') ?></div>
+    <!-- TAB 1: Informações Gerais -->
+    <div class="tab-content active content-box">
+        <div class="info-grid">
+            <div class="info-group">
+                <div class="info-label">Nome da Empresa</div>
+                <div class="info-value">Siemens Healthineers</div>
             </div>
-            <div class="col-md-4">
-                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Tipo</div>
-                <div><span class="badge bg-primary"><?= htmlspecialchars(ucfirst(strtolower($fornecedor->tipoFornecedor ?? ''))) ?></span></div>
+            <div class="info-group">
+                <div class="info-label">NIF</div>
+                <div class="info-value">500123456</div>
             </div>
-            <div class="col-md-4">
-                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">País</div>
-                <div><?= htmlspecialchars($fornecedor->nomePais ?? '—') ?></div>
+            <div class="info-group">
+                <div class="info-label">Tipo</div>
+                <div class="info-value"><span class="badge badge-primary">Fabricante</span></div>
             </div>
-            <div class="col-md-4">
-                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Website</div>
-                <div><?= htmlspecialchars($fornecedor->website ?? '—') ?></div>
+            <div class="info-group">
+                <div class="info-label">País</div>
+                <div class="info-value">Alemanha</div>
             </div>
-            <div class="col-md-8">
-                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Morada</div>
-                <div><?= htmlspecialchars($fornecedor->morada ?? '—') ?></div>
+            <div class="info-group">
+                <div class="info-label">Website</div>
+                <div class="info-value"><a href="https://www.siemens-healthineers.com" target="_blank" style="color:var(--primary);">www.siemens-healthineers.com</a></div>
+            </div>
+            <div class="info-group">
+                <div class="info-label">Morada</div>
+                <div class="info-value">Rua da Inovação 45, Lisboa</div>
             </div>
         </div>
     </div>
 
-    <!-- Contacto -->
-    <div class="content-box mb-3">
-        <h6 class="fw-bold mb-3 text-muted text-uppercase" style="font-size:0.78em;letter-spacing:.05em;">
-            <i class="fa-solid fa-address-card me-1"></i>Contacto Principal
-        </h6>
-        <div class="row g-3">
-            <div class="col-md-3">
-                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Nome</div>
-                <div><?= htmlspecialchars($fornecedor->nomeContacto ?? '—') ?></div>
+    <!-- TAB 2: Contacto -->
+    <div class="tab-content content-box">
+        <div class="info-grid">
+            <div class="info-group">
+                <div class="info-label">Nome do Contacto</div>
+                <div class="info-value">Hans Mueller</div>
             </div>
-            <div class="col-md-3">
-                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Cargo</div>
-                <div><?= htmlspecialchars($fornecedor->cargoContacto ?? '—') ?></div>
+            <div class="info-group">
+                <div class="info-label">Cargo</div>
+                <div class="info-value">Diretor Comercial</div>
             </div>
-            <div class="col-md-3">
-                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Telefone</div>
-                <div><?= htmlspecialchars($fornecedor->telefoneContacto ?? '—') ?></div>
+            <div class="info-group">
+                <div class="info-label">Telefone</div>
+                <div class="info-value">+351 210 000 001</div>
             </div>
-            <div class="col-md-3">
-                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Email</div>
-                <div><?= htmlspecialchars($fornecedor->emailContacto ?? '—') ?></div>
+            <div class="info-group">
+                <div class="info-label">Email</div>
+                <div class="info-value"><a href="mailto:hmueller@siemens.com" style="color:var(--primary);">hmueller@siemens.com</a></div>
             </div>
         </div>
     </div>
 
-    <!-- Equipamentos Associados -->
-    <div class="content-box">
-        <h6 class="fw-bold mb-3 text-muted text-uppercase" style="font-size:0.78em;letter-spacing:.05em;">
-            <i class="fa-solid fa-stethoscope me-1"></i>Equipamentos Associados
-        </h6>
-        <?php if (empty($equipamentos)): ?>
-        <p class="text-muted small">Nenhum equipamento associado a este fornecedor.</p>
-        <?php else: ?>
-        <div class="table-responsive">
-            <table class="table table-sm table-striped table-bordered">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Código</th>
-                        <th>Designação</th>
-                        <th>Estado</th>
-                        <th>Localização</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($equipamentos as $eq): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($eq->codigoEquipamento) ?></td>
-                        <td><?= htmlspecialchars($eq->designacao) ?></td>
-                        <td><?= htmlspecialchars($eq->nomeEstado) ?></td>
-                        <td><?= htmlspecialchars($eq->nomeLocalizacao) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+    <!-- TAB 3: Equipamentos -->
+    <div class="tab-content">
+        <div class="table-box">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Equipamento</th>
+                            <th>Estado</th>
+                            <th>Localização</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EQ-001</td>
+                            <td>Ressonância Magnética 3T</td>
+                            <td><span class="badge badge-success">Ativo</span></td>
+                            <td>Radiologia</td>
+                        </tr>
+                        <tr>
+                            <td>EQ-004</td>
+                            <td>Tomógrafo Computorizado</td>
+                            <td><span class="badge badge-success">Ativo</span></td>
+                            <td>Radiologia</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <?php endif; ?>
     </div>
 
 </div><!-- /page -->
 
 <?php
-$scriptsExtra = '';
+$scriptsExtra = '
+<script>
+    function switchTab(btn, index) {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        document.querySelectorAll(".tab-content")[index].classList.add("active");
+    }
+</script>
+';
 ?>
 <?php include __DIR__ . '/../../includes/footer.php'; ?>
