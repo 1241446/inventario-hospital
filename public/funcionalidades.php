@@ -1,18 +1,20 @@
+﻿<?php require_once __DIR__ . '/../config/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funcionalidades | MedControl</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/1241446.css">
+    <meta name="description" content="Funcionalidades MedControl - Gestão de equipamentos, localizações, fornecedores, garantias e documentação numa única plataforma.">
+    <title>Funcionalidades | <?= APP_NAME ?></title>
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/css/1241446.css">
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg bng-navbar sticky-top">
     <div class="container-fluid px-4">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="<?= APP_BASE ?>/public/index.php">
             <i class="fa-solid fa-hospital-user" style="color:#4fc3f7; font-size:1.4em; margin-right:8px;"></i>
             Med<span>Control</span>
         </a>
@@ -21,14 +23,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarMain">
             <div class="container-navegacao mx-auto">
-                <a href="index.html">Quem Somos</a>
-                <a href="solucao.html">A Solução</a>
-                <a href="funcionalidades.html" class="active">Funcionalidades</a>
-                <a href="clientes.html">Clientes</a>
-                <a href="contacto.html">Contacto</a>
+                <a href="<?= APP_BASE ?>/public/index.php">Quem Somos</a>
+                <a href="<?= APP_BASE ?>/public/solucao.php">A Solução</a>
+                <a href="<?= APP_BASE ?>/public/funcionalidades.php" class="active">Funcionalidades</a>
+                <a href="<?= APP_BASE ?>/public/clientes.php">Clientes</a>
+                <a href="<?= APP_BASE ?>/public/contacto.php">Contacto</a>
             </div>
             <div class="nav-cliente">
-                <a href="login.html"><i class="fa-solid fa-right-to-bracket"></i> Área Restrita</a>
+                <a href="<?= APP_BASE ?>/public/login.php"><i class="fa-solid fa-right-to-bracket"></i> Área Restrita</a>
             </div>
         </div>
     </div>
@@ -208,10 +210,10 @@
     </div>
 </footer>
 <div class="footer-bottom">
-    &copy; 2025 MedControl — Sistemas de Informação Hospitalar, Lda.
+    <?= APP_COPYRIGHT ?>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="<?= APP_BASE ?>/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/1241446.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
