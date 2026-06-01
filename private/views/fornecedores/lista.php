@@ -12,93 +12,114 @@ redirect_if_not_logged();
 
 $tituloPagina = 'Fornecedores';
 $paginaAtiva  = 'fornecedores';
-
-try {
-    $pdo = get_pdo();
-
-    $stmt = $pdo->query("
-        SELECT f.idFornecedor, f.nomeEmpresa, f.nif, f.tipoFornecedor,
-               f.emailContacto, f.telefoneContacto,
-               COUNT(ef.idEquipamento) AS totalEquipamentos
-          FROM Fornecedor f
-          LEFT JOIN EquipamentoFornecedor ef ON f.idFornecedor = ef.idFornecedor
-         GROUP BY f.idFornecedor
-         ORDER BY f.nomeEmpresa
-    ");
-    $fornecedores = $stmt->fetchAll(PDO::FETCH_OBJ);
-    $pdo = null;
-} catch (PDOException $e) {
-    $dbErro      = $e->getMessage();
-    $fornecedores = [];
-}
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/nav.php'; ?>
+<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
 
-<div class="container-fluid">
-    <div class="row">
-        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
-        <main class="col-md-9 col-lg-10 p-4">
+<?php
+$topbarTitulo    = '<i class="fa-solid fa-truck-medical" style="color:var(--primary);margin-right:8px;"></i>Gestão de Fornecedores';
+$topbarSubtitulo = 'Fabricantes, distribuidores e assistências técnicas';
+$topbarAcao      = '<a href="' . APP_BASE . '/private/views/fornecedores/novo.php" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Novo Fornecedor</a>';
+include __DIR__ . '/../../includes/nav.php';
+?>
 
-<?php if (!empty($dbErro)): ?>
-<div class="alert alert-danger">
-    <i class="fa-solid fa-triangle-exclamation me-2"></i>
-    Erro na ligação à base de dados: <?= htmlspecialchars($dbErro) ?>
-</div>
-<?php endif; ?>
+<div class="page">
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0"><i class="fa-solid fa-truck-medical me-2"></i>Fornecedores</h4>
-    <a href="<?= APP_BASE ?>/private/views/fornecedores/novo.php" class="btn btn-primary btn-sm">
-        <i class="fa-solid fa-plus me-1"></i>Novo Fornecedor
-    </a>
-</div>
+    <div class="filters">
+        <div class="filter-group">
+            <label>Pesquisar</label>
+            <input type="text" id="searchInput" placeholder="Nome ou NIF...">
+        </div>
+        <div class="filter-group">
+            <label>Tipo</label>
+            <select id="filterTipo">
+                <option value="">Todos os tipos</option>
+                <option value="Fabricante">Fabricante</option>
+                <option value="Distribuidor">Distribuidor</option>
+                <option value="Fornecedor">Fornecedor</option>
+            </select>
+        </div>
+    </div>
 
-<div class="table-responsive">
-    <table id="tabelaFornecedores" class="table table-striped table-hover table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th>Nome</th>
-                <th>NIF</th>
-                <th>Tipo</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                <th>Equipamentos</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($fornecedores as $forn): ?>
-            <tr>
-                <td><?= htmlspecialchars($forn->nomeEmpresa) ?></td>
-                <td><?= htmlspecialchars($forn->nif) ?></td>
-                <td><span class="badge bg-primary"><?= htmlspecialchars(ucfirst(strtolower($forn->tipoFornecedor))) ?></span></td>
-                <td><?= htmlspecialchars($forn->emailContacto) ?></td>
-                <td><?= htmlspecialchars($forn->telefoneContacto ?? '—') ?></td>
-                <td><?= (int)$forn->totalEquipamentos ?></td>
-                <td>
-                    <a href="<?= APP_BASE ?>/private/views/fornecedores/detalhes.php?id=<?= (int)$forn->idFornecedor ?>"
-                       class="btn btn-sm btn-info" title="Ver detalhes">
-                        <i class="fa-solid fa-eye"></i>
-                    </a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
+    <div class="table-box">
+        <div class="table-responsive">
+            <table id="fornecedoresTable">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Equipamentos</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>FORN-001</td>
+                        <td>Siemens Healthineers</td>
+                        <td><span class="badge badge-primary">Fabricante</span></td>
+                        <td>hmueller@siemens.com</td>
+                        <td>+351 210 000 001</td>
+                        <td>3</td>
+                        <td class="actions">
+                            <a href="<?= APP_BASE ?>/private/views/fornecedores/detalhes.php?id=1" class="btn-action ver"><i class="fa-solid fa-eye"></i> Ver</a>
+                            <a href="<?= APP_BASE ?>/private/views/fornecedores/novo.php?id=1" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
+                            <button class="btn-action apagar" onclick="apagarFornecedor(1)"><i class="fa-solid fa-trash"></i> Apagar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>FORN-002</td>
+                        <td>Philips Healthcare</td>
+                        <td><span class="badge badge-primary">Fabricante</span></td>
+                        <td>mrodrigues@philips.com</td>
+                        <td>+351 220 000 002</td>
+                        <td>2</td>
+                        <td class="actions">
+                            <a href="<?= APP_BASE ?>/private/views/fornecedores/detalhes.php?id=2" class="btn-action ver"><i class="fa-solid fa-eye"></i> Ver</a>
+                            <a href="<?= APP_BASE ?>/private/views/fornecedores/novo.php?id=2" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
+                            <button class="btn-action apagar" onclick="apagarFornecedor(2)"><i class="fa-solid fa-trash"></i> Apagar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>FORN-003</td>
+                        <td>MedTech Portugal</td>
+                        <td><span class="badge badge-info">Distribuidor</span></td>
+                        <td>jsilva@medtech.pt</td>
+                        <td>+351 239 000 003</td>
+                        <td>3</td>
+                        <td class="actions">
+                            <a href="<?= APP_BASE ?>/private/views/fornecedores/detalhes.php?id=3" class="btn-action ver"><i class="fa-solid fa-eye"></i> Ver</a>
+                            <a href="<?= APP_BASE ?>/private/views/fornecedores/novo.php?id=3" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
+                            <button class="btn-action apagar" onclick="apagarFornecedor(3)"><i class="fa-solid fa-trash"></i> Apagar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div><!-- /page -->
 
 <?php
 $scriptsExtra = '
 <script>
-$(document).ready(function() {
-    $("#tabelaFornecedores").DataTable({
-        pageLength: 10,
-        language: {
-            url: "' . APP_BASE . '/private/assets/js/datatables-pt.json"
+    function apagarFornecedor(id) {
+        if (confirm("Tem a certeza que deseja apagar este fornecedor?")) {
+            showNotification("Fornecedor apagado com sucesso!", "success");
         }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        filterTable("fornecedoresTable", "searchInput");
+        document.getElementById("filterTipo").addEventListener("change", function() {
+            const tipo = this.value.toLowerCase();
+            document.querySelectorAll("#fornecedoresTable tbody tr").forEach(row => {
+                row.style.display = !tipo || row.textContent.toLowerCase().includes(tipo) ? "" : "none";
+            });
+        });
     });
-});
 </script>
 ';
 ?>
