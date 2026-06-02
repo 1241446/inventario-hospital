@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // =====================================================
 // MedControl – Lista de Equipamentos
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -12,6 +12,32 @@ redirect_if_not_logged();
 
 $tituloPagina = 'Equipamentos';
 $paginaAtiva  = 'equipamentos';
+
+// ─── LIGAÇÃO À BASE DE DADOS ─────────────────────────
+try {
+    $pdo = get_pdo();
+
+    $stmt = $pdo->query("
+        SELECT e.idEquipamento,
+               e.codigoEquipamento,
+               e.designacao,
+               e.marca,
+               e.modelo,
+               est.nomeEstado,
+               c.nomeCriticidade,
+               l.nomeLocalizacao
+          FROM Equipamento e
+          JOIN Estado      est ON e.idEstado      = est.idEstado
+          JOIN Criticidade c   ON e.idCriticidade = c.idCriticidade
+          JOIN Localizacao l   ON e.idLocalizacao = l.idLocalizacao
+         ORDER BY e.codigoEquipamento
+    ");
+    $equipamentos = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+} catch (PDOException $e) {
+    $dbErro      = $e->getMessage();
+    $equipamentos = [];
+}
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
 <?php include __DIR__ . '/../../includes/nav.php'; ?>
@@ -22,157 +48,88 @@ $paginaAtiva  = 'equipamentos';
         <main class="col-md-9 col-lg-10 p-4">
 
 <!-- ─── CONTEÚDO ─── -->
-<div class="page">
 
-    <!-- Filtros -->
-    <div class="filters">
-        <div class="filter-group">
-            <label>Pesquisar</label>
-            <input type="text" id="searchInput" placeholder="Código, nome ou marca...">
-        </div>
-        <div class="filter-group">
-            <label>Estado</label>
-            <select id="filterEstado">
-                <option value="">Todos os estados</option>
-                <option value="Operacional">Operacional</option>
-                <option value="Manutenção">Manutenção</option>
-                <option value="Avariado">Avariado</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label>Criticidade</label>
-            <select id="filterCriticidade">
-                <option value="">Todas as criticidades</option>
-                <option value="Crítica">Crítica</option>
-                <option value="Alta">Alta</option>
-                <option value="Média">Média</option>
-                <option value="Baixa">Baixa</option>
-            </select>
-        </div>
-        <div style="display:flex;gap:8px;align-items:flex-end;">
-            <button class="btn btn-secondary" onclick="exportarCSV()">
-                <i class="fa-solid fa-download"></i> Exportar
-            </button>
-        </div>
+<?php if (!empty($dbErro)): ?>
+    <div class="alert alert-danger">
+        <i class="fa-solid fa-triangle-exclamation me-2"></i>
+        Erro na ligação à base de dados: <?= htmlspecialchars($dbErro) ?>
     </div>
+<?php endif; ?>
 
-    <!-- Tabela -->
-    <div class="table-box">
-        <div class="table-responsive">
-            <table id="equipamentosTable">
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Nome</th>
-                        <th>Marca / Modelo</th>
-                        <th>Localização</th>
-                        <th>Estado</th>
-                        <th>Criticidade</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>EQ-001</td>
-                        <td>Ventilador Pulmonar</td>
-                        <td>Siemens SERVO-i</td>
-                        <td>UCI-01</td>
-                        <td><span class="badge badge-success">Operacional</span></td>
-                        <td><span class="badge badge-danger">Crítica</span></td>
-                        <td class="actions">
-                            <a href="<?= APP_BASE ?>/private/views/equipamentos/detalhes.php?id=1" class="btn-action ver"><i class="fa-solid fa-eye"></i> Ver</a>
-                            <a href="<?= APP_BASE ?>/private/views/equipamentos/editar.php?id=1" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
-                            <button class="btn-action apagar" onclick="apagarEquipamento(1)"><i class="fa-solid fa-trash"></i> Apagar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>EQ-002</td>
-                        <td>Monitor Cardíaco</td>
-                        <td>Philips IntelliVue MP50</td>
-                        <td>Urgência</td>
-                        <td><span class="badge badge-success">Operacional</span></td>
-                        <td><span class="badge badge-danger">Crítica</span></td>
-                        <td class="actions">
-                            <a href="<?= APP_BASE ?>/private/views/equipamentos/detalhes.php?id=2" class="btn-action ver"><i class="fa-solid fa-eye"></i> Ver</a>
-                            <a href="<?= APP_BASE ?>/private/views/equipamentos/editar.php?id=2" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
-                            <button class="btn-action apagar" onclick="apagarEquipamento(2)"><i class="fa-solid fa-trash"></i> Apagar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>EQ-003</td>
-                        <td>Bomba de Infusão</td>
-                        <td>Fresenius Volumat Agilia</td>
-                        <td>UCI-02</td>
-                        <td><span class="badge badge-success">Operacional</span></td>
-                        <td><span class="badge badge-info">Alta</span></td>
-                        <td class="actions">
-                            <a href="<?= APP_BASE ?>/private/views/equipamentos/detalhes.php?id=3" class="btn-action ver"><i class="fa-solid fa-eye"></i> Ver</a>
-                            <a href="<?= APP_BASE ?>/private/views/equipamentos/editar.php?id=3" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
-                            <button class="btn-action apagar" onclick="apagarEquipamento(3)"><i class="fa-solid fa-trash"></i> Apagar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>EQ-004</td>
-                        <td>Desfibrilhador</td>
-                        <td>Zoll X Series</td>
-                        <td>Bloco Operatório</td>
-                        <td><span class="badge badge-success">Operacional</span></td>
-                        <td><span class="badge badge-danger">Crítica</span></td>
-                        <td class="actions">
-                            <a href="<?= APP_BASE ?>/private/views/equipamentos/detalhes.php?id=4" class="btn-action ver"><i class="fa-solid fa-eye"></i> Ver</a>
-                            <a href="<?= APP_BASE ?>/private/views/equipamentos/editar.php?id=4" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
-                            <button class="btn-action apagar" onclick="apagarEquipamento(4)"><i class="fa-solid fa-trash"></i> Apagar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>EQ-005</td>
-                        <td>Electrocardiograma</td>
-                        <td>GE Healthcare MAC 5000</td>
-                        <td>Cardio</td>
-                        <td><span class="badge badge-warning">Manutenção</span></td>
-                        <td><span class="badge badge-info">Alta</span></td>
-                        <td class="actions">
-                            <a href="<?= APP_BASE ?>/private/views/equipamentos/detalhes.php?id=5" class="btn-action ver"><i class="fa-solid fa-eye"></i> Ver</a>
-                            <a href="<?= APP_BASE ?>/private/views/equipamentos/editar.php?id=5" class="btn-action editar"><i class="fa-solid fa-pen"></i> Editar</a>
-                            <button class="btn-action apagar" onclick="apagarEquipamento(5)"><i class="fa-solid fa-trash"></i> Apagar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0"><i class="fa-solid fa-hospital-user me-2"></i>Lista de Equipamentos</h4>
+    <div class="d-flex gap-2">
+        <a href="<?= APP_BASE ?>/private/views/equipamentos/exportar.php"
+           class="btn btn-success btn-sm"
+           data-bs-toggle="tooltip" title="Exportar lista para CSV">
+            <i class="fa-solid fa-file-csv me-1"></i>Exportar CSV
+        </a>
+        <a href="<?= APP_BASE ?>/private/views/equipamentos/novo.php" class="btn btn-primary btn-sm"
+           data-bs-toggle="tooltip" title="Registar novo equipamento">
+            <i class="fa-solid fa-plus me-1"></i>Novo Equipamento
+        </a>
     </div>
+</div>
 
-</div><!-- /page -->
+<div class="table-responsive">
+    <table id="tabelaEquipamentos" class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Designação</th>
+                <th>Marca / Modelo</th>
+                <th>Localização</th>
+                <th>Estado</th>
+                <th>Criticidade</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($equipamentos as $eq): ?>
+            <tr>
+                <td><?= htmlspecialchars($eq->codigoEquipamento) ?></td>
+                <td><?= htmlspecialchars($eq->designacao) ?></td>
+                <td><?= htmlspecialchars($eq->marca . ' ' . $eq->modelo) ?></td>
+                <td><?= htmlspecialchars($eq->nomeLocalizacao) ?></td>
+                <td><?= htmlspecialchars($eq->nomeEstado) ?></td>
+                <td><?= htmlspecialchars($eq->nomeCriticidade) ?></td>
+                <td>
+                    <a href="<?= APP_BASE ?>/private/views/equipamentos/detalhes.php?id_equipamento=<?= aes_encrypt($eq->idEquipamento) ?>"
+                       class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Ver detalhes">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                    <a href="<?= APP_BASE ?>/private/views/equipamentos/editar.php?id_equipamento=<?= aes_encrypt($eq->idEquipamento) ?>"
+                       class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar equipamento">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+                    <a href="<?= APP_BASE ?>/private/views/equipamentos/apagar.php?id_equipamento=<?= aes_encrypt($eq->idEquipamento) ?>"
+                       class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Desativar equipamento">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
 <?php
 $scriptsExtra = '
 <script>
-    function apagarEquipamento(id) {
-        if (confirm("Tem a certeza que deseja apagar este equipamento?")) {
-            showNotification("Equipamento apagado com sucesso!", "success");
-        }
-    }
-
-    function exportarCSV() {
-        exportTableToCSV("equipamentosTable", "equipamentos.csv");
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        filterTable("equipamentosTable", "searchInput");
-
-        document.getElementById("filterEstado").addEventListener("change", filterRows);
-        document.getElementById("filterCriticidade").addEventListener("change", filterRows);
-
-        function filterRows() {
-            const estado = document.getElementById("filterEstado").value.toLowerCase();
-            const crit   = document.getElementById("filterCriticidade").value.toLowerCase();
-            document.querySelectorAll("#equipamentosTable tbody tr").forEach(row => {
-                const texto = row.textContent.toLowerCase();
-                const ok = (!estado || texto.includes(estado)) && (!crit || texto.includes(crit));
-                row.style.display = ok ? "" : "none";
-            });
+$(document).ready(function() {
+    $("#tabelaEquipamentos").DataTable({
+        pageLength: 10,
+        order: [[0, "asc"]],
+        responsive: true,
+        language: {
+            search: "Pesquisar:",
+            lengthMenu: "Mostrar _MENU_ registos",
+            info: "A mostrar _START_ a _END_ de _TOTAL_ equipamentos",
+            paginate: { previous: "Anterior", next: "Seguinte" },
+            zeroRecords: "Nenhum equipamento encontrado"
         }
     });
+});
 </script>
 ';
 ?>
