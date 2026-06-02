@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // =====================================================
 // MedControl – Lista de Garantias
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -14,7 +14,12 @@ $tituloPagina = 'Garantias';
 $paginaAtiva  = 'garantias';
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+<?php include __DIR__ . '/../../includes/nav.php'; ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+        <main class="col-md-9 col-lg-10 p-4">
 
 <style>
     .kpi-mini {
@@ -46,12 +51,6 @@ $paginaAtiva  = 'garantias';
 
     @media (max-width: 700px) { .kpi-mini { grid-template-columns: 1fr; } }
 </style>
-
-<?php
-$topbarTitulo    = '<i class="fa-solid fa-file-contract" style="color:var(--primary);margin-right:8px;"></i>Gestão de Garantias';
-$topbarSubtitulo = 'Monitorização de prazos e condições de garantia';
-include __DIR__ . '/../../includes/nav.php';
-?>
 
 <div class="page">
 

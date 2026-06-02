@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // =====================================================
 // MedControl – Lista de Localizações
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -14,14 +14,12 @@ $tituloPagina = 'Localizações';
 $paginaAtiva  = 'localizacoes';
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+<?php include __DIR__ . '/../../includes/nav.php'; ?>
 
-<?php
-$topbarTitulo    = '<i class="fa-solid fa-map-location-dot" style="color:var(--primary);margin-right:8px;"></i>Gestão de Localizações';
-$topbarSubtitulo = 'Departamentos, salas e zonas do hospital';
-$topbarAcao      = '<a href="' . APP_BASE . '/private/views/localizacoes/novo.php" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nova Localização</a>';
-include __DIR__ . '/../../includes/nav.php';
-?>
+<div class="container-fluid">
+    <div class="row">
+        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+        <main class="col-md-9 col-lg-10 p-4">
 
 <div class="page">
 

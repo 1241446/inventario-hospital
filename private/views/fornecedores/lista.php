@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // =====================================================
 // MedControl – Lista de Fornecedores
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -14,14 +14,12 @@ $tituloPagina = 'Fornecedores';
 $paginaAtiva  = 'fornecedores';
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+<?php include __DIR__ . '/../../includes/nav.php'; ?>
 
-<?php
-$topbarTitulo    = '<i class="fa-solid fa-truck-medical" style="color:var(--primary);margin-right:8px;"></i>Gestão de Fornecedores';
-$topbarSubtitulo = 'Fabricantes, distribuidores e assistências técnicas';
-$topbarAcao      = '<a href="' . APP_BASE . '/private/views/fornecedores/novo.php" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Novo Fornecedor</a>';
-include __DIR__ . '/../../includes/nav.php';
-?>
+<div class="container-fluid">
+    <div class="row">
+        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+        <main class="col-md-9 col-lg-10 p-4">
 
 <div class="page">
 

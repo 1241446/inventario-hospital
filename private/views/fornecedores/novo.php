@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // =====================================================
 // MedControl – Novo / Editar Fornecedor
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -14,14 +14,12 @@ $tituloPagina = 'Novo Fornecedor';
 $paginaAtiva  = 'fornecedores';
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+<?php include __DIR__ . '/../../includes/nav.php'; ?>
 
-<?php
-$topbarTitulo    = '<i class="fa-solid fa-plus" style="color:var(--primary);margin-right:8px;"></i>Novo Fornecedor';
-$topbarSubtitulo = 'Registar um novo fornecedor ou parceiro';
-$topbarAcao      = '<a href="' . APP_BASE . '/private/views/fornecedores/lista.php" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Voltar</a>';
-include __DIR__ . '/../../includes/nav.php';
-?>
+<div class="container-fluid">
+    <div class="row">
+        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+        <main class="col-md-9 col-lg-10 p-4">
 
 <div class="page">
     <div class="content-box">

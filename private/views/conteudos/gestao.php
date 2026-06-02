@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // =====================================================
 // MedControl – Gestão de Conteúdos Front Office
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -14,7 +14,12 @@ $tituloPagina = 'Conteúdos';
 $paginaAtiva  = 'conteudos';
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+<?php include __DIR__ . '/../../includes/nav.php'; ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+        <main class="col-md-9 col-lg-10 p-4">
 
 <style>
     .content-card {
@@ -71,12 +76,6 @@ $paginaAtiva  = 'conteudos';
 
     @media (max-width: 900px) { .stat-mini-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
-
-<?php
-$topbarTitulo    = '<i class="fa-solid fa-newspaper" style="color:var(--primary);margin-right:8px;"></i>Gestão de Conteúdos Front Office';
-$topbarSubtitulo = 'Notícias, destaques, testemunhos e mensagens do website';
-include __DIR__ . '/../../includes/nav.php';
-?>
 
 <div class="page">
 

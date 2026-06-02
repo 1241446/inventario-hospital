@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // =====================================================
 // MedControl – Novo Equipamento
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -14,7 +14,12 @@ $tituloPagina = 'Novo Equipamento';
 $paginaAtiva  = 'equipamentos';
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+<?php include __DIR__ . '/../../includes/nav.php'; ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+        <main class="col-md-9 col-lg-10 p-4">
 
 <style>
     .step-indicator {
@@ -53,13 +58,6 @@ $paginaAtiva  = 'equipamentos';
         border-bottom: 2px solid var(--border);
     }
 </style>
-
-<?php
-$topbarTitulo    = '<i class="fa-solid fa-plus" style="color:var(--primary);margin-right:8px;"></i>Novo Equipamento';
-$topbarSubtitulo = 'Registar um novo equipamento no inventário';
-$topbarAcao      = '<a href="' . APP_BASE . '/private/views/equipamentos/lista.php" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Voltar à lista</a>';
-include __DIR__ . '/../../includes/nav.php';
-?>
 
 <!-- ─── CONTEÚDO ─── -->
 <div class="page">

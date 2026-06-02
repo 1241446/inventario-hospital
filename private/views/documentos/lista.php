@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // =====================================================
 // MedControl – Lista de Documentos
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -14,14 +14,12 @@ $tituloPagina = 'Documentos';
 $paginaAtiva  = 'documentos';
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+<?php include __DIR__ . '/../../includes/nav.php'; ?>
 
-<?php
-$topbarTitulo    = '<i class="fa-solid fa-file-pdf" style="color:var(--primary);margin-right:8px;"></i>Gestão de Documentação';
-$topbarSubtitulo = 'Manuais, certificados, contratos e especificações';
-$topbarAcao      = '<button class="btn btn-primary" onclick="uploadDocumento()"><i class="fa-solid fa-upload"></i> Enviar Documento</button>';
-include __DIR__ . '/../../includes/nav.php';
-?>
+<div class="container-fluid">
+    <div class="row">
+        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+        <main class="col-md-9 col-lg-10 p-4">
 
 <div class="page">
 

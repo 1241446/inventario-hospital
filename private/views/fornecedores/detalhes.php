@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // =====================================================
 // MedControl – Detalhes do Fornecedor
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -14,7 +14,12 @@ $tituloPagina = 'Detalhes do Fornecedor';
 $paginaAtiva  = 'fornecedores';
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+<?php include __DIR__ . '/../../includes/nav.php'; ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+        <main class="col-md-9 col-lg-10 p-4">
 
 <style>
     .info-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 32px; }
@@ -23,14 +28,6 @@ $paginaAtiva  = 'fornecedores';
     .info-value { font-size: 0.92em; font-weight: 500; color: var(--text); }
     @media (max-width: 700px) { .info-grid { grid-template-columns: 1fr; } }
 </style>
-
-<?php
-$topbarTitulo    = '<i class="fa-solid fa-truck-medical" style="color:var(--primary);margin-right:8px;"></i>Siemens Healthineers';
-$topbarSubtitulo = 'Fabricante · FORN-001';
-$topbarAcao      = '<a href="' . APP_BASE . '/private/views/fornecedores/lista.php" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
-    <a href="' . APP_BASE . '/private/views/fornecedores/novo.php?id=1" class="btn btn-primary"><i class="fa-solid fa-pen"></i> Editar</a>';
-include __DIR__ . '/../../includes/nav.php';
-?>
 
 <div class="page">
 

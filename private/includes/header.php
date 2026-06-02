@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -5,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($tituloPagina) ? sanitizar($tituloPagina) . ' | ' : '' ?><?= APP_NAME ?></title>
 
-    <!-- Font Awesome 6 -->
-    <link rel="stylesheet"
-          href="<?= APP_BASE ?>/assets/fontawesome/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/bootstrap/css/bootstrap.min.css">
 
-    <!-- CSS partilhado da área privada -->
-    <link rel="stylesheet"
-          href="<?= APP_BASE ?>/private/assets/css/private.css">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/fontawesome/css/all.min.css">
+
+    <!-- CSS personalizado da área privada -->
+    <link rel="stylesheet" href="<?= APP_BASE ?>/private/assets/css/private.css">
 </head>
 <body>
-<div class="layout">

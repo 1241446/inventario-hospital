@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // =====================================================
 // MedControl – Lista de Equipamentos
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -14,14 +14,12 @@ $tituloPagina = 'Equipamentos';
 $paginaAtiva  = 'equipamentos';
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
-<?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+<?php include __DIR__ . '/../../includes/nav.php'; ?>
 
-<?php
-$topbarTitulo    = '<i class="fa-solid fa-stethoscope" style="color:var(--primary);margin-right:8px;"></i>Gestão de Equipamentos';
-$topbarSubtitulo = 'Inventário completo de equipamentos médicos';
-$topbarAcao      = '<a href="' . APP_BASE . '/private/views/equipamentos/novo.php" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Novo Equipamento</a>';
-include __DIR__ . '/../../includes/nav.php';
-?>
+<div class="container-fluid">
+    <div class="row">
+        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
+        <main class="col-md-9 col-lg-10 p-4">
 
 <!-- ─── CONTEÚDO ─── -->
 <div class="page">
