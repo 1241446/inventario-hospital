@@ -32,9 +32,7 @@ function iniciarSessaoUtilizador(array $utilizador): void
 {
     session_regenerate_id(true);                // previne fixação de sessão
 
-    // $_SESSION['utilizador'] guarda o email (string) — Ficha 10
-    // Os dados completos ficam em $_SESSION['sessao']
-    $_SESSION['sessao'] = [
+    $_SESSION['utilizador'] = [
         'id'            => $utilizador['idUtilizador'],
         'nomeUtilizador'=> $utilizador['nomeUtilizador'],
         'nomeCompleto'  => $utilizador['nomeCompleto'],
@@ -65,7 +63,7 @@ function verificarSessao(): void
  */
 function utilizadorSessao(): ?array
 {
-    return $_SESSION['sessao'] ?? null;
+    return $_SESSION['utilizador'] ?? null;
 }
 
 /**
