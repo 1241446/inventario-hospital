@@ -1,6 +1,7 @@
 <?php
 $_u       = function_exists('utilizadorSessao') ? utilizadorSessao() : [];
 $_nomeNav = function_exists('sanitizar') ? sanitizar($_u['nomeCompleto'] ?? 'Utilizador') : ($_u['nomeCompleto'] ?? 'Utilizador');
+$_titulo  = isset($tituloPagina) ? sanitizar($tituloPagina) : APP_NAME;
 ?>
 <!-- ─── NAVBAR ─── -->
 <header class="bg-dark text-white">
@@ -8,7 +9,10 @@ $_nomeNav = function_exists('sanitizar') ? sanitizar($_u['nomeCompleto'] ?? 'Uti
         <div class="row align-items-center py-2 px-3">
             <div class="col-6 d-flex align-items-center gap-3">
                 <i class="fa-solid fa-hospital-user" style="color:#4fc3f7;font-size:1.5em;"></i>
-                <h3 class="mb-0 fw-bold"><?= APP_NAME ?></h3>
+                <div>
+                    <h3 class="mb-0 fw-bold lh-1"><?= APP_NAME ?></h3>
+                    <small class="text-white-50"><?= $_titulo ?></small>
+                </div>
             </div>
             <div class="col-6 text-end">
                 <div class="dropdown">

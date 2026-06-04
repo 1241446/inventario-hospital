@@ -92,14 +92,20 @@ if (!empty($_SESSION['server_error'])) {
                             <label for="text_password" class="form-label fw-semibold">
                                 <i class="fa-solid fa-lock me-1"></i> Password
                             </label>
-                            <input
-                                type="password"
-                                class="form-control"
-                                id="text_password"
-                                name="text_password"
-                                placeholder="Password"
-                                required
-                            >
+                            <div class="input-group">
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    id="text_password"
+                                    name="text_password"
+                                    placeholder="Password"
+                                    required
+                                >
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword"
+                                        aria-label="Mostrar ou ocultar password">
+                                    <i class="fa-solid fa-eye" id="toggleIcon"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="d-grid">
@@ -123,5 +129,14 @@ if (!empty($_SESSION['server_error'])) {
 </div>
 
 <script src="<?= APP_BASE ?>/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script>
+document.getElementById('togglePassword').addEventListener('click', function () {
+    var input = document.getElementById('text_password');
+    var icon  = document.getElementById('toggleIcon');
+    var show  = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    icon.className = show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+});
+</script>
 </body>
 </html>
