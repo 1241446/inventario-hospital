@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MedControl - Sistema de Gestão de Inventário Hospitalar. Controlo total de equipamentos médicos, fornecedores, garantias e documentação.">
     <title><?= APP_NAME ?> - Sistemas de Informação Hospitalar</title>
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/fontawesome/css/all.min.css">

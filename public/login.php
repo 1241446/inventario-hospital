@@ -109,8 +109,9 @@ if (!empty($_SESSION['server_error'])) {
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fa-solid fa-right-to-bracket me-2"></i>Entrar
+                            <button type="submit" class="btn btn-primary btn-lg" id="btnSubmit">
+                                <i class="fa-solid fa-right-to-bracket me-2" id="btnIcon"></i>
+                                <span id="btnText">Entrar</span>
                             </button>
                         </div>
 
@@ -136,6 +137,15 @@ document.getElementById('togglePassword').addEventListener('click', function () 
     var show  = input.type === 'password';
     input.type = show ? 'text' : 'password';
     icon.className = show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+});
+
+document.querySelector('form').addEventListener('submit', function () {
+    var btn  = document.getElementById('btnSubmit');
+    var icon = document.getElementById('btnIcon');
+    var text = document.getElementById('btnText');
+    btn.disabled   = true;
+    icon.className = 'fa-solid fa-spinner fa-spin me-2';
+    text.textContent = 'A autenticar...';
 });
 </script>
 </body>

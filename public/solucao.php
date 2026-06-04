@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Solução MedControl - Plataforma integrada para inventário hospitalar com rastreabilidade e controlo de garantias em tempo real.">
     <title>A Solução | <?= APP_NAME ?></title>
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/fontawesome/css/all.min.css">
