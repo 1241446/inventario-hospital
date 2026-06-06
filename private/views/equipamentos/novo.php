@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // =====================================================
 // MedControl – Novo Equipamento
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -6,12 +6,111 @@
 
 require_once __DIR__ . '/../../../config/config.php';
 require_once __DIR__ . '/../../includes/funcoes.php';
+require_once __DIR__ . '/../../includes/validacoes.php';
 require_once __DIR__ . '/../../includes/sessao.php';
 
 redirect_if_not_logged();
 
 $tituloPagina = 'Novo Equipamento';
 $paginaAtiva  = 'equipamentos';
+
+// ─── CARREGAR LISTAS DA BD ───────────────────────────
+try {
+    $pdoListas = get_pdo();
+    $categorias   = $pdoListas->query("SELECT * FROM Categoria   ORDER BY nomeCategoria")->fetchAll(PDO::FETCH_OBJ);
+    $estados      = $pdoListas->query("SELECT * FROM Estado      ORDER BY nomeEstado")->fetchAll(PDO::FETCH_OBJ);
+    $criticidades = $pdoListas->query("SELECT * FROM Criticidade ORDER BY nomeCriticidade")->fetchAll(PDO::FETCH_OBJ);
+    $localizacoes = $pdoListas->query("SELECT * FROM Localizacao ORDER BY nomeLocalizacao")->fetchAll(PDO::FETCH_OBJ);
+    $pdoListas = null;
+} catch (PDOException $e) {
+    $categorias = $estados = $criticidades = $localizacoes = [];
+}
+
+// ─── INICIALIZAÇÃO ───────────────────────────────────
+$erros        = [];
+$erro_sistema = "";
+
+// ─── PROCESSAR FORMULÁRIO (POST) ─────────────────────
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // 1. Recolher dados
+    $codigo        = $_POST['codigo_equipamento']     ?? '';
+    $designacao    = $_POST['designacao_equipamento'] ?? '';
+    $idCategoria   = $_POST['id_categoria']           ?? '';
+    $marca         = $_POST['marca_equipamento']      ?? '';
+    $modelo        = $_POST['modelo_equipamento']     ?? '';
+    $serie         = $_POST['serie_equipamento']      ?? '';
+    $anoFabrico    = $_POST['ano_fabrico']            ?? '';
+    $idEstado      = $_POST['id_estado']              ?? '';
+    $idCriticidade = $_POST['id_criticidade']         ?? '';
+    $idLocalizacao = $_POST['id_localizacao']         ?? '';
+    $observacoes   = $_POST['observacoes_equipamento'] ?? '';
+
+    // 2. Validar dados
+    $codigo        = trim($codigo);
+    $designacao    = trim($designacao);
+    $marca         = trim($marca);
+    $modelo        = trim($modelo);
+    $serie         = trim($serie);
+    $anoFabrico    = trim($anoFabrico);
+    $observacoes   = trim($observacoes);
+
+    $erros = array_merge($erros, validar_codigo($codigo));
+    $erros = array_merge($erros, validar_designacao($designacao));
+    $erros = array_merge($erros, validar_ano_fabrico($anoFabrico));
+
+    if (empty($idCategoria))   $erros[] = "A Categoria é obrigatória.";
+    if (empty($idEstado))      $erros[] = "O Estado é obrigatório.";
+    if (empty($idCriticidade)) $erros[] = "A Criticidade é obrigatória.";
+    if (empty($idLocalizacao)) $erros[] = "A Localização é obrigatória.";
+
+    // 3. Normalizar entrada
+    if (empty($erros)) {
+        $designacao = ucwords(strtolower($designacao));
+        $marca      = ucwords(strtolower($marca));
+        $modelo     = ucwords(strtolower($modelo));
+        $codigo     = strtoupper($codigo);
+
+        // 4. Guardar na base de dados
+        try {
+            $ligacao = get_pdo();
+
+            $sql = "INSERT INTO Equipamento (
+                        codigoEquipamento, designacao, idCategoria, marca, modelo,
+                        numeroSerie, anoFabrico, idEstado, idCriticidade, idLocalizacao, observacoes
+                    ) VALUES (
+                        :codigo, :designacao, :idCategoria, :marca, :modelo,
+                        :serie, :anoFabrico, :idEstado, :idCriticidade, :idLocalizacao, :observacoes
+                    )";
+
+            $stmt = $ligacao->prepare($sql);
+            $stmt->execute([
+                ':codigo'        => $codigo,
+                ':designacao'    => $designacao,
+                ':idCategoria'   => $idCategoria,
+                ':marca'         => $marca         ?: null,
+                ':modelo'        => $modelo         ?: null,
+                ':serie'         => $serie          ?: null,
+                ':anoFabrico'    => $anoFabrico     ?: null,
+                ':idEstado'      => $idEstado,
+                ':idCriticidade' => $idCriticidade,
+                ':idLocalizacao' => $idLocalizacao,
+                ':observacoes'   => $observacoes    ?: null,
+            ]);
+
+            $novoId = $ligacao->lastInsertId();
+            $ligacao = null;
+            registarLog('INSERIR_EQUIPAMENTO', "codigo=$codigo id=$novoId por " . ($_SESSION['utilizador'] ?? 'desconhecido'));
+            $_SESSION['toast'] = ['msg' => 'Equipamento criado com sucesso.', 'type' => 'success'];
+            header('Location: lista.php');
+            exit;
+
+        } catch (PDOException $err) {
+            registarLog('ERRO_INSERIR_EQUIPAMENTO', $err->getMessage());
+            $erro_sistema = "Erro ao gravar os dados: " . $err->getMessage();
+        }
+    }
+}
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
 <?php include __DIR__ . '/../../includes/nav.php'; ?>
@@ -21,248 +120,167 @@ $paginaAtiva  = 'equipamentos';
         <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
         <main class="col-md-9 col-lg-10 p-4">
 
-<style>
-    .step-indicator {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 28px;
-        justify-content: space-between;
-    }
-
-    .step {
-        flex: 1;
-        padding: 12px 16px;
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        text-align: center;
-        font-size: 0.82em;
-        font-weight: 600;
-        color: var(--text-muted);
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .step.active {
-        background: var(--primary);
-        border-color: var(--primary-dark);
-        color: white;
-    }
-
-    .step-section-title {
-        font-size: 1em;
-        font-weight: 700;
-        color: var(--text);
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid var(--border);
-    }
-</style>
-
 <!-- ─── CONTEÚDO ─── -->
 <div class="page">
     <div class="content-box">
 
-        <!-- Indicador de passos -->
-        <div class="step-indicator">
-            <div class="step active" onclick="goToStep(0)">1. Identificação</div>
-            <div class="step" onclick="goToStep(1)">2. Dados Técnicos</div>
-            <div class="step" onclick="goToStep(2)">3. Garantia</div>
-            <div class="step" onclick="goToStep(3)">4. Fornecedores</div>
-        </div>
+        <h5 class="mb-4">
+            <i class="fa-solid fa-hospital-user me-2"></i>Inserir novo equipamento
+        </h5>
 
-        <form id="novoForm" method="POST" action="">
+        <form action="#" method="post" novalidate>
 
-            <!-- Passo 1 – Identificação -->
-            <div class="tab-content active" id="step0">
-                <p class="step-section-title"><i class="fa-solid fa-tag"></i> Identificação do Equipamento</p>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Código Único *</label>
-                        <input type="text" name="codigo" required placeholder="EQ-XXX">
-                    </div>
-                    <div class="form-group">
-                        <label>Nome *</label>
-                        <input type="text" name="nome" required placeholder="Nome do equipamento">
-                    </div>
-                    <div class="form-group">
-                        <label>Marca *</label>
-                        <input type="text" name="marca" required placeholder="Marca">
-                    </div>
-                    <div class="form-group">
-                        <label>Modelo *</label>
-                        <input type="text" name="modelo" required placeholder="Modelo">
-                    </div>
-                    <div class="form-group">
-                        <label>Número de Série *</label>
-                        <input type="text" name="serie" required placeholder="Número de série">
-                    </div>
-                    <div class="form-group">
-                        <label>Localização *</label>
-                        <select name="localizacao" required>
-                            <option value="">--- Seleccione ---</option>
-                            <option>Bloco Operatório A</option>
-                            <option>UCI</option>
-                            <option>Radiologia</option>
-                            <option>Laboratório Central</option>
-                            <option>Fisioterapia</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Estado *</label>
-                        <select name="estado" required>
-                            <option value="">--- Seleccione ---</option>
-                            <option>Ativo</option>
-                            <option>Em Manutencao</option>
-                            <option>Avariado</option>
-                            <option>Abatido</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Criticidade *</label>
-                        <select name="criticidade" required>
-                            <option value="">--- Seleccione ---</option>
-                            <option>Alta</option>
-                            <option>Media</option>
-                            <option>Baixa</option>
-                        </select>
-                    </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="codigo_equipamento" class="form-label">Código Único *</label>
+                    <input type="text" class="form-control" id="codigo_equipamento"
+                           name="codigo_equipamento"
+                           value="<?= htmlspecialchars($_POST['codigo_equipamento'] ?? '') ?>"
+                           placeholder="EQ-001">
+                </div>
+                <div class="col-md-8">
+                    <label for="designacao_equipamento" class="form-label">Designação *</label>
+                    <input type="text" class="form-control" id="designacao_equipamento"
+                           name="designacao_equipamento"
+                           value="<?= htmlspecialchars($_POST['designacao_equipamento'] ?? '') ?>"
+                           placeholder="Nome do equipamento">
                 </div>
             </div>
 
-            <!-- Passo 2 – Dados Técnicos -->
-            <div class="tab-content" id="step1">
-                <p class="step-section-title"><i class="fa-solid fa-microchip"></i> Dados Técnicos</p>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Tensão de Alimentação</label>
-                        <input type="text" name="tensao" placeholder="Ex: 220V ~ 50Hz">
-                    </div>
-                    <div class="form-group">
-                        <label>Potência</label>
-                        <input type="text" name="potencia" placeholder="Ex: 500W">
-                    </div>
-                    <div class="form-group">
-                        <label>Peso</label>
-                        <input type="text" name="peso" placeholder="Ex: 28.5 kg">
-                    </div>
-                    <div class="form-group">
-                        <label>Dimensões</label>
-                        <input type="text" name="dimensoes" placeholder="Ex: 65cm × 45cm × 120cm">
-                    </div>
-                    <div class="form-group full">
-                        <label>Observações Técnicas</label>
-                        <textarea name="observacoes" placeholder="Informações técnicas adicionais..."></textarea>
-                    </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="marca_equipamento" class="form-label">Marca</label>
+                    <input type="text" class="form-control" id="marca_equipamento"
+                           name="marca_equipamento"
+                           value="<?= htmlspecialchars($_POST['marca_equipamento'] ?? '') ?>"
+                           placeholder="Ex: Siemens">
+                </div>
+                <div class="col-md-4">
+                    <label for="modelo_equipamento" class="form-label">Modelo</label>
+                    <input type="text" class="form-control" id="modelo_equipamento"
+                           name="modelo_equipamento"
+                           value="<?= htmlspecialchars($_POST['modelo_equipamento'] ?? '') ?>"
+                           placeholder="Ex: MAGNETOM Vida">
+                </div>
+                <div class="col-md-4">
+                    <label for="serie_equipamento" class="form-label">Número de Série</label>
+                    <input type="text" class="form-control" id="serie_equipamento"
+                           name="serie_equipamento"
+                           value="<?= htmlspecialchars($_POST['serie_equipamento'] ?? '') ?>"
+                           placeholder="Ex: SN-2021-001">
                 </div>
             </div>
 
-            <!-- Passo 3 – Garantia -->
-            <div class="tab-content" id="step2">
-                <p class="step-section-title"><i class="fa-solid fa-file-contract"></i> Informações de Garantia</p>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Data de Início *</label>
-                        <input type="date" name="dataInicio" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Data de Fim *</label>
-                        <input type="date" name="dataFim" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Tipo de Garantia</label>
-                        <select name="tipoGarantia">
-                            <option value="">--- Seleccione ---</option>
-                            <option>Completa</option>
-                            <option>Limitada</option>
-                            <option>Fabricante</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Condições</label>
-                        <input type="text" name="condicoes" placeholder="Ex: Cobre peças e mão de obra">
-                    </div>
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="ano_fabrico" class="form-label">Ano de Fabrico</label>
+                    <input type="text" class="form-control" id="ano_fabrico"
+                           name="ano_fabrico"
+                           value="<?= htmlspecialchars($_POST['ano_fabrico'] ?? '') ?>"
+                           placeholder="AAAA">
+                </div>
+                <div class="col-md-3">
+                    <label for="id_categoria" class="form-label">Categoria *</label>
+                    <select class="form-select" id="id_categoria" name="id_categoria">
+                        <option value="">-- Escolha uma opção --</option>
+                        <?php foreach ($categorias as $cat): ?>
+                        <option value="<?= $cat->idCategoria ?>"
+                            <?= (($_POST['id_categoria'] ?? '') == $cat->idCategoria) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($cat->nomeCategoria) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="id_estado" class="form-label">Estado *</label>
+                    <select class="form-select" id="id_estado" name="id_estado">
+                        <option value="">-- Escolha uma opção --</option>
+                        <?php foreach ($estados as $est): ?>
+                        <option value="<?= $est->idEstado ?>"
+                            <?= (($_POST['id_estado'] ?? '') == $est->idEstado) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($est->nomeEstado) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="id_criticidade" class="form-label">Criticidade *</label>
+                    <select class="form-select" id="id_criticidade" name="id_criticidade">
+                        <option value="">-- Escolha uma opção --</option>
+                        <?php foreach ($criticidades as $crit): ?>
+                        <option value="<?= $crit->idCriticidade ?>"
+                            <?= (($_POST['id_criticidade'] ?? '') == $crit->idCriticidade) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($crit->nomeCriticidade) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
             </div>
 
-            <!-- Passo 4 – Fornecedores -->
-            <div class="tab-content" id="step3">
-                <p class="step-section-title"><i class="fa-solid fa-truck-medical"></i> Fornecedores Associados</p>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Fabricante</label>
-                        <select name="fabricante">
-                            <option value="">--- Seleccione ---</option>
-                            <option>Siemens Healthineers</option>
-                            <option>Philips Healthcare</option>
-                            <option>MedTech Portugal</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Distribuidor</label>
-                        <input type="text" name="distribuidor" placeholder="Nome do distribuidor">
-                    </div>
-                    <div class="form-group">
-                        <label>Assistência Técnica</label>
-                        <input type="text" name="assistencia" placeholder="Nome da assistência técnica">
-                    </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="id_localizacao" class="form-label">Localização *</label>
+                    <select class="form-select" id="id_localizacao" name="id_localizacao">
+                        <option value="">-- Escolha uma opção --</option>
+                        <?php foreach ($localizacoes as $loc): ?>
+                        <option value="<?= $loc->idLocalizacao ?>"
+                            <?= (($_POST['id_localizacao'] ?? '') == $loc->idLocalizacao) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($loc->nomeLocalizacao) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="observacoes_equipamento" class="form-label">Observações</label>
+                    <textarea class="form-control" id="observacoes_equipamento"
+                              name="observacoes_equipamento" rows="2"
+                              placeholder="Informações adicionais..."><?= htmlspecialchars($_POST['observacoes_equipamento'] ?? '') ?></textarea>
                 </div>
             </div>
 
-            <!-- Botões de navegação -->
-            <div class="form-actions" style="justify-content:space-between;">
-                <button type="button" class="btn btn-secondary" onclick="goToPreviousStep()">
-                    <i class="fa-solid fa-arrow-left"></i> Anterior
+            <p class="text-muted small mt-2"><span class="text-danger">*</span> Campos obrigatórios</p>
+
+            <!-- Área de erros de validação -->
+            <?php if (!empty($erros)): ?>
+            <div class="alert alert-danger" role="alert">
+                <strong>Foram encontrados os seguintes erros:</strong>
+                <ul class="mb-0">
+                    <?php foreach ($erros as $erro): ?>
+                    <li><?= htmlspecialchars($erro) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+            <?php endif; ?>
+
+            <!-- Área de erro do sistema (PDO) -->
+            <?php if (!empty($erro_sistema)): ?>
+            <div class="alert alert-danger" role="alert">
+                <strong>Erro:</strong>
+                <p class="mb-0"><?= htmlspecialchars($erro_sistema) ?></p>
+            </div>
+            <?php endif; ?>
+
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <a href="<?= APP_BASE ?>/private/views/equipamentos/lista.php" class="btn btn-secondary">
+                    <i class="fa-solid fa-xmark me-1"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk me-1"></i> Guardar
                 </button>
-                <div style="display:flex;gap:8px;">
-                    <a href="<?= APP_BASE ?>/private/views/equipamentos/lista.php" class="btn btn-secondary">
-                        <i class="fa-solid fa-xmark"></i> Cancelar
-                    </a>
-                    <button type="button" class="btn btn-primary" id="btnProximo" onclick="goToNextStep()">
-                        Próximo <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                    <button type="submit" class="btn btn-primary" id="btnSubmit" style="display:none;">
-                        <i class="fa-solid fa-check"></i> Guardar
-                    </button>
-                </div>
             </div>
+
         </form>
+
     </div>
 </div><!-- /page -->
 
 <?php
 $scriptsExtra = '
 <script>
-    let currentStep = 0;
-    const totalSteps = 4;
-
-    function goToStep(step) {
-        currentStep = step;
-        updateSteps();
-    }
-
-    function goToNextStep() {
-        if (currentStep < totalSteps - 1) { currentStep++; updateSteps(); }
-    }
-
-    function goToPreviousStep() {
-        if (currentStep > 0) { currentStep--; updateSteps(); }
-    }
-
-    function updateSteps() {
-        document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
-        document.querySelectorAll(".step").forEach(el => el.classList.remove("active"));
-        document.getElementById("step" + currentStep).classList.add("active");
-        document.querySelectorAll(".step")[currentStep].classList.add("active");
-        document.getElementById("btnProximo").style.display = currentStep === totalSteps - 1 ? "none" : "inline-flex";
-        document.getElementById("btnSubmit").style.display  = currentStep === totalSteps - 1 ? "inline-flex" : "none";
-    }
-
-    document.getElementById("novoForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        showNotification("Equipamento registado com sucesso!", "success");
-        setTimeout(() => { window.location.href = "lista.php"; }, 1500);
-    });
+flatpickr("#ano_fabrico", {
+    dateFormat: "Y",
+    maxDate: "today"
+});
 </script>
 ';
 ?>
