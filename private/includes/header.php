@@ -14,14 +14,5 @@
 
     <!-- CSS personalizado da área privada -->
     <link rel="stylesheet" href="<?= APP_BASE ?>/private/assets/css/private.css">
-
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/datatables/css/dataTables.min.css">
-
-    <!-- CSS do Flatpickr -->
-    <link rel="stylesheet" href="<?= APP_BASE ?>/private/assets/flatpickr/flatpickr.min.css">
-
-    <!-- JS do Flatpickr -->
-    <script src="<?= APP_BASE ?>/private/assets/flatpickr/flatpickr.js"></script>
 </head>
 <body>

@@ -52,30 +52,26 @@ if (!empty($validation_errors)) {
 }
 
 // --------------------------------------------------------------------
-// VERIFICAÇÃO DE CREDENCIAIS NA BASE DE DADOS
+// VERIFICAÇÃO DE CREDENCIAIS (simulado — sem ligação à BD por agora)
 // --------------------------------------------------------------------
+$utilizadoresValidos = [
+    ['email' => 'admin@medcontrol.pt',  'password' => 'admin123', 'nomeCompleto' => 'Administrador Sistema', 'tipoUtilizador' => 'ADMINISTRADOR', 'idUtilizador' => 1],
+    ['email' => 'carlos@medcontrol.pt', 'password' => 'senha123',  'nomeCompleto' => 'Carlos Silva',          'tipoUtilizador' => 'TECNICO',        'idUtilizador' => 2],
+    ['email' => 'joana@medcontrol.pt',  'password' => 'senha456',  'nomeCompleto' => 'Joana Ferreira',        'tipoUtilizador' => 'GESTOR',         'idUtilizador' => 3],
+];
+
 $utilizadorEncontrado = null;
-
-try {
-    $pdo = get_pdo();
-
-    $stmt = $pdo->prepare(
-        "SELECT * FROM Utilizador WHERE email = :email AND ativo = 1"
-    );
-    $stmt->execute([':email' => $username]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $pdo = null;
-
-    $utilizadorEncontrado = ($row && password_verify($password, $row['password'])) ? $row : null;
-
-} catch (PDOException $e) {
-    $_SESSION['server_error'] = 'Erro de ligação à base de dados.';
-    registarLog('LOGIN_ERRO_BD', $e->getMessage());
-    header('Location: ../public/login.php');
-    return;
+foreach ($utilizadoresValidos as $u) {
+    if ($u['email'] === $username && $u['password'] === $password) {
+        $utilizadorEncontrado = $u;
+        break;
+    }
 }
 
-if (!$utilizadorEncontrado) {
+// 1 = login válido, 0 = inválido
+$result['status'] = $utilizadorEncontrado ? 1 : 0;
+
+if (!$result['status']) {
     $_SESSION['server_error'] = 'Login inválido';
     registarLog('LOGIN_FALHA', "email=$username");
     header('Location: ../public/login.php');
@@ -86,12 +82,12 @@ if (!$utilizadorEncontrado) {
 // LOGIN BEM-SUCEDIDO: guardar utilizador na sessão
 // --------------------------------------------------------------------
 // Guarda o email na sessão (conforme ficha 10)
-$_SESSION['utilizador'] = $utilizadorEncontrado['email'];
+$_SESSION['utilizador'] = $username;
 
 // Inicia a sessão completa com todos os dados do utilizador
 iniciarSessaoUtilizador([
     'idUtilizador'   => $utilizadorEncontrado['idUtilizador'],
-    'nomeUtilizador' => $utilizadorEncontrado['nomeUtilizador'],
+    'nomeUtilizador' => $utilizadorEncontrado['email'],
     'nomeCompleto'   => $utilizadorEncontrado['nomeCompleto'],
     'tipoUtilizador' => $utilizadorEncontrado['tipoUtilizador'],
 ]);

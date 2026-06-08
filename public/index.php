@@ -1,16 +1,4 @@
-﻿<?php
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../private/includes/funcoes.php';
-
-$noticias = [];
-try {
-    $pdo      = get_pdo();
-    $noticias = $pdo->query("SELECT * FROM Noticia WHERE publicada = 1 AND destaque = 1 ORDER BY dataCriacao DESC LIMIT 3")->fetchAll(PDO::FETCH_OBJ);
-    $pdo      = null;
-} catch (PDOException $e) {
-    $noticias = [];
-}
-?>
+﻿<?php require_once __DIR__ . '/../config/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -150,33 +138,6 @@ try {
         <span class="tech-badge"><i class="fa-solid fa-database"></i> MySQL</span>
     </div>
 </div>
-
-<!-- Notícias em Destaque (carregadas da BD via gestao.php) -->
-<?php if (!empty($noticias)): ?>
-<div style="background:#f8f9fa; padding:60px 40px;">
-    <h2 class="section-title" style="padding-top:0;">Últimas Notícias</h2>
-    <div class="section-divider"></div>
-    <div class="container" style="margin-top:30px;">
-        <div class="row g-4 justify-content-center">
-            <?php foreach ($noticias as $n): ?>
-            <div class="col-lg-4 col-md-6">
-                <div class="feature-card" style="height:100%; text-align:left;">
-                    <div style="margin-bottom:12px;">
-                        <span style="background:#e3f2fd; color:#1565c0; padding:4px 10px; border-radius:20px; font-size:0.8em; font-weight:600;">
-                            <i class="fa-solid fa-newspaper me-1"></i>Destaque
-                        </span>
-                    </div>
-                    <h3 style="font-size:1.05em;"><?= htmlspecialchars($n->titulo) ?></h3>
-                    <p style="color:#7f8c8d; font-size:0.9em; margin-top:10px;">
-                        <?= htmlspecialchars($n->resumo) ?>
-                    </p>
-                </div>
-            </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</div>
-<?php endif; ?>
 
 <!-- Rodapé -->
 <footer class="footer-container">

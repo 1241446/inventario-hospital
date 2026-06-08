@@ -1,24 +1,7 @@
 <?php
-// --------------------------------------------------------------------
-// VERIFICAÇÃO DE SESSÃO
-// --------------------------------------------------------------------
-// Verifica se a sessão ainda não foi iniciada
-if (session_status() == PHP_SESSION_NONE) {
-    session_start(); // Inicia a sessão
-}
-
-// Verifica se o utilizador está autenticado
-if (!isset($_SESSION['utilizador'])) {
-    // Se não estiver autenticado, redireciona para o formulário de login
-    header('Location: ' . APP_BASE . '/public/login.php');
-    exit; // Encerra o script
-}
-
-// A partir daqui, o utilizador está autenticado
-// Podemos usar livremente os dados da sessão
-$nome    = $_SESSION['sessao']['nomeCompleto'] ?? $_SESSION['utilizador'];
-$perfil  = $_SESSION['sessao']['tipoUtilizador'] ?? '';
-$_titulo = isset($tituloPagina) ? htmlspecialchars($tituloPagina) : APP_NAME;
+$_u       = function_exists('utilizadorSessao') ? utilizadorSessao() : [];
+$_nomeNav = function_exists('sanitizar') ? sanitizar($_u['nomeCompleto'] ?? 'Utilizador') : ($_u['nomeCompleto'] ?? 'Utilizador');
+$_titulo  = isset($tituloPagina) ? sanitizar($tituloPagina) : APP_NAME;
 ?>
 <!-- ─── NAVBAR ─── -->
 <header class="bg-dark text-white">
@@ -35,7 +18,7 @@ $_titulo = isset($tituloPagina) ? htmlspecialchars($tituloPagina) : APP_NAME;
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-regular fa-user me-2"></i><?= htmlspecialchars($nome) ?> <span class="badge bg-secondary ms-1" style="font-size:0.7em;"><?= htmlspecialchars($perfil) ?></span>
+                        <i class="fa-regular fa-user me-2"></i><?= $_nomeNav ?>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
@@ -45,9 +28,11 @@ $_titulo = isset($tituloPagina) ? htmlspecialchars($tituloPagina) : APP_NAME;
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                            <a class="dropdown-item" href="<?= APP_BASE ?>/public/logout.php">
-                                <i class="fa-solid fa-right-from-bracket me-2"></i>Sair
-                            </a>
+                            <form method="POST" action="<?= APP_BASE ?>/public/logout.php" style="margin:0;">
+                                <button type="submit" class="dropdown-item">
+                                    <i class="fa-solid fa-right-from-bracket me-2"></i>Sair
+                                </button>
+                            </form>
                         </li>
                     </ul>
                 </div>
