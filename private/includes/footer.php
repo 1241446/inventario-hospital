@@ -6,6 +6,12 @@
             <?= APP_COPYRIGHT ?> &mdash; <?= APP_NAME ?> v<?= APP_VERSION ?>
         </footer>
 
+<!-- jQuery -->
+<script src="<?= APP_BASE ?>/assets/jquery/jquery.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="<?= APP_BASE ?>/assets/datatables/js/dataTables.min.js"></script>
+
 <!-- Bootstrap JS -->
 <script src="<?= APP_BASE ?>/assets/bootstrap/js/bootstrap.bundle.min.js" defer></script>
 

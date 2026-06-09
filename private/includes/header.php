@@ -14,5 +14,8 @@
 
     <!-- CSS personalizado da área privada -->
     <link rel="stylesheet" href="<?= APP_BASE ?>/private/assets/css/private.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="<?= APP_BASE ?>/assets/datatables/css/dataTables.min.css">
 </head>
 <body>

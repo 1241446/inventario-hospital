@@ -21,5 +21,13 @@ define('DB_NAME', 'db1241446');
 define('DB_USER', '1241446');
 define('DB_PASS', 'santos_446');
 
+// ─── MYSQL (Ficha 11) ─────────────────────────────
+define('MYSQL_HOST',     'vsgate-s1.dei.isep.ipp.pt');
+define('MYSQL_PORT',      10464);
+define('MYSQL_DATABASE', 'db1241446');
+define('MYSQL_USERNAME', '1241446');
+define('MYSQL_PASSWORD', 'santos_446');
+define('MYSQL_AES_KEY',  'medcontrol2025');
+
 // ─── FUSO HORÁRIO ─────────────────────────────────
 date_default_timezone_set('Europe/Lisbon');
