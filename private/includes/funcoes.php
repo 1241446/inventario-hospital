@@ -105,6 +105,20 @@ function formatarData(string $data): string
     return $dt ? $dt->format('d/m/Y') : sanitizar($data);
 }
 
+// ─── AES (Ficha 13) ──────────────────────────────────
+
+function aes_encrypt(int $id): string
+{
+    $encrypted = openssl_encrypt((string)$id, OPENSSL_CIPHER, OPENSSL_KEY, 0, OPENSSL_IV);
+    return urlencode($encrypted);
+}
+
+function aes_decrypt(string $encrypted): int
+{
+    $decrypted = openssl_decrypt(urldecode($encrypted), OPENSSL_CIPHER, OPENSSL_KEY, 0, OPENSSL_IV);
+    return (int)$decrypted;
+}
+
 function start_session(): void
 {
     if (session_status() === PHP_SESSION_NONE) {

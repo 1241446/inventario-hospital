@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../../../config/config.php';
 require_once __DIR__ . '/../../includes/funcoes.php';
+require_once __DIR__ . '/../../includes/validacoes.php';
 require_once __DIR__ . '/../../includes/sessao.php';
 
 redirect_if_not_logged();
@@ -59,31 +60,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $anoFabrico    = trim($anoFabrico);
     $observacoes   = trim($observacoes);
 
-    if (empty($codigo)) {
-        $erros[] = "O campo Código é obrigatório.";
-    } elseif (!preg_match('/^[A-Za-z]{2}-\d{3}$/', $codigo)) {
-        $erros[] = "Código inválido. Use o formato EQ-001 (2 letras, hífen, 3 dígitos).";
-    }
-
-    if (empty($designacao)) {
-        $erros[] = "O campo Designação é obrigatório.";
-    }
+    $erros = array_merge($erros, validar_codigo($codigo));
+    $erros = array_merge($erros, validar_designacao($designacao));
+    $erros = array_merge($erros, validar_ano_fabrico($anoFabrico));
 
     if (empty($idCategoria))   $erros[] = "A Categoria é obrigatória.";
     if (empty($idEstado))      $erros[] = "O Estado é obrigatório.";
     if (empty($idCriticidade)) $erros[] = "A Criticidade é obrigatória.";
     if (empty($idLocalizacao)) $erros[] = "A Localização é obrigatória.";
-
-    if (!empty($anoFabrico)) {
-        if (!preg_match('/^\d{4}$/', $anoFabrico)) {
-            $erros[] = "Ano de fabrico inválido. Use o formato AAAA (ex: 2021).";
-        } else {
-            $ano = (int)$anoFabrico;
-            if ($ano < 1900 || $ano > (int)date('Y')) {
-                $erros[] = "Ano de fabrico fora do intervalo válido (1900 – " . date('Y') . ").";
-            }
-        }
-    }
 
     // 3. Normalizar entrada
     if (empty($erros)) {

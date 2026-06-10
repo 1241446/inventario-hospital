@@ -95,7 +95,7 @@ try {
                        class="btn btn-sm btn-info" title="Ver detalhes">
                         <i class="fa-solid fa-eye"></i>
                     </a>
-                    <a href="<?= APP_BASE ?>/private/views/equipamentos/editar.php?id=<?= (int)$eq->idEquipamento ?>"
+                    <a href="<?= APP_BASE ?>/private/views/equipamentos/editar.php?id_equipamento=<?= aes_encrypt($eq->idEquipamento) ?>"
                        class="btn btn-sm btn-warning" title="Editar">
                         <i class="fa-solid fa-pen"></i>
                     </a>

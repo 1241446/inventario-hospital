@@ -29,5 +29,10 @@ define('MYSQL_USERNAME', '1241446');
 define('MYSQL_PASSWORD', 'santos_446');
 define('MYSQL_AES_KEY',  'medcontrol2025');
 
+// ─── OPENSSL / AES (Ficha 13) ─────────────────────
+define('OPENSSL_CIPHER', 'AES-256-CBC');
+define('OPENSSL_KEY',    'medcontrol_hospital_key_2025_abc');
+define('OPENSSL_IV',     'medcontrol_iv_16');
+
 // ─── FUSO HORÁRIO ─────────────────────────────────
 date_default_timezone_set('Europe/Lisbon');
