@@ -20,6 +20,9 @@ USE `db1241446`;
 -- execucoes anteriores nem afetar outras tabelas que
 -- eventualmente existam na BD.
 
+DROP TABLE IF EXISTS MensagemContacto;
+DROP TABLE IF EXISTS Testemunho;
+DROP TABLE IF EXISTS Noticia;
 DROP TABLE IF EXISTS HistoricoAlteracoes;
 DROP TABLE IF EXISTS EquipamentoFornecedor;
 DROP TABLE IF EXISTS Documento;
@@ -278,6 +281,54 @@ CREATE TABLE HistoricoAlteracoes (
     idUtilizador       integer,
     descricaoAlteracao text,
     CONSTRAINT pkHistoricoAlteracoesIdHistorico PRIMARY KEY (idHistorico)
+);
+
+CREATE TABLE Noticia (
+    idNoticia      integer
+        auto_increment,
+    titulo         varchar(200)
+        NOT NULL,
+    resumo         text,
+    destaque       boolean
+        DEFAULT FALSE,
+    publicada      boolean
+        DEFAULT TRUE,
+    dataPublicacao datetime
+        DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pkNoticiaIdNoticia PRIMARY KEY (idNoticia)
+);
+
+CREATE TABLE Testemunho (
+    idTestemunho integer
+        auto_increment,
+    nomeEmpresa  varchar(100)
+        NOT NULL,
+    nomeAutor    varchar(100),
+    cargoAutor   varchar(100),
+    texto        text
+        NOT NULL,
+    ativo        boolean
+        DEFAULT TRUE,
+    dataRegisto  datetime
+        DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pkTestemunhoIdTestemunho PRIMARY KEY (idTestemunho)
+);
+
+CREATE TABLE MensagemContacto (
+    idMensagem     integer
+        auto_increment,
+    nomeRemetente  varchar(100)
+        NOT NULL,
+    emailRemetente varchar(100)
+        NOT NULL,
+    assunto        varchar(200),
+    mensagem       text
+        NOT NULL,
+    lida           boolean
+        DEFAULT FALSE,
+    dataRecebida   datetime
+        DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pkMensagemContactoIdMensagem PRIMARY KEY (idMensagem)
 );
 
 -- ─── CHAVES ESTRANGEIRAS ─────────────────────────────

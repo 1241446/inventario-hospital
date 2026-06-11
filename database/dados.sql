@@ -133,6 +133,28 @@ INSERT INTO EquipamentoFornecedor (idEquipamento, idFornecedor) VALUES
 
 -- ─── HISTORICO DE ALTERACOES ─────────────────────────
 
+-- ─── NOTICIAS ────────────────────────────────────────
+
+INSERT INTO Noticia (titulo, resumo, destaque, publicada) VALUES
+  ('MedControl Apresenta Nova Versão', 'Lançamento da versão com novas funcionalidades de análise avançada e melhorias de desempenho.', FALSE, TRUE)
+ ,('Integração com Sistema ERP', 'Nova integração API permite sincronização automática com sistemas ERP hospitalares.', FALSE, TRUE)
+ ,('Solução Completa de Gestão', 'Da identificação ao acompanhamento, o MedControl oferece uma solução integrada para gestão de equipamentos.', TRUE, TRUE)
+ ,('Suporte 24/7 Dedicado', 'Equipa técnica sempre disponível para resolver qualquer questão ou implementar customizações.', TRUE, TRUE);
+
+-- ─── TESTEMUNHOS ─────────────────────────────────────
+
+INSERT INTO Testemunho (nomeEmpresa, nomeAutor, cargoAutor, texto) VALUES
+  ('Hospital de São João', 'Dr. Carlos Ferreira', 'Diretor de Tecnologia', 'Desde que implementámos o MedControl, temos visibilidade total do nosso parque de equipamentos.')
+ ,('Hospital da Luz', 'Eng. Paula Ribeiro', 'Gestora de Infraestruturas', 'O sistema é muito intuitivo. Os técnicos aprenderam a usar rapidamente.');
+
+-- ─── MENSAGENS DE CONTACTO ───────────────────────────
+
+INSERT INTO MensagemContacto (nomeRemetente, emailRemetente, assunto, mensagem) VALUES
+  ('João Silva', 'joao@hospital.pt', 'Solicitar Demo', 'Gostaria de conhecer melhor o sistema MedControl. Podem agendar uma demonstração?')
+ ,('Maria Costa', 'maria@hospital.net', 'Informações Gerais', 'Qual é o tempo de implementação típico do sistema?');
+
+-- ─── HISTORICO DE ALTERACOES ─────────────────────────
+
 INSERT INTO HistoricoAlteracoes (tabela, tipoOperacao, idRegistro, dataOperacao, idUtilizador, descricaoAlteracao) VALUES
   ('Equipamento', 'INSERT', 1, str_to_date('15-03-2021', '%d-%c-%Y'), 1, 'Registo inicial do equipamento EQ-001')
  ,('Equipamento', 'INSERT', 2, str_to_date('10-06-2020', '%d-%c-%Y'), 1, 'Registo inicial do equipamento EQ-002')
