@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // =====================================================
 // MedControl – Detalhes do Equipamento
 // Estudante: 1241446 | SIBDAS LEBIOM 2025-2026
@@ -12,6 +12,72 @@ redirect_if_not_logged();
 
 $tituloPagina = 'Detalhes do Equipamento';
 $paginaAtiva  = 'equipamentos';
+
+if (empty($_GET['id_equipamento'])) {
+    header('Location: lista.php');
+    exit;
+}
+
+$idEquipamento = aes_decrypt($_GET['id_equipamento']);
+if ($idEquipamento <= 0) {
+    header('Location: lista.php');
+    exit;
+}
+
+$erro_sistema = '';
+$equipamento  = null;
+$garantias    = [];
+$documentos   = [];
+
+try {
+    $pdo = new PDO(
+        'mysql:host=' . MYSQL_HOST . ';port=' . MYSQL_PORT . ';dbname=' . MYSQL_DATABASE . ';charset=utf8',
+        MYSQL_USERNAME,
+        MYSQL_PASSWORD
+    );
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $pdo->prepare("
+        SELECT e.*, cat.nomeCategoria, est.nomeEstado, c.nomeCriticidade, l.nomeLocalizacao
+          FROM Equipamento e
+          JOIN Categoria   cat ON e.idCategoria   = cat.idCategoria
+          JOIN Estado      est ON e.idEstado       = est.idEstado
+          JOIN Criticidade c   ON e.idCriticidade  = c.idCriticidade
+          JOIN Localizacao l   ON e.idLocalizacao  = l.idLocalizacao
+         WHERE e.idEquipamento = :id
+    ");
+    $stmt->bindParam(':id', $idEquipamento, PDO::PARAM_INT);
+    $stmt->execute();
+    $equipamento = $stmt->fetch(PDO::FETCH_OBJ);
+
+    if (!$equipamento) {
+        header('Location: lista.php');
+        exit;
+    }
+
+    $stmtG = $pdo->prepare("
+        SELECT g.*, DATEDIFF(g.dataFim, CURDATE()) AS diasRestantes,
+               f.nomeEmpresa AS nomeFornecedor
+          FROM Garantia g
+          LEFT JOIN Fornecedor f ON g.idFornecedor = f.idFornecedor
+         WHERE g.idEquipamento = :id
+         ORDER BY g.dataFim DESC
+    ");
+    $stmtG->bindParam(':id', $idEquipamento, PDO::PARAM_INT);
+    $stmtG->execute();
+    $garantias = $stmtG->fetchAll(PDO::FETCH_OBJ);
+
+    $stmtD = $pdo->prepare("
+        SELECT * FROM Documento WHERE idEquipamento = :id ORDER BY dataUpload DESC
+    ");
+    $stmtD->bindParam(':id', $idEquipamento, PDO::PARAM_INT);
+    $stmtD->execute();
+    $documentos = $stmtD->fetchAll(PDO::FETCH_OBJ);
+
+    $pdo = null;
+} catch (PDOException $e) {
+    $erro_sistema = $e->getMessage();
+}
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
 <?php include __DIR__ . '/../../includes/nav.php'; ?>
@@ -21,200 +87,140 @@ $paginaAtiva  = 'equipamentos';
         <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
         <main class="col-md-9 col-lg-10 p-4">
 
-<style>
-    .info-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 32px; margin-bottom: 24px; }
-    .info-group { display: flex; flex-direction: column; gap: 4px; }
-    .info-label { font-size: 0.74em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
-    .info-value { font-size: 0.92em; font-weight: 500; color: var(--text); }
-
-    .content-card {
-        background: var(--surface);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
-        overflow: hidden;
-        margin-bottom: 20px;
-    }
-
-    .content-card-header {
-        padding: 12px 20px;
-        border-bottom: 1px solid var(--border);
-        font-size: 0.85em;
-        font-weight: 700;
-        color: var(--text);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: var(--bg);
-    }
-
-    .content-card-body { padding: 20px; }
-
-    @media (max-width: 700px) { .info-grid { grid-template-columns: 1fr; } }
-</style>
+<?php if (!empty($erro_sistema)): ?>
+<div class="alert alert-danger"><?= htmlspecialchars($erro_sistema) ?></div>
+<?php endif; ?>
 
 <div class="page">
 
-    <div class="tab-buttons" style="margin-bottom:24px;">
-        <button class="tab-btn active" onclick="switchTab(this,0)">Identificação</button>
-        <button class="tab-btn" onclick="switchTab(this,1)">Dados Técnicos</button>
-        <button class="tab-btn" onclick="switchTab(this,2)">Garantia</button>
-        <button class="tab-btn" onclick="switchTab(this,3)">Fornecedores</button>
-        <button class="tab-btn" onclick="switchTab(this,4)">Documentação</button>
-    </div>
-
-    <!-- TAB 1: Identificação -->
-    <div class="tab-content active content-box">
-        <div class="info-grid">
-            <div class="info-group">
-                <div class="info-label">Código</div>
-                <div class="info-value">EQ-001</div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Nome</div>
-                <div class="info-value">Ventilador Pulmonar</div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Marca</div>
-                <div class="info-value">Siemens</div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Modelo</div>
-                <div class="info-value">SERVO-i</div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Número de Série</div>
-                <div class="info-value">SN-2024-001547</div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Localização</div>
-                <div class="info-value">UCI-01</div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Estado</div>
-                <div class="info-value"><span class="badge badge-success">Operacional</span></div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Criticidade</div>
-                <div class="info-value"><span class="badge badge-danger">Crítica</span></div>
-            </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">
+            <i class="fa-solid fa-stethoscope me-2"></i>
+            <?= htmlspecialchars($equipamento->designacao ?? '') ?>
+            <small class="text-muted fs-6 ms-2"><?= htmlspecialchars($equipamento->codigoEquipamento ?? '') ?></small>
+        </h4>
+        <div class="d-flex gap-2">
+            <a href="editar.php?id_equipamento=<?= aes_encrypt($idEquipamento) ?>" class="btn btn-warning btn-sm">
+                <i class="fa-solid fa-pen me-1"></i>Editar
+            </a>
+            <a href="lista.php" class="btn btn-secondary btn-sm">
+                <i class="fa-solid fa-arrow-left me-1"></i>Voltar
+            </a>
         </div>
     </div>
 
-    <!-- TAB 2: Dados Técnicos -->
-    <div class="tab-content content-box">
-        <div class="info-grid">
-            <div class="info-group">
-                <div class="info-label">Tensão de Alimentação</div>
-                <div class="info-value">220V ~ 50Hz</div>
+    <!-- Identificação -->
+    <div class="content-box mb-3">
+        <h6 class="fw-bold mb-3 text-muted text-uppercase" style="font-size:0.78em;letter-spacing:.05em;">
+            <i class="fa-solid fa-circle-info me-1"></i>Identificação
+        </h6>
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Categoria</div>
+                <div><?= htmlspecialchars($equipamento->nomeCategoria ?? '—') ?></div>
             </div>
-            <div class="info-group">
-                <div class="info-label">Potência</div>
-                <div class="info-value">500W</div>
+            <div class="col-md-3">
+                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Marca</div>
+                <div><?= htmlspecialchars($equipamento->marca ?? '—') ?></div>
             </div>
-            <div class="info-group">
-                <div class="info-label">Peso</div>
-                <div class="info-value">28,5 kg</div>
+            <div class="col-md-3">
+                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Modelo</div>
+                <div><?= htmlspecialchars($equipamento->modelo ?? '—') ?></div>
             </div>
-            <div class="info-group">
-                <div class="info-label">Dimensões</div>
-                <div class="info-value">65cm × 45cm × 120cm</div>
+            <div class="col-md-3">
+                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Número de Série</div>
+                <div><?= htmlspecialchars($equipamento->numeroSerie ?? '—') ?></div>
             </div>
-            <div class="info-group">
-                <div class="info-label">Última Calibração</div>
-                <div class="info-value">15/05/2024</div>
+            <div class="col-md-3">
+                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Ano de Fabrico</div>
+                <div><?= htmlspecialchars($equipamento->anoFabrico ?? '—') ?></div>
             </div>
-            <div class="info-group">
-                <div class="info-label">Próxima Calibração</div>
-                <div class="info-value">15/11/2024</div>
+            <div class="col-md-3">
+                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Localização</div>
+                <div><?= htmlspecialchars($equipamento->nomeLocalizacao ?? '—') ?></div>
             </div>
+            <div class="col-md-3">
+                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Estado</div>
+                <div><span class="badge bg-success"><?= htmlspecialchars($equipamento->nomeEstado ?? '—') ?></span></div>
+            </div>
+            <div class="col-md-3">
+                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Criticidade</div>
+                <div><span class="badge bg-danger"><?= htmlspecialchars($equipamento->nomeCriticidade ?? '—') ?></span></div>
+            </div>
+            <?php if (!empty($equipamento->observacoes)): ?>
+            <div class="col-12">
+                <div class="small text-muted fw-bold text-uppercase" style="font-size:0.72em;">Observações</div>
+                <div><?= htmlspecialchars($equipamento->observacoes) ?></div>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 
-    <!-- TAB 3: Garantia -->
-    <div class="tab-content content-box">
-        <div class="info-grid">
-            <div class="info-group">
-                <div class="info-label">Data de Início</div>
-                <div class="info-value">15/01/2024</div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Data de Fim</div>
-                <div class="info-value">15/01/2027</div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Tipo de Garantia</div>
-                <div class="info-value">Fabricante</div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Estado</div>
-                <div class="info-value"><span class="badge badge-success">Ativa</span></div>
-            </div>
+    <!-- Garantias -->
+    <div class="content-box mb-3">
+        <h6 class="fw-bold mb-3 text-muted text-uppercase" style="font-size:0.78em;letter-spacing:.05em;">
+            <i class="fa-solid fa-file-contract me-1"></i>Garantias
+        </h6>
+        <?php if (empty($garantias)): ?>
+        <p class="text-muted small">Sem garantias registadas.</p>
+        <?php else: ?>
+        <div class="table-responsive">
+            <table class="table table-sm table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr><th>Tipo</th><th>Início</th><th>Fim</th><th>Fornecedor</th><th>Estado</th></tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($garantias as $g):
+                        $dias = (int)$g->diasRestantes;
+                        if ($dias < 0)       $badge = '<span class="badge bg-danger">Expirada</span>';
+                        elseif ($dias <= 30) $badge = '<span class="badge bg-warning text-dark">Expira em ' . $dias . ' dias</span>';
+                        else                 $badge = '<span class="badge bg-success">Ativa (' . $dias . ' dias)</span>';
+                    ?>
+                    <tr>
+                        <td><?= htmlspecialchars($g->tipoGarantia ?? '—') ?></td>
+                        <td><?= date('d/m/Y', strtotime($g->dataInicio)) ?></td>
+                        <td><?= date('d/m/Y', strtotime($g->dataFim)) ?></td>
+                        <td><?= htmlspecialchars($g->nomeFornecedor ?? '—') ?></td>
+                        <td><?= $badge ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
+        <?php endif; ?>
     </div>
 
-    <!-- TAB 4: Fornecedores -->
-    <div class="tab-content content-box">
-        <div class="info-grid">
-            <div class="info-group">
-                <div class="info-label">Fabricante</div>
-                <div class="info-value">Siemens Healthineers</div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Distribuidor</div>
-                <div class="info-value">MedTech Portugal</div>
-            </div>
-            <div class="info-group">
-                <div class="info-label">Assistência Técnica</div>
-                <div class="info-value">Siemens Service Center</div>
-            </div>
+    <!-- Documentos -->
+    <div class="content-box">
+        <h6 class="fw-bold mb-3 text-muted text-uppercase" style="font-size:0.78em;letter-spacing:.05em;">
+            <i class="fa-solid fa-file-pdf me-1"></i>Documentação
+        </h6>
+        <?php if (empty($documentos)): ?>
+        <p class="text-muted small">Sem documentos registados.</p>
+        <?php else: ?>
+        <div class="table-responsive">
+            <table class="table table-sm table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr><th>Nome</th><th>Tipo</th><th>Data Upload</th></tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($documentos as $doc): ?>
+                    <tr>
+                        <td>
+                            <i class="fa-solid fa-file-pdf text-danger me-1"></i>
+                            <?= htmlspecialchars($doc->nomeDocumento) ?>
+                        </td>
+                        <td><?= htmlspecialchars(ucfirst(strtolower($doc->tipoDocumento ?? ''))) ?></td>
+                        <td><?= date('d/m/Y', strtotime($doc->dataUpload)) ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
-    </div>
-
-    <!-- TAB 5: Documentação -->
-    <div class="tab-content">
-        <div class="table-box">
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tipo</th>
-                            <th>Nome do Ficheiro</th>
-                            <th>Data</th>
-                            <th>Ação</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Manual Técnico</td>
-                            <td><i class="fa-solid fa-file-pdf" style="color:var(--danger);"></i> SERVO-i_Manual_PT.pdf</td>
-                            <td>20/01/2024</td>
-                            <td><a href="#" class="btn-action ver"><i class="fa-solid fa-download"></i> Descarregar</a></td>
-                        </tr>
-                        <tr>
-                            <td>Certificado Calibração</td>
-                            <td><i class="fa-solid fa-file-pdf" style="color:var(--danger);"></i> Calibracao_2024_05.pdf</td>
-                            <td>15/05/2024</td>
-                            <td><a href="#" class="btn-action ver"><i class="fa-solid fa-download"></i> Descarregar</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <?php endif; ?>
     </div>
 
 </div><!-- /page -->
 
-<?php
-$scriptsExtra = '
-<script>
-    function switchTab(btn, index) {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-        btn.classList.add("active");
-        document.querySelectorAll(".tab-content")[index].classList.add("active");
-    }
-</script>
-';
-?>
+<?php $scriptsExtra = ''; ?>
 <?php include __DIR__ . '/../../includes/footer.php'; ?>

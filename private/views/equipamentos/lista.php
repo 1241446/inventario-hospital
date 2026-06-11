@@ -91,7 +91,7 @@ try {
                 <td><?= htmlspecialchars($eq->nomeEstado) ?></td>
                 <td><?= htmlspecialchars($eq->nomeCriticidade) ?></td>
                 <td>
-                    <a href="<?= APP_BASE ?>/private/views/equipamentos/detalhes.php?id=<?= (int)$eq->idEquipamento ?>"
+                    <a href="<?= APP_BASE ?>/private/views/equipamentos/detalhes.php?id_equipamento=<?= aes_encrypt($eq->idEquipamento) ?>"
                        class="btn btn-sm btn-info" title="Ver detalhes">
                         <i class="fa-solid fa-eye"></i>
                     </a>
