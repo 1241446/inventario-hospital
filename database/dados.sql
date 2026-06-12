@@ -7,6 +7,9 @@
 
 USE `db1241446`;
 
+SET NAMES 'utf8mb4';
+SET CHARACTER SET utf8mb4;
+
 -- ─── CATEGORIAS ──────────────────────────────────────
 
 INSERT INTO Categoria (nomeCategoria, descricao) VALUES
@@ -59,9 +62,10 @@ INSERT INTO Fornecedor (nomeEmpresa, nif, tipoFornecedor, idPais, website, morad
 -- ─── UTILIZADORES ────────────────────────────────────
 
 INSERT INTO Utilizador (nomeUtilizador, password, nomeCompleto, email, tipoUtilizador, ativo) VALUES
-  ('admin',  SHA2('admin123', 256), 'Administrador do Sistema', 'admin@medcontrol.pt',   'ADMINISTRADOR', TRUE)
- ,('carlos', SHA2('senha123', 256), 'Carlos Ferreira',          'carlos@medcontrol.pt',  'TECNICO',       TRUE)
- ,('joana',  SHA2('senha456', 256), 'Joana Pereira',            'joana@medcontrol.pt',   'GESTOR',        TRUE);
+  ('admin',  '$2y$10$e017jXf6fLDEBpRbS8RxeOO5XizMfRGwJbqUQV9DaRDwgmg.kpsQ.', 'Administrador do Sistema', 'admin@medcontrol.pt',   'ADMINISTRADOR', TRUE)
+ ,('carlos', '$2y$10$RoSyVl0pgarYw5PUmwM1e.CzpltKZuyVyV0aSZxVSiY90ZRxNl6zC', 'Carlos Ferreira',          'carlos@medcontrol.pt',  'TECNICO',       TRUE)
+ ,('joana',  '$2y$10$ceZzqLY69PjVv50PZ9C0E.t/wiY7mJIes2ugyduwEhlfFApfgj/0u',  'Joana Pereira',            'joana@medcontrol.pt',   'GESTOR',        TRUE)
+ ,('rui',    '$2y$10$hHgMEd78QNEYCTdGapLZlO/yt6rDuYwWwLVxx/LlPL2E7sxgrvbMi', 'Rui Mendes',               'rui@medcontrol.pt',     'CONSULTOR',     TRUE);
 
 -- ─── EQUIPAMENTOS ────────────────────────────────────
 
@@ -73,7 +77,12 @@ INSERT INTO Equipamento (codigoEquipamento, designacao, idCategoria, marca, mode
  ,('EQ-005', 'Analisador Hematológico',          4, 'Sysmex',  'XN-3000',          'SN-2021-005', 2021, 1, 2, 4)
  ,('EQ-006', 'Eletrocardiógrafo Portátil',       2, 'Philips', 'PageWriter TC70',  'SN-2018-006', 2018, 2, 2, 2)
  ,('EQ-007', 'Mesa Cirúrgica Motorizada',        3, 'Maquet',  'Alphamaxx',        'SN-2020-007', 2020, 1, 2, 1)
- ,('EQ-008', 'Aparelho de Ultrassons Portátil',  1, 'GE',      'Vscan Air',        'SN-2023-008', 2023, 1, 2, 5);
+ ,('EQ-008', 'Aparelho de Ultrassons Portátil',  1, 'GE',      'Vscan Air',        'SN-2023-008', 2023, 1, 2, 5)
+ ,('EQ-009', 'Desfibrilhador Automático',       2, 'Philips', 'HeartStart FRx',   'SN-2022-009', 2022, 1, 1, 2)
+ ,('EQ-010', 'Bomba de Infusão',                2, 'BD',      'Alaris 8015',       'SN-2021-010', 2021, 1, 2, 1)
+ ,('EQ-011', 'Microscópio Cirúrgico',           3, 'Zeiss',   'OPMI Lumera 700',  'SN-2020-011', 2020, 1, 2, 1)
+ ,('EQ-012', 'Autoclave Hospitalar',            3, 'Tuttnauer','2540EK',           'SN-2019-012', 2019, 3, 3, 1)
+ ,('EQ-013', 'Centrifugadora Laboratorial',     4, 'Hettich', 'Universal 320R',   'SN-2022-013', 2022, 1, 3, 4);
 
 -- ─── AQUISICOES ──────────────────────────────────────
 

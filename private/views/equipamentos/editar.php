@@ -118,10 +118,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
 
             $ligacao = null;
+            registarLog('EDITAR_EQUIPAMENTO', "id=$idEquipamento codigo=$codigo por " . ($_SESSION['utilizador'] ?? 'desconhecido'));
+            $_SESSION['toast'] = ['msg' => 'Equipamento atualizado com sucesso.', 'type' => 'success'];
             header('Location: lista.php');
             exit;
 
         } catch (PDOException $err) {
+            registarLog('ERRO_EDITAR_EQUIPAMENTO', $err->getMessage());
             $erro_sistema = "Erro ao atualizar os dados: " . $err->getMessage();
         }
     }

@@ -98,11 +98,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ':observacoes'   => $observacoes    ?: null,
             ]);
 
+            $novoId = $ligacao->lastInsertId();
             $ligacao = null;
+            registarLog('INSERIR_EQUIPAMENTO', "codigo=$codigo id=$novoId por " . ($_SESSION['utilizador'] ?? 'desconhecido'));
+            $_SESSION['toast'] = ['msg' => 'Equipamento criado com sucesso.', 'type' => 'success'];
             header('Location: lista.php');
             exit;
 
         } catch (PDOException $err) {
+            registarLog('ERRO_INSERIR_EQUIPAMENTO', $err->getMessage());
             $erro_sistema = "Erro ao gravar os dados: " . $err->getMessage();
         }
     }
@@ -233,6 +237,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               placeholder="Informações adicionais..."><?= htmlspecialchars($_POST['observacoes_equipamento'] ?? '') ?></textarea>
                 </div>
             </div>
+
+            <p class="text-muted small mt-2"><span class="text-danger">*</span> Campos obrigatórios</p>
 
             <!-- Área de erros de validação -->
             <?php if (!empty($erros)): ?>
