@@ -16,12 +16,7 @@ $paginaAtiva  = 'equipamentos';
 
 // ─── CARREGAR LISTAS DA BD ───────────────────────────
 try {
-    $pdoListas = new PDO(
-        'mysql:host=' . MYSQL_HOST . ';port=' . MYSQL_PORT . ';dbname=' . MYSQL_DATABASE . ';charset=utf8',
-        MYSQL_USERNAME,
-        MYSQL_PASSWORD
-    );
-    $pdoListas->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdoListas = get_pdo();
     $categorias   = $pdoListas->query("SELECT * FROM Categoria   ORDER BY nomeCategoria")->fetchAll(PDO::FETCH_OBJ);
     $estados      = $pdoListas->query("SELECT * FROM Estado      ORDER BY nomeEstado")->fetchAll(PDO::FETCH_OBJ);
     $criticidades = $pdoListas->query("SELECT * FROM Criticidade ORDER BY nomeCriticidade")->fetchAll(PDO::FETCH_OBJ);
@@ -78,12 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // 4. Guardar na base de dados
         try {
-            $ligacao = new PDO(
-                'mysql:host=' . MYSQL_HOST . ';port=' . MYSQL_PORT . ';dbname=' . MYSQL_DATABASE . ';charset=utf8',
-                MYSQL_USERNAME,
-                MYSQL_PASSWORD
-            );
-            $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $ligacao = get_pdo();
 
             $sql = "INSERT INTO Equipamento (
                         codigoEquipamento, designacao, idCategoria, marca, modelo,

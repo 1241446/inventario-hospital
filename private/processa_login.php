@@ -57,12 +57,7 @@ if (!empty($validation_errors)) {
 $utilizadorEncontrado = null;
 
 try {
-    $pdo = new PDO(
-        'mysql:host=' . MYSQL_HOST . ';port=' . MYSQL_PORT . ';dbname=' . MYSQL_DATABASE . ';charset=utf8',
-        MYSQL_USERNAME,
-        MYSQL_PASSWORD
-    );
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = get_pdo();
 
     $stmt = $pdo->prepare(
         "SELECT * FROM Utilizador WHERE email = :email AND password = SHA2(:password, 256) AND ativo = 1"

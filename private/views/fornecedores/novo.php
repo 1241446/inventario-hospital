@@ -15,12 +15,7 @@ $paginaAtiva  = 'fornecedores';
 
 // ─── CARREGAR PAÍSES ─────────────────────────────────
 try {
-    $pdoPaises = new PDO(
-        'mysql:host=' . MYSQL_HOST . ';port=' . MYSQL_PORT . ';dbname=' . MYSQL_DATABASE . ';charset=utf8',
-        MYSQL_USERNAME,
-        MYSQL_PASSWORD
-    );
-    $pdoPaises->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdoPaises = get_pdo();
     $paises = $pdoPaises->query("SELECT * FROM Pais ORDER BY nomePais")->fetchAll(PDO::FETCH_OBJ);
     $pdoPaises = null;
 } catch (PDOException $e) {
@@ -52,12 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($erros)) {
         try {
-            $pdo = new PDO(
-                'mysql:host=' . MYSQL_HOST . ';port=' . MYSQL_PORT . ';dbname=' . MYSQL_DATABASE . ';charset=utf8',
-                MYSQL_USERNAME,
-                MYSQL_PASSWORD
-            );
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo = get_pdo();
 
             $stmt = $pdo->prepare("
                 INSERT INTO Fornecedor

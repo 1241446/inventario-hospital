@@ -105,6 +105,18 @@ function formatarData(string $data): string
     return $dt ? $dt->format('d/m/Y') : sanitizar($data);
 }
 
+// ─── PDO ─────────────────────────────────────────────
+
+function get_pdo(): PDO
+{
+    $dsn = 'mysql:host=' . MYSQL_HOST . ';port=' . MYSQL_PORT . ';dbname=' . MYSQL_DATABASE . ';charset=utf8mb4';
+    $pdo = new PDO($dsn, MYSQL_USERNAME, MYSQL_PASSWORD, [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8mb4'",
+    ]);
+    return $pdo;
+}
+
 // ─── AES (Ficha 13) ──────────────────────────────────
 
 function aes_encrypt(int $id): string

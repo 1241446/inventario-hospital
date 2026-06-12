@@ -30,12 +30,7 @@ $garantias    = [];
 $documentos   = [];
 
 try {
-    $pdo = new PDO(
-        'mysql:host=' . MYSQL_HOST . ';port=' . MYSQL_PORT . ';dbname=' . MYSQL_DATABASE . ';charset=utf8',
-        MYSQL_USERNAME,
-        MYSQL_PASSWORD
-    );
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = get_pdo();
 
     $stmt = $pdo->prepare("
         SELECT e.*, cat.nomeCategoria, est.nomeEstado, c.nomeCriticidade, l.nomeLocalizacao

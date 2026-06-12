@@ -21,12 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $acao = $_POST['acao'] ?? '';
 
     try {
-        $pdo = new PDO(
-            'mysql:host=' . MYSQL_HOST . ';port=' . MYSQL_PORT . ';dbname=' . MYSQL_DATABASE . ';charset=utf8',
-            MYSQL_USERNAME,
-            MYSQL_PASSWORD
-        );
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = get_pdo();
 
         if ($acao === 'add_noticia') {
             $titulo  = trim($_POST['titulo']  ?? '');
@@ -83,12 +78,7 @@ $testemunhos = [];
 $mensagens   = [];
 
 try {
-    $pdo = new PDO(
-        'mysql:host=' . MYSQL_HOST . ';port=' . MYSQL_PORT . ';dbname=' . MYSQL_DATABASE . ';charset=utf8',
-        MYSQL_USERNAME,
-        MYSQL_PASSWORD
-    );
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = get_pdo();
 
     $noticias    = $pdo->query("SELECT * FROM Noticia    WHERE destaque = 0 ORDER BY dataPublicacao DESC")->fetchAll(PDO::FETCH_OBJ);
     $destaques   = $pdo->query("SELECT * FROM Noticia    WHERE destaque = 1 ORDER BY dataPublicacao DESC")->fetchAll(PDO::FETCH_OBJ);
