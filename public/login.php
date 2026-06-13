@@ -57,6 +57,7 @@ $tituloPagina = 'Login';
                         Med<span style="color:#1565c0;"><?php echo APP_NAME; ?></span>
                     </h2>
                     <p class="text-muted small">Sistema de Gestão de Inventário Hospitalar</p>
+                    <p class="text-muted" style="font-size:0.75em;">Introduza o seu email e password para aceder</p>
                 </div>
 
                 <div class="card shadow-sm border-0">
