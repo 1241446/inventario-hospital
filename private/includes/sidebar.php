@@ -1,6 +1,5 @@
 <?php
-$_ativa  = $paginaAtiva ?? '';
-$_perfil = $_SESSION['sessao']['tipoUtilizador'] ?? '';
+$_ativa = $paginaAtiva ?? '';
 
 if (!function_exists('sidebarAtiva')) {
     function sidebarAtiva(string $secao, string $ativa): string {
@@ -31,18 +30,14 @@ if (!function_exists('sidebarAtiva')) {
            class="nav-link text-white px-2 py-1 rounded<?= sidebarAtiva('equipamentos', $_ativa) ?>">
             <i class="fa-solid fa-stethoscope me-2"></i>Equipamentos
         </a>
-        <?php if (in_array($_perfil, ['ADMINISTRADOR', 'GESTOR', 'TECNICO'])): ?>
         <a href="<?= APP_BASE ?>/private/views/localizacoes/lista.php"
            class="nav-link text-white px-2 py-1 rounded<?= sidebarAtiva('localizacoes', $_ativa) ?>">
             <i class="fa-solid fa-map-location-dot me-2"></i>Localizações
         </a>
-        <?php endif; ?>
-        <?php if (in_array($_perfil, ['ADMINISTRADOR', 'GESTOR'])): ?>
         <a href="<?= APP_BASE ?>/private/views/fornecedores/lista.php"
            class="nav-link text-white px-2 py-1 rounded<?= sidebarAtiva('fornecedores', $_ativa) ?>">
             <i class="fa-solid fa-truck-medical me-2"></i>Fornecedores
         </a>
-        <?php endif; ?>
     </nav>
 
     <p class="text-uppercase text-white-50 small mb-1">Documentação</p>
@@ -55,26 +50,10 @@ if (!function_exists('sidebarAtiva')) {
            class="nav-link text-white px-2 py-1 rounded<?= sidebarAtiva('garantias', $_ativa) ?>">
             <i class="fa-solid fa-file-contract me-2"></i>Garantias
         </a>
-        <?php if (in_array($_perfil, ['ADMINISTRADOR', 'GESTOR'])): ?>
         <a href="<?= APP_BASE ?>/private/views/conteudos/gestao.php"
            class="nav-link text-white px-2 py-1 rounded<?= sidebarAtiva('conteudos', $_ativa) ?>">
             <i class="fa-solid fa-newspaper me-2"></i>Conteúdos
         </a>
-        <?php endif; ?>
     </nav>
-
-    <?php if ($_perfil): ?>
-    <div class="mt-4 pt-3 border-top border-secondary">
-        <div class="text-white-50 small mb-1">
-            <i class="fa-solid fa-user-circle me-1"></i>
-            <?= htmlspecialchars($_SESSION['sessao']['nomeUtilizador'] ?? '') ?>
-        </div>
-        <div class="badge bg-primary mb-3"><?= htmlspecialchars($_perfil) ?></div>
-        <a href="<?= APP_BASE ?>/public/logout.php"
-           class="btn btn-outline-light btn-sm w-100">
-            <i class="fa-solid fa-right-from-bracket me-1"></i>Sair
-        </a>
-    </div>
-    <?php endif; ?>
 
 </aside>

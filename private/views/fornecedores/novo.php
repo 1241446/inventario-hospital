@@ -71,12 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':observacoes'      => $observacoes      ?: null,
             ]);
             $pdo = null;
-            registarLog('INSERIR_FORNECEDOR', "empresa=$nomeEmpresa por " . ($_SESSION['utilizador'] ?? 'desconhecido'));
-            $_SESSION['toast'] = ['msg' => 'Fornecedor criado com sucesso.', 'type' => 'success'];
             header('Location: lista.php');
             exit;
         } catch (PDOException $err) {
-            registarLog('ERRO_INSERIR_FORNECEDOR', $err->getMessage());
             $erro_sistema = 'Erro ao guardar: ' . $err->getMessage();
         }
     }

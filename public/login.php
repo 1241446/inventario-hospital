@@ -57,7 +57,6 @@ $tituloPagina = 'Login';
                         Med<span style="color:#1565c0;"><?php echo APP_NAME; ?></span>
                     </h2>
                     <p class="text-muted small">Sistema de Gestão de Inventário Hospitalar</p>
-                    <p class="text-muted" style="font-size:0.75em;">Introduza o seu email e password para aceder</p>
                 </div>
 
                 <div class="card shadow-sm border-0">
@@ -65,7 +64,7 @@ $tituloPagina = 'Login';
                         <h5 class="card-title mb-4 text-center">Acesso à Área Reservada</h5>
 
                         <!-- O conteúdo do formulário de login será adicionado aqui -->
-                        <form name="formulario" action="../private/processa_login.php" method="post" novalidate>
+                        <form action="../private/processa_login.php" method="post" novalidate>
 
                             <div class="mb-3">
                                 <label for="text_username" class="form-label fw-semibold">Utilizador</label>
@@ -90,16 +89,6 @@ $tituloPagina = 'Login';
                                 <button type="submit" class="btn btn-primary px-4" id="btnSubmit">
                                     <i class="fa-solid fa-right-to-bracket me-2" id="btnIcon"></i>
                                     <span id="btnText">Entrar</span>
-                                </button>
-                            </div>
-
-                            <!-- Botões de preenchimento automático (Fase de Testes) -->
-                            <div class="mt-2 text-center">
-                                <button type="button" id="preencher_adm" class="btn btn-outline-primary btn-sm me-2">
-                                    Preencher Admin
-                                </button>
-                                <button type="button" id="preencher_tec" class="btn btn-outline-secondary btn-sm">
-                                    Preencher Técnico
                                 </button>
                             </div>
 
@@ -149,18 +138,6 @@ document.getElementById("togglePassword").addEventListener("click", function () 
     var show  = input.type === "password";
     input.type = show ? "text" : "password";
     icon.className = show ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
-});
-
-document.querySelector("#preencher_adm").addEventListener("click", function () {
-    const f = document.forms["formulario"];
-    f["text_username"].value = "admin@medcontrol.pt";
-    f["text_password"].value = "admin123";
-});
-
-document.querySelector("#preencher_tec").addEventListener("click", function () {
-    const f = document.forms["formulario"];
-    f["text_username"].value = "carlos@medcontrol.pt";
-    f["text_password"].value = "senha123";
 });
 
 document.querySelector("form").addEventListener("submit", function () {

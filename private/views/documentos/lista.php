@@ -53,10 +53,7 @@ $badgeTipo = [
 </div>
 <?php endif; ?>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0"><i class="fa-solid fa-file-pdf me-2"></i>Documentos</h4>
-    <span class="text-muted small"><?= count($documentos) ?> documento(s) encontrado(s)</span>
-</div>
+<h4 class="mb-3"><i class="fa-solid fa-file-pdf me-2"></i>Documentos</h4>
 
 <div class="table-responsive">
     <table id="tabelaDocumentos" class="table table-striped table-hover table-bordered">
@@ -94,13 +91,8 @@ $scriptsExtra = '
 $(document).ready(function() {
     $("#tabelaDocumentos").DataTable({
         pageLength: 10,
-        order: [[3, "desc"]],
         language: {
-            search: "Pesquisar:",
-            lengthMenu: "Mostrar _MENU_ registos",
-            info: "A mostrar _START_ a _END_ de _TOTAL_ documentos",
-            paginate: { previous: "Anterior", next: "Seguinte" },
-            zeroRecords: "Nenhum documento encontrado"
+            url: "' . APP_BASE . '/private/assets/js/datatables-pt.json"
         }
     });
 });

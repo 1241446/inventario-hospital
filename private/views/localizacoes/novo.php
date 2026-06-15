@@ -45,12 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':descricao'=> $descricao ?: null,
             ]);
             $pdo = null;
-            registarLog('INSERIR_LOCALIZACAO', "nome=$nomeLocalizacao por " . ($_SESSION['utilizador'] ?? 'desconhecido'));
-            $_SESSION['toast'] = ['msg' => 'Localização criada com sucesso.', 'type' => 'success'];
             header('Location: lista.php');
             exit;
         } catch (PDOException $err) {
-            registarLog('ERRO_INSERIR_LOCALIZACAO', $err->getMessage());
             $erro_sistema = 'Erro ao guardar: ' . $err->getMessage();
         }
     }

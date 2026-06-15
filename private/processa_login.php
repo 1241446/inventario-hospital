@@ -60,13 +60,11 @@ try {
     $pdo = get_pdo();
 
     $stmt = $pdo->prepare(
-        "SELECT * FROM Utilizador WHERE email = :email AND ativo = 1"
+        "SELECT * FROM Utilizador WHERE email = :email AND password = SHA2(:password, 256) AND ativo = 1"
     );
-    $stmt->execute([':email' => $username]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt->execute([':email' => $username, ':password' => $password]);
+    $utilizadorEncontrado = $stmt->fetch(PDO::FETCH_ASSOC);
     $pdo = null;
-
-    $utilizadorEncontrado = ($row && password_verify($password, $row['password'])) ? $row : null;
 
 } catch (PDOException $e) {
     $_SESSION['server_error'] = 'Erro de ligação à base de dados.';

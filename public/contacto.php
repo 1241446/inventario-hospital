@@ -1,44 +1,4 @@
-﻿<?php
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../private/includes/funcoes.php';
-
-$mensagem_enviada = false;
-$erro_envio       = '';
-$erros            = [];
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome     = trim($_POST['nome']     ?? '');
-    $email    = trim($_POST['email']    ?? '');
-    $assunto  = trim($_POST['assunto']  ?? '');
-    $mensagem = trim($_POST['mensagem'] ?? '');
-
-    if (empty($nome))                              $erros[] = 'O nome é obrigatório.';
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $erros[] = 'O email não é válido.';
-    if (empty($assunto))                           $erros[] = 'O assunto é obrigatório.';
-    if (empty($mensagem))                          $erros[] = 'A mensagem é obrigatória.';
-
-    if (empty($erros)) {
-        try {
-            $pdo  = get_pdo();
-            $stmt = $pdo->prepare("
-                INSERT INTO MensagemContacto (nomeRemetente, emailRemetente, assunto, mensagem)
-                VALUES (:nome, :email, :assunto, :mensagem)
-            ");
-            $stmt->execute([
-                ':nome'     => $nome,
-                ':email'    => $email,
-                ':assunto'  => $assunto,
-                ':mensagem' => $mensagem,
-            ]);
-            $pdo = null;
-            $mensagem_enviada = true;
-            registarLog('CONTACTO_RECEBIDO', "de=$email assunto=$assunto");
-        } catch (PDOException $e) {
-            $erro_envio = 'Erro ao enviar mensagem. Tente novamente.';
-        }
-    }
-}
-?>
+﻿<?php require_once __DIR__ . '/../config/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -121,59 +81,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
                 <h2 style="color: var(--bg-dark); margin-bottom: 30px;">Formulário de Contacto</h2>
 
-                <?php if ($mensagem_enviada): ?>
-                <div class="alert alert-success d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-circle-check fa-lg"></i>
-                    <div>
-                        <strong>Mensagem enviada com sucesso!</strong><br>
-                        Responderemos no prazo de 24h úteis.
-                    </div>
-                </div>
-                <?php else: ?>
-
-                <?php if (!empty($erros)): ?>
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        <?php foreach ($erros as $e): ?>
-                        <li><?= htmlspecialchars($e) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-                <?php endif; ?>
-                <?php if (!empty($erro_envio)): ?>
-                <div class="alert alert-danger"><?= htmlspecialchars($erro_envio) ?></div>
-                <?php endif; ?>
-
-                <form id="contactForm" method="post" action="#" novalidate>
+                <form id="contactForm">
                     <div style="margin-bottom: 20px;">
-                        <label for="nome" style="display: block; margin-bottom: 8px; color: var(--bg-dark); font-weight: 600;">Nome Completo *</label>
-                        <input type="text" id="nome" name="nome" required
-                               value="<?= htmlspecialchars($_POST['nome'] ?? '') ?>"
-                               class="form-control" placeholder="Seu nome completo">
+                        <label style="display: block; margin-bottom: 8px; color: var(--bg-dark); font-weight: 600;">Nome Completo *</label>
+                        <input type="text" id="nome" required style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 6px; font-size: 1em; transition: all 0.3s ease;" placeholder="Seu nome completo">
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                         <div>
-                            <label for="email" style="display: block; margin-bottom: 8px; color: var(--bg-dark); font-weight: 600;">Email *</label>
-                            <input type="email" id="email" name="email" required
-                                   value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
-                                   class="form-control" placeholder="seu@email.com">
+                            <label style="display: block; margin-bottom: 8px; color: var(--bg-dark); font-weight: 600;">Email *</label>
+                            <input type="email" id="email" required style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 6px; font-size: 1em; transition: all 0.3s ease;" placeholder="seu@email.com">
                         </div>
                         <div>
-                            <label for="assunto" style="display: block; margin-bottom: 8px; color: var(--bg-dark); font-weight: 600;">Assunto *</label>
-                            <select id="assunto" name="assunto" required class="form-select">
-                                <option value="">--- Seleccione um assunto ---</option>
-                                <?php foreach (['Informações Gerais','Solicitar Demo','Suporte Técnico','Proposta Comercial','Parcerias','Outro'] as $op): ?>
-                                <option value="<?= $op ?>" <?= (($_POST['assunto'] ?? '') === $op) ? 'selected' : '' ?>><?= $op ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <label style="display: block; margin-bottom: 8px; color: var(--bg-dark); font-weight: 600;">Telefone</label>
+                            <input type="tel" id="telefone" style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 6px; font-size: 1em; transition: all 0.3s ease;" placeholder="+351 xxx xxx xxx">
                         </div>
                     </div>
 
                     <div style="margin-bottom: 20px;">
-                        <label for="mensagem" style="display: block; margin-bottom: 8px; color: var(--bg-dark); font-weight: 600;">Mensagem *</label>
-                        <textarea id="mensagem" name="mensagem" required class="form-control"
-                                  rows="5" placeholder="Descreva a sua mensagem em detalhe..."><?= htmlspecialchars($_POST['mensagem'] ?? '') ?></textarea>
+                        <label style="display: block; margin-bottom: 8px; color: var(--bg-dark); font-weight: 600;">Instituição</label>
+                        <input type="text" id="instituicao" style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 6px; font-size: 1em; transition: all 0.3s ease;" placeholder="Nome da sua instituição">
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--bg-dark); font-weight: 600;">Assunto *</label>
+                        <select id="assunto" required style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 6px; font-size: 1em; transition: all 0.3s ease;">
+                            <option value="">--- Seleccione um assunto ---</option>
+                            <option value="informacoes">Informações Gerais</option>
+                            <option value="demos">Solicitar Demo</option>
+                            <option value="suporte">Suporte Técnico</option>
+                            <option value="comercial">Proposta Comercial</option>
+                            <option value="parceria">Parcerias</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--bg-dark); font-weight: 600;">Mensagem *</label>
+                        <textarea id="mensagem" required style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 6px; font-size: 1em; resize: vertical; min-height: 150px; transition: all 0.3s ease;" placeholder="Descreva a sua mensagem em detalhe..."></textarea>
                     </div>
 
                     <div style="display: flex; gap: 15px; margin-top: 30px;">
@@ -184,9 +129,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <i class="fa-solid fa-rotate-left" style="margin-right: 8px;"></i> Limpar
                         </button>
                     </div>
+
                     <p style="color: var(--text-light); font-size: 0.85em; margin-top: 15px;">* Campos obrigatórios. Responderemos no prazo de 24h úteis.</p>
                 </form>
-                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -249,6 +194,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <script src="<?= APP_BASE ?>/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<?= APP_BASE ?>/assets/js/1241446.js"></script>
+<script src="../assets/js/1241446.js"></script>
+<script>
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (validateForm('contactForm')) {
+            showNotification('Mensagem enviada com sucesso! Responderemos em breve.', 'success');
+            document.getElementById('contactForm').reset();
+        } else {
+            showNotification('Por favor, preencha todos os campos obrigatórios com dados válidos.', 'danger');
+        }
+    });
+</script>
 </body>
 </html>

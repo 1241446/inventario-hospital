@@ -16,8 +16,7 @@ if (!isset($_SESSION['utilizador'])) {
 
 // A partir daqui, o utilizador está autenticado
 // Podemos usar livremente os dados da sessão
-$nome    = $_SESSION['sessao']['nomeCompleto'] ?? $_SESSION['utilizador'];
-$perfil  = $_SESSION['sessao']['tipoUtilizador'] ?? '';
+$nome    = $_SESSION['utilizador'];
 $_titulo = isset($tituloPagina) ? htmlspecialchars($tituloPagina) : APP_NAME;
 ?>
 <!-- ─── NAVBAR ─── -->
@@ -35,7 +34,7 @@ $_titulo = isset($tituloPagina) ? htmlspecialchars($tituloPagina) : APP_NAME;
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-regular fa-user me-2"></i><?= htmlspecialchars($nome) ?> <span class="badge bg-secondary ms-1" style="font-size:0.7em;"><?= htmlspecialchars($perfil) ?></span>
+                        <i class="fa-regular fa-user me-2"></i><?= htmlspecialchars($nome) ?>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
