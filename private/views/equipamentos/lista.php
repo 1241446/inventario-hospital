@@ -94,6 +94,10 @@ try {
                        class="btn btn-sm btn-warning" title="Editar">
                         <i class="fa-solid fa-pen"></i>
                     </a>
+                    <a href="<?= APP_BASE ?>/private/views/equipamentos/apagar.php?id_equipamento=<?= aes_encrypt($eq->idEquipamento) ?>"
+                       class="btn btn-sm btn-danger" title="Desativar">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
                 </td>
             </tr>
             <?php endforeach; ?>
