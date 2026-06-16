@@ -62,10 +62,10 @@ INSERT INTO Fornecedor (nomeEmpresa, nif, tipoFornecedor, idPais, website, morad
 -- ─── UTILIZADORES ────────────────────────────────────
 
 INSERT INTO Utilizador (nomeUtilizador, password, nomeCompleto, email, tipoUtilizador, ativo) VALUES
-  ('admin',  SHA2('admin123', 256), 'Administrador do Sistema', 'admin@medcontrol.pt',   'ADMINISTRADOR', TRUE)
- ,('carlos', SHA2('senha123', 256), 'Carlos Ferreira',          'carlos@medcontrol.pt',  'TECNICO',       TRUE)
- ,('joana',  SHA2('senha456', 256), 'Joana Pereira',            'joana@medcontrol.pt',   'GESTOR',        TRUE)
- ,('rui',    SHA2('senha789', 256), 'Rui Mendes',               'rui@medcontrol.pt',     'CONSULTOR',     TRUE);
+  ('admin',  '$2y$10$e017jXf6fLDEBpRbS8RxeOO5XizMfRGwJbqUQV9DaRDwgmg.kpsQ.', 'Administrador do Sistema', 'admin@medcontrol.pt',   'ADMINISTRADOR', TRUE)
+ ,('carlos', '$2y$10$RoSyVl0pgarYw5PUmwM1e.CzpltKZuyVyV0aSZxVSiY90ZRxNl6zC', 'Carlos Ferreira',          'carlos@medcontrol.pt',  'TECNICO',       TRUE)
+ ,('joana',  '$2y$10$ceZzqLY69PjVv50PZ9C0E.t/wiY7mJIes2ugyduwEhlfFApfgj/0u',  'Joana Pereira',            'joana@medcontrol.pt',   'GESTOR',        TRUE)
+ ,('rui',    '$2y$10$hHgMEd78QNEYCTdGapLZlO/yt6rDuYwWwLVxx/LlPL2E7sxgrvbMi', 'Rui Mendes',               'rui@medcontrol.pt',     'CONSULTOR',     TRUE);
 
 -- ─── EQUIPAMENTOS ────────────────────────────────────
 

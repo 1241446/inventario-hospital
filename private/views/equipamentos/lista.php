@@ -58,9 +58,17 @@ try {
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="mb-0"><i class="fa-solid fa-hospital-user me-2"></i>Lista de Equipamentos</h4>
-    <a href="<?= APP_BASE ?>/private/views/equipamentos/novo.php" class="btn btn-primary btn-sm">
-        <i class="fa-solid fa-plus me-1"></i>Novo Equipamento
-    </a>
+    <div class="d-flex gap-2">
+        <a href="<?= APP_BASE ?>/private/views/equipamentos/exportar.php"
+           class="btn btn-success btn-sm"
+           data-bs-toggle="tooltip" title="Exportar lista para CSV">
+            <i class="fa-solid fa-file-csv me-1"></i>Exportar CSV
+        </a>
+        <a href="<?= APP_BASE ?>/private/views/equipamentos/novo.php" class="btn btn-primary btn-sm"
+           data-bs-toggle="tooltip" title="Registar novo equipamento">
+            <i class="fa-solid fa-plus me-1"></i>Novo Equipamento
+        </a>
+    </div>
 </div>
 
 <div class="table-responsive">
@@ -87,15 +95,15 @@ try {
                 <td><?= htmlspecialchars($eq->nomeCriticidade) ?></td>
                 <td>
                     <a href="<?= APP_BASE ?>/private/views/equipamentos/detalhes.php?id_equipamento=<?= aes_encrypt($eq->idEquipamento) ?>"
-                       class="btn btn-sm btn-info" title="Ver detalhes">
+                       class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Ver detalhes">
                         <i class="fa-solid fa-eye"></i>
                     </a>
                     <a href="<?= APP_BASE ?>/private/views/equipamentos/editar.php?id_equipamento=<?= aes_encrypt($eq->idEquipamento) ?>"
-                       class="btn btn-sm btn-warning" title="Editar">
+                       class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar equipamento">
                         <i class="fa-solid fa-pen"></i>
                     </a>
                     <a href="<?= APP_BASE ?>/private/views/equipamentos/apagar.php?id_equipamento=<?= aes_encrypt($eq->idEquipamento) ?>"
-                       class="btn btn-sm btn-danger" title="Desativar">
+                       class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Desativar equipamento">
                         <i class="fa-solid fa-trash-can"></i>
                     </a>
                 </td>

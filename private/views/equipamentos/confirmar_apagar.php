@@ -28,12 +28,14 @@ try {
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
 
-    $_SESSION['success_message'] = 'Equipamento desativado com sucesso.';
+    registarLog('DESATIVAR_EQUIPAMENTO', "idEquipamento=$id por " . ($_SESSION['utilizador'] ?? 'desconhecido'));
+    $_SESSION['toast'] = ['msg' => 'Equipamento desativado com sucesso.', 'type' => 'success'];
     header('Location: lista.php');
     exit;
 
 } catch (PDOException $e) {
-    $_SESSION['success_message'] = 'Erro ao desativar: ' . $e->getMessage();
+    registarLog('ERRO_DESATIVAR_EQUIPAMENTO', $e->getMessage());
+    $_SESSION['toast'] = ['msg' => 'Erro ao desativar equipamento.', 'type' => 'danger'];
     header('Location: lista.php');
     exit;
 }
