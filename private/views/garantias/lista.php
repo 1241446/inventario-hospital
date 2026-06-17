@@ -113,7 +113,12 @@ try {
                     $diasTexto   = '<strong class="text-success">' . $dias . ' dias</strong>';
                 }
             ?>
-            <tr>
+            <?php
+                $trClass = '';
+                if ($dias < 0) $trClass = 'table-danger';
+                elseif ($dias <= 30) $trClass = 'table-warning';
+            ?>
+            <tr class="<?= $trClass ?>">
                 <td><?= htmlspecialchars($g->designacao) ?></td>
                 <td><?= htmlspecialchars($g->codigoEquipamento) ?></td>
                 <td><?= htmlspecialchars($g->tipoGarantia ?? '—') ?></td>
