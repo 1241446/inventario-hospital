@@ -1,4 +1,7 @@
-﻿0722b5e - 1241446 - 2026-06-22 14:38:32 +0100 - Conformidade com guia de submissao: bcrypt, exportacao CSV, Toasts Bootstrap, Tooltips, README atualizado
+﻿b10375f - 1241446 - 2026-06-22 15:39:51 +0100 - Ligar area publica a BD: noticias em destaque, testemunhos e formulario de contacto reais
+2879a6d - 1241446 - 2026-06-22 15:33:41 +0100 - Adicionar logs em todas as operacoes CRUD: inserir/editar equipamentos, fornecedores, localizacoes
+c4d5eec - 1241446 - 2026-06-22 14:38:48 +0100 - Adicionar commits.txt para submissao do projeto
+0722b5e - 1241446 - 2026-06-22 14:38:32 +0100 - Conformidade com guia de submissao: bcrypt, exportacao CSV, Toasts Bootstrap, Tooltips, README atualizado
 82feb5a - 1241446 - 2026-06-22 13:57:24 +0100 - Adicionar utilizador CONSULTOR: rui@medcontrol.pt / senha789
 edf4c7a - 1241446 - 2026-06-22 00:28:38 +0100 - Implementar Ficha 14: desativar equipamentos, sidebar condicional e botoes de teste no login
 3c47761 - 1241446 - 2026-06-22 00:17:28 +0100 - Corrigir charset das tabelas: adicionar utf8mb4 ao schema e dados
