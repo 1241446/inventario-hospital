@@ -238,8 +238,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
 
-            <p class="text-muted small mt-2"><span class="text-danger">*</span> Campos obrigatórios</p>
-
             <!-- Área de erros de validação -->
             <?php if (!empty($erros)): ?>
             <div class="alert alert-danger" role="alert">

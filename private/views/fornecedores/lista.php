@@ -48,10 +48,7 @@ try {
 <?php endif; ?>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-        <h4 class="mb-0"><i class="fa-solid fa-truck-medical me-2"></i>Fornecedores</h4>
-        <small class="text-muted"><?= count($fornecedores) ?> fornecedor(es) registado(s)</small>
-    </div>
+    <h4 class="mb-0"><i class="fa-solid fa-truck-medical me-2"></i>Fornecedores</h4>
     <a href="<?= APP_BASE ?>/private/views/fornecedores/novo.php" class="btn btn-primary btn-sm">
         <i class="fa-solid fa-plus me-1"></i>Novo Fornecedor
     </a>

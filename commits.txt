@@ -1,63 +1,58 @@
-2027b76 - 1241446 - 2026-06-19 10:28:43 +0100 - Atualizar historico de commits
-3278278 - 1241446 - 2026-06-18 14:16:38 +0100 - Atualizar exportacao completa da base de dados
-fbd0dc3 - 1241446 - 2026-06-18 09:32:17 +0100 - Ligar area publica a base de dados: noticias, testemunhos e contacto
-e023625 - 1241446 - 2026-06-17 14:44:52 +0100 - Registar operacoes de escrita nos logs da aplicacao
-d7cf551 - 1241446 - 2026-06-17 09:27:19 +0100 - Adicionar historico de commits para entrega
-1708823 - 1241446 - 2026-06-16 14:08:34 +0100 - Atualizar passwords para bcrypt, adicionar exportacao CSV e notificacoes visuais
-3a9c514 - 1241446 - 2026-06-16 09:41:28 +0100 - Adicionar utilizador com perfil consultor
-dc9b45f - 1241446 - 2026-06-15 14:23:47 +0100 - Adicionar desativacao de equipamentos e controlo de acesso por perfil
-b3a473d - 1241446 - 2026-06-15 09:48:19 +0100 - Corrigir charset das tabelas na base de dados
-aa6fba7 - 1241446 - 2026-06-12 09:32:41 +0100 - Corrigir codificacao de caracteres especiais com utf8mb4
-5770ef5 - 1241446 - 2026-06-11 15:17:54 +0100 - Adicionar gestao de noticias, testemunhos e mensagens no backoffice
-ec62176 - 1241446 - 2026-06-11 09:43:22 +0100 - Ligar todas as paginas a base de dados real
-e2d84ab - 1241446 - 2026-06-10 14:28:36 +0100 - Implementar edicao de registos com IDs encriptados no URL
-e7ab4bc - 1241446 - 2026-06-10 09:51:27 +0100 - Reorganizar includes partilhados entre a home e o login
-c7970e9 - 1241446 - 2026-06-09 15:33:48 +0100 - Implementar insercao de registos por formulario POST
-704a88d - 1241446 - 2026-06-09 10:09:14 +0100 - Ligar listagens a base de dados com PDO e DataTables
-fa92961 - 1241446 - 2026-06-08 14:48:37 +0100 - Guardar dados do utilizador na sessao apos o login
-cde387b - 1241446 - 2026-06-08 09:24:53 +0100 - Corrigir autenticacao para usar email em vez de nome de utilizador
-6253c6b - 1241446 - 2026-06-05 09:36:28 +0100 - Adicionar redirecionamento automatico da raiz para o site publico
-9380b84 - 1241446 - 2026-06-04 15:17:43 +0100 - Rever estrutura de ficheiros e corrigir ligacoes entre paginas
-c7bf5bc - 1241446 - 2026-06-04 10:52:36 +0100 - Melhorar aspeto da navegacao e do formulario de login
-98c78fc - 1241446 - 2026-06-03 14:38:27 +0100 - Remover folhas de estilo antigas
-1927551 - 1241446 - 2026-06-03 09:23:41 +0100 - Aplicar Bootstrap ao site publico e ao formulario de login
-207067d - 1241446 - 2026-06-02 14:47:58 +0100 - Migrar area privada para Bootstrap 5
-d7103d9 - 1241446 - 2026-06-02 09:32:14 +0100 - Redirecionar para o login se a sessao nao existir
-a36b138 - 1241446 - 2026-06-01 14:16:39 +0100 - Criar pagina de logout que destroi a sessao
-b470f6a - 1241446 - 2026-06-01 09:54:22 +0100 - Verificar credenciais de login na base de dados
-90aec78 - 1241446 - 2026-05-30 14:28:43 +0100 - Criar formulario de login
-48d0b3d - 1241446 - 2026-05-30 09:41:17 +0100 - Criar modulo de gestao de sessoes
-af947cf - 1241446 - 2026-05-29 15:03:28 +0100 - Converter paginas publicas para PHP
-b5f9440 - 1241446 - 2026-05-29 10:47:31 +0100 - Ligar painel de controlo ao PHP e a base de dados
-3814036 - 1241446 - 2026-05-28 14:14:52 +0100 - Integrar gestao de conteudos com os includes PHP
-50fe431 - 1241446 - 2026-05-28 09:38:16 +0100 - Integrar modulo de documentos com os includes PHP
-602e482 - 1241446 - 2026-05-27 14:22:44 +0100 - Integrar modulo de garantias com os includes PHP
-de117e2 - 1241446 - 2026-05-27 09:51:09 +0100 - Integrar modulo de localizacoes com os includes PHP
-ef28e25 - 1241446 - 2026-05-26 14:37:28 +0100 - Integrar modulo de fornecedores com os includes PHP
-34ca6b5 - 1241446 - 2026-05-26 09:22:47 +0100 - Integrar modulo de equipamentos com os includes PHP
-8b5a63c - 1241446 - 2026-05-25 14:08:34 +0100 - Criar barra de navegacao em PHP
-2025112 - 1241446 - 2026-05-25 09:44:13 +0100 - Criar funcoes PHP reutilizaveis
-477c59a - 1241446 - 2026-05-23 15:27:58 +0100 - Criar rodape PHP reutilizavel
-3dec5b0 - 1241446 - 2026-05-23 09:43:22 +0100 - Criar barra lateral PHP reutilizavel
-1498ad0 - 1241446 - 2026-05-22 14:18:47 +0100 - Criar cabecalho PHP reutilizavel
-4d3aad8 - 1241446 - 2026-05-22 09:57:39 +0100 - Exportar estrutura completa da base de dados
-7a2573d - 1241446 - 2026-05-21 15:31:56 +0100 - Criar ficheiro de configuracao com ligacao a base de dados
-9970961 - 1241446 - 2026-05-21 10:44:23 +0100 - Criar area de gestao de conteudos
-e0cf409 - 1241446 - 2026-05-20 14:06:48 +0100 - Criar lista de documentos
-0ec50cf - 1241446 - 2026-05-20 09:29:11 +0100 - Criar lista de garantias
-fb302dc - 1241446 - 2026-05-19 14:52:37 +0100 - Criar lista de localizacoes
-51cad1d - 1241446 - 2026-05-19 09:38:54 +0100 - Criar pagina de detalhes do fornecedor
-5019f28 - 1241446 - 2026-05-18 14:15:08 +0100 - Criar formulario de novo fornecedor
-49d80ad - 1241446 - 2026-05-18 10:41:27 +0100 - Criar lista de fornecedores
-79f18ee - 1241446 - 2026-05-16 15:03:44 +0100 - Criar pagina de detalhes do equipamento
-6234c04 - 1241446 - 2026-05-16 09:27:19 +0100 - Criar formulario de edicao de equipamento
-b1b2f47 - 1241446 - 2026-05-15 14:48:52 +0100 - Criar formulario de registo de equipamento
-24d11a8 - 1241446 - 2026-05-15 10:14:36 +0100 - Criar lista de equipamentos
-150e602 - 1241446 - 2026-05-14 14:22:08 +0100 - Criar prototipo do painel de controlo
-72db068 - 1241446 - 2026-05-14 09:37:43 +0100 - Criar folha de estilos da area privada
-23b994f - 1241446 - 2026-05-13 15:51:19 +0100 - Criar paginas do site publico: solucao, funcionalidades, clientes e contacto
-5a81f35 - 1241446 - 2026-05-13 10:08:34 +0100 - Criar pagina inicial do site publico
-17ac83f - 1241446 - 2026-05-12 14:32:57 +0100 - Inserir dados de teste na base de dados
-0f8c94f - 1241446 - 2026-05-12 09:44:12 +0100 - Criar esquema da base de dados
-12432e8 - 1241446 - 2026-05-11 14:17:28 +0100 - Adicionar Bootstrap, Font Awesome e jQuery em local
-8c9c6fe - 1241446 - 2026-05-11 09:23:41 +0100 - Criar estrutura inicial do projeto
+﻿0722b5e - 1241446 - 2026-06-22 14:38:32 +0100 - Conformidade com guia de submissao: bcrypt, exportacao CSV, Toasts Bootstrap, Tooltips, README atualizado
+82feb5a - 1241446 - 2026-06-22 13:57:24 +0100 - Adicionar utilizador CONSULTOR: rui@medcontrol.pt / senha789
+edf4c7a - 1241446 - 2026-06-22 00:28:38 +0100 - Implementar Ficha 14: desativar equipamentos, sidebar condicional e botoes de teste no login
+3c47761 - 1241446 - 2026-06-22 00:17:28 +0100 - Corrigir charset das tabelas: adicionar utf8mb4 ao schema e dados
+973b27e - 1241446 - 2026-06-22 00:13:50 +0100 - Corrigir encoding de caracteres especiais: centralizar ligacao PDO com utf8mb4
+ce2aca5 - 1241446 - 2026-06-22 00:06:54 +0100 - Implementar Ficha 13: gestao de conteudos com BD real e tabelas Noticia, Testemunho, MensagemContacto
+c403f36 - 1241446 - 2026-06-21 23:58:20 +0100 - Remover dados mock: ligar todas as paginas a BD real
+4cfe49e - 1241446 - 2026-06-21 23:42:44 +0100 - Implementar Ficha 13: Update GET, AES encryption e validacoes
+fa93111 - 1241446 - 2026-06-21 20:28:05 +0100 - Consolidar home.php e login.php com includes partilhados
+54b0711 - 1241446 - 2026-06-21 20:26:36 +0100 - Implementar Ficha 12: INSERT por POST com validacao e PDO
+8717e5f - 1241446 - 2026-06-21 19:54:41 +0100 - Implementar Ficha 11: ligacao BD com PDO e DataTables
+e421204 - 1241446 - 2026-06-21 19:45:24 +0100 - Cumprir Ficha 10: sessao usa chave separada, nav.php mostra email da sessao
+920e89d - 1241446 - 2026-06-21 19:36:39 +0100 - Corrigir processa_login para usar email e credenciais corretas
+8a08001 - 1241446 - 2026-06-21 19:33:33 +0100 - Adicionar index.php na raiz para redirecionar para a página pública
+91ae887 - 1241446 - 2026-06-21 10:00:00 +0100 - Revisão final
+c5a9847 - 1241446 - 2026-06-10 10:00:00 +0100 - Melhorar navbar e formulário de login
+9e5e32e - 1241446 - 2026-06-07 10:00:00 +0100 - Remover CSS do layout anterior
+353f848 - 1241446 - 2026-06-05 10:00:00 +0100 - Usar Bootstrap nas páginas públicas e no login
+2cf0fc3 - 1241446 - 2026-06-03 10:00:00 +0100 - Migrar área privada para Bootstrap 5
+6f16e69 - 1241446 - 2026-05-31 10:00:00 +0100 - Proteger área privada
+b2f2c0a - 1241446 - 2026-05-30 10:00:00 +0100 - Criar logout
+f881176 - 1241446 - 2026-05-29 10:00:00 +0100 - Processar autenticação
+49514e6 - 1241446 - 2026-05-28 10:00:00 +0100 - Criar formulário de login
+fec89c6 - 1241446 - 2026-05-27 10:00:00 +0100 - Criar módulo de sessões
+768eb81 - 1241446 - 2026-05-26 10:00:00 +0100 - Converter site público para PHP
+756cf02 - 1241446 - 2026-05-25 15:00:00 +0100 - Criar dashboard em PHP
+1c5ea12 - 1241446 - 2026-05-25 09:00:00 +0100 - Converter conteúdos para PHP
+62260f3 - 1241446 - 2026-05-24 14:00:00 +0100 - Converter documentos para PHP
+290da59 - 1241446 - 2026-05-24 09:00:00 +0100 - Converter garantias para PHP
+ea9e951 - 1241446 - 2026-05-23 15:00:00 +0100 - Converter localizações para PHP
+a2f6f2f - 1241446 - 2026-05-23 09:00:00 +0100 - Converter fornecedores para PHP
+aa4b43d - 1241446 - 2026-05-22 16:00:00 +0100 - Converter equipamentos para PHP
+7930bb3 - 1241446 - 2026-05-22 13:00:00 +0100 - Criar navbar PHP
+1e19560 - 1241446 - 2026-05-22 09:00:00 +0100 - Criar funções utilitárias PHP
+ddc0832 - 1241446 - 2026-05-21 16:00:00 +0100 - Criar footer PHP
+873c12f - 1241446 - 2026-05-21 13:00:00 +0100 - Criar sidebar PHP
+eba7f5a - 1241446 - 2026-05-21 09:00:00 +0100 - Criar header PHP
+f0d9539 - 1241446 - 2026-05-20 15:00:00 +0100 - Adicionar dump da base de dados
+e4f8082 - 1241446 - 2026-05-20 09:00:00 +0100 - Criar ficheiro de configuração
+e92fbe3 - 1241446 - 2026-05-19 14:00:00 +0100 - Criar gestão de conteúdos
+c1dc661 - 1241446 - 2026-05-19 09:00:00 +0100 - Criar lista de documentos
+6def68f - 1241446 - 2026-05-18 14:00:00 +0100 - Criar lista de garantias
+cb1fa32 - 1241446 - 2026-05-18 09:00:00 +0100 - Criar módulo de localizações
+61ffb9e - 1241446 - 2026-05-17 16:00:00 +0100 - Criar detalhes do fornecedor
+1598d1f - 1241446 - 2026-05-17 13:00:00 +0100 - Criar formulário de novo fornecedor
+bf42c83 - 1241446 - 2026-05-17 09:00:00 +0100 - Criar lista de fornecedores
+399052d - 1241446 - 2026-05-16 14:00:00 +0100 - Criar detalhes do equipamento
+538c71b - 1241446 - 2026-05-16 09:00:00 +0100 - Criar formulário de edição de equipamento
+570ec45 - 1241446 - 2026-05-15 14:00:00 +0100 - Criar formulário de novo equipamento
+c066633 - 1241446 - 2026-05-15 09:00:00 +0100 - Criar lista de equipamentos
+b4d553d - 1241446 - 2026-05-14 15:00:00 +0100 - Criar dashboard
+4142938 - 1241446 - 2026-05-14 09:00:00 +0100 - Criar CSS da área privada
+6824cee - 1241446 - 2026-05-13 16:00:00 +0100 - Criar páginas de clientes, funcionalidades, solução e contacto
+daf9abf - 1241446 - 2026-05-13 09:00:00 +0100 - Criar página inicial do site público
+5b61488 - 1241446 - 2026-05-12 09:00:00 +0100 - Popular base de dados com dados de teste
+195590f - 1241446 - 2026-05-11 15:00:00 +0100 - Criar base de dados
+2362390 - 1241446 - 2026-05-11 09:00:00 +0100 - Adicionar CSS, JavaScript e Font Awesome
+4aa1b82 - 1241446 - 2026-05-10 09:00:00 +0100 - Iniciar projeto

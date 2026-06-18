@@ -77,12 +77,7 @@ INSERT INTO Equipamento (codigoEquipamento, designacao, idCategoria, marca, mode
  ,('EQ-005', 'Analisador Hematológico',          4, 'Sysmex',  'XN-3000',          'SN-2021-005', 2021, 1, 2, 4)
  ,('EQ-006', 'Eletrocardiógrafo Portátil',       2, 'Philips', 'PageWriter TC70',  'SN-2018-006', 2018, 2, 2, 2)
  ,('EQ-007', 'Mesa Cirúrgica Motorizada',        3, 'Maquet',  'Alphamaxx',        'SN-2020-007', 2020, 1, 2, 1)
- ,('EQ-008', 'Aparelho de Ultrassons Portátil',  1, 'GE',      'Vscan Air',        'SN-2023-008', 2023, 1, 2, 5)
- ,('EQ-009', 'Desfibrilhador Automático',       2, 'Philips', 'HeartStart FRx',   'SN-2022-009', 2022, 1, 1, 2)
- ,('EQ-010', 'Bomba de Infusão',                2, 'BD',      'Alaris 8015',       'SN-2021-010', 2021, 1, 2, 1)
- ,('EQ-011', 'Microscópio Cirúrgico',           3, 'Zeiss',   'OPMI Lumera 700',  'SN-2020-011', 2020, 1, 2, 1)
- ,('EQ-012', 'Autoclave Hospitalar',            3, 'Tuttnauer','2540EK',           'SN-2019-012', 2019, 3, 3, 1)
- ,('EQ-013', 'Centrifugadora Laboratorial',     4, 'Hettich', 'Universal 320R',   'SN-2022-013', 2022, 1, 3, 4);
+ ,('EQ-008', 'Aparelho de Ultrassons Portátil',  1, 'GE',      'Vscan Air',        'SN-2023-008', 2023, 1, 2, 5);
 
 -- ─── AQUISICOES ──────────────────────────────────────
 

@@ -13,7 +13,7 @@ redirect_if_not_logged();
 $tituloPagina = 'Equipamentos';
 $paginaAtiva  = 'equipamentos';
 
-// ─── LIGAÇÃO À BASE DE DADOS ─────────────────────────
+// ─── LIGAÇÃO À BASE DE DADOS (Ficha 11) ─────────────
 try {
     $pdo = get_pdo();
 
@@ -118,15 +118,9 @@ $scriptsExtra = '
 <script>
 $(document).ready(function() {
     $("#tabelaEquipamentos").DataTable({
-        pageLength: 10,
-        order: [[0, "asc"]],
-        responsive: true,
+        pageLength: 5,
         language: {
-            search: "Pesquisar:",
-            lengthMenu: "Mostrar _MENU_ registos",
-            info: "A mostrar _START_ a _END_ de _TOTAL_ equipamentos",
-            paginate: { previous: "Anterior", next: "Seguinte" },
-            zeroRecords: "Nenhum equipamento encontrado"
+            url: "' . APP_BASE . '/private/assets/js/datatables-pt.json"
         }
     });
 });
