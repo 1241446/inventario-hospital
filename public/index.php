@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../private/includes/funcoes.php';
 
@@ -12,19 +12,50 @@ try {
 }
 ?>
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MedControl - Sistema de Gestão de Inventário Hospitalar. Controlo total de equipamentos médicos, fornecedores, garantias e documentação.">
-    <title><?= APP_NAME ?> - Sistemas de Informação Hospitalar</title>
+    <meta name="description" content="MedControl — Plataforma de gestão de inventário hospitalar. Controlo total de equipamentos médicos, fornecedores, garantias e documentação.">
+    <title><?= APP_NAME ?> — Gestão de Inventário Hospitalar</title>
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/css/1241446.css">
+    <style>
+        .hero-home {
+            background: linear-gradient(135deg, #0a2540 0%, #0d3d5c 60%, #0a2540 100%);
+            padding: 80px 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 50px;
+        }
+        .hero-home h1 { font-size: 2.8em; color: white; font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
+        .hero-home h1 span { color: #4fc3f7; }
+        .hero-home p { color: #b0c4de; font-size: 1.1em; line-height: 1.8; margin-bottom: 30px; }
+        .hero-home img { width: 100%; max-width: 500px; height: 340px; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+        .hero-btns { display: flex; gap: 15px; flex-wrap: wrap; }
+        .btn-hero-primary { background: #4fc3f7; color: #0a2540; padding: 14px 32px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 1em; border: none; transition: background .2s; }
+        .btn-hero-primary:hover { background: #81d4fa; color: #0a2540; }
+        .btn-hero-outline { border: 2px solid rgba(255,255,255,0.4); color: white; padding: 13px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 1em; transition: all .2s; }
+        .btn-hero-outline:hover { border-color: #4fc3f7; color: #4fc3f7; }
+        .trust-bar { background: #061e33; padding: 14px 60px; display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+        .trust-item { display: flex; align-items: center; gap: 10px; color: #b0c4de; font-size: 0.88em; }
+        .trust-item i { color: #4fc3f7; font-size: 1em; }
+        .cta-section { background: linear-gradient(135deg, #0a2540 0%, #0d3d5c 100%); padding: 70px 40px; text-align: center; }
+        .cta-section h2 { color: white; font-size: 1.9em; margin-bottom: 12px; }
+        .cta-section p { color: #b0c4de; margin-bottom: 30px; font-size: 1.05em; }
+        .cta-btns { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        @media (max-width: 768px) {
+            .hero-home { grid-template-columns: 1fr; padding: 50px 24px; }
+            .hero-home img { display: none; }
+            .hero-home h1 { font-size: 2em; }
+            .trust-bar { padding: 14px 24px; gap: 20px; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Navegação Bootstrap Responsiva -->
 <nav class="navbar navbar-expand-lg bng-navbar sticky-top">
     <div class="container-fluid px-4">
         <a class="navbar-brand" href="<?= APP_BASE ?>/public/index.php">
@@ -49,37 +80,31 @@ try {
     </div>
 </nav>
 
-<!-- Hero Section -->
-<div class="hero-section" style="display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:40px; padding:60px; text-align:left;">
+<!-- Hero -->
+<div class="hero-home">
     <div>
-        <h1 style="font-size:2.5em;">Gestão Inteligente do<br><span>Inventário Hospitalar</span></h1>
-        <p style="margin:20px 0;">Desenvolvemos soluções web especializadas para a gestão centralizada de equipamentos médicos, garantindo rastreabilidade, segurança e eficiência operacional em instituições de saúde.</p>
+        <h1>Gestão Inteligente do<br><span>Inventário Hospitalar</span></h1>
+        <p>Desenvolvemos soluções web especializadas para a gestão centralizada de equipamentos médicos, garantindo rastreabilidade, segurança e eficiência operacional em instituições de saúde.</p>
+        <div class="hero-btns">
+            <a href="<?= APP_BASE ?>/public/solucao.php" class="btn-hero-primary">
+                <i class="fa-solid fa-circle-play" style="margin-right:8px;"></i>Ver a Solução
+            </a>
+            <a href="<?= APP_BASE ?>/public/contacto.php" class="btn-hero-outline">
+                <i class="fa-solid fa-envelope" style="margin-right:8px;"></i>Contacte-nos
+            </a>
+        </div>
     </div>
-    <!-- Imagem Hospital -->
-    <div style="display:flex; justify-content:center; align-items:center;">
-        <img src="../assets/img/hospital.jpg" alt="Hospital"
-             style="width:100%; max-width:480px; height:320px; object-fit:cover; border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,0.4);">
+    <div style="display:flex; justify-content:center;">
+        <img src="<?= APP_BASE ?>/assets/img/hospital.jpg" alt="Hospital moderno com equipamentos médicos">
     </div>
 </div>
 
-<!-- Stats Bar -->
-<div class="stats-bar">
-    <div class="stat-item">
-        <div class="number">+50</div>
-        <div class="label">Hospitais Parceiros</div>
-    </div>
-    <div class="stat-item">
-        <div class="number">+80 000</div>
-        <div class="label">Equipamentos Geridos</div>
-    </div>
-    <div class="stat-item">
-        <div class="number">99.9%</div>
-        <div class="label">Disponibilidade</div>
-    </div>
-    <div class="stat-item">
-        <div class="number">12</div>
-        <div class="label">Anos de Experiência</div>
-    </div>
+<!-- Barra de confiança -->
+<div class="trust-bar">
+    <div class="trust-item"><i class="fa-solid fa-circle-check"></i> Mais de 50 hospitais parceiros</div>
+    <div class="trust-item"><i class="fa-solid fa-circle-check"></i> Mais de 80 000 equipamentos geridos</div>
+    <div class="trust-item"><i class="fa-solid fa-circle-check"></i> 99,9 % de disponibilidade</div>
+    <div class="trust-item"><i class="fa-solid fa-circle-check"></i> 12 anos de experiência no setor</div>
 </div>
 
 <!-- Quem Somos -->
@@ -115,14 +140,14 @@ try {
                 <div class="feature-card">
                     <div class="icon"><i class="fa-solid fa-file-excel"></i></div>
                     <h3>Gestão Dispersa</h3>
-                    <p>Muitos hospitais continuam a gerir o inventário com folhas de Excel, documentos isolados e pastas físicas sem integração, dificultando o acesso à informação.</p>
+                    <p>Muitos hospitais continuam a gerir o inventário com folhas de cálculo isoladas e pastas físicas sem integração, dificultando o acesso à informação atualizada.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card">
                     <div class="icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
                     <h3>Falta de Rastreabilidade</h3>
-                    <p>Sem um sistema centralizado, torna-se impossível conhecer em tempo real a localização, o estado e o histórico de cada equipamento médico.</p>
+                    <p>Sem um sistema centralizado, é impossível conhecer em tempo real a localização, o estado e o histórico de cada equipamento médico.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
@@ -151,7 +176,7 @@ try {
     </div>
 </div>
 
-<!-- Notícias em Destaque (carregadas da BD via gestao.php) -->
+<!-- Notícias em Destaque (carregadas da BD) -->
 <?php if (!empty($noticias)): ?>
 <div style="background:#f8f9fa; padding:60px 40px;">
     <h2 class="section-title" style="padding-top:0;">Últimas Notícias</h2>
@@ -167,9 +192,7 @@ try {
                         </span>
                     </div>
                     <h3 style="font-size:1.05em;"><?= htmlspecialchars($n->titulo) ?></h3>
-                    <p style="color:#7f8c8d; font-size:0.9em; margin-top:10px;">
-                        <?= htmlspecialchars($n->resumo) ?>
-                    </p>
+                    <p style="color:#7f8c8d; font-size:0.9em; margin-top:10px;"><?= htmlspecialchars($n->resumo) ?></p>
                 </div>
             </div>
             <?php endforeach; ?>
@@ -178,7 +201,20 @@ try {
 </div>
 <?php endif; ?>
 
-<!-- Rodapé -->
+<!-- CTA -->
+<div class="cta-section">
+    <h2>Pronto para transformar a gestão do seu hospital?</h2>
+    <p>Contacte-nos hoje e agende uma demonstração gratuita da plataforma MedControl.</p>
+    <div class="cta-btns">
+        <a href="<?= APP_BASE ?>/public/contacto.php" class="btn btn-primary" style="padding:13px 32px; font-size:1em;">
+            <i class="fa-solid fa-envelope me-2"></i>Pedir Demonstração
+        </a>
+        <a href="<?= APP_BASE ?>/public/login.php" class="btn btn-outline-light" style="padding:13px 32px; font-size:1em;">
+            <i class="fa-solid fa-right-to-bracket me-2"></i>Entrar na Plataforma
+        </a>
+    </div>
+</div>
+
 <footer class="footer-container">
     <div class="footer-section">
         <strong><i class="fa-solid fa-hospital-user"></i> MedControl</strong>
@@ -186,15 +222,15 @@ try {
     </div>
     <div class="footer-section">
         <strong><i class="fa-solid fa-location-dot"></i> Localização</strong>
-        <p>Rua do Hospital Escolar, 123<br>4200-072, Porto<br>Portugal</p>
+        <p>Rua do Hospital Escolar, 123<br>4200-072 Porto<br>Portugal</p>
     </div>
     <div class="footer-section">
         <strong><i class="fa-solid fa-clock"></i> Horário</strong>
-        <p>2ª a 6ª Feira: 9h — 18h<br>Sábado e Feriados: Encerrado</p>
+        <p>2.ª a 6.ª feira: 9h00 — 18h00<br>Sábados e feriados: encerrado</p>
     </div>
     <div class="footer-section">
         <strong><i class="fa-solid fa-address-book"></i> Contactos</strong>
-        <p><a href="mailto:geral@MedControl.pt">geral@MedControl.pt</a><br>+351 220 xxx xxx<br><a href="https://www.MedControl.pt">www.MedControl.pt</a></p>
+        <p><a href="mailto:geral@medcontrol.pt">geral@medcontrol.pt</a><br>+351 220 123 456</p>
     </div>
 </footer>
 <div class="footer-bottom">
@@ -202,5 +238,6 @@ try {
 </div>
 
 <script src="<?= APP_BASE ?>/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= APP_BASE ?>/assets/js/1241446.js"></script>
 </body>
 </html>
