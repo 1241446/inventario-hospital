@@ -69,7 +69,11 @@ if (!function_exists('sidebarAtiva')) {
             <i class="fa-solid fa-user-circle me-1"></i>
             <?= htmlspecialchars($_SESSION['sessao']['nomeUtilizador'] ?? '') ?>
         </div>
-        <div class="badge bg-primary"><?= htmlspecialchars($_perfil) ?></div>
+        <div class="badge bg-primary mb-3"><?= htmlspecialchars($_perfil) ?></div>
+        <a href="<?= APP_BASE ?>/public/logout.php"
+           class="btn btn-outline-light btn-sm w-100">
+            <i class="fa-solid fa-right-from-bracket me-1"></i>Sair
+        </a>
     </div>
     <?php endif; ?>
 

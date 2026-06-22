@@ -9,10 +9,10 @@ require_once __DIR__ . '/includes/funcoes.php';
 require_once __DIR__ . '/includes/sessao.php';
 
 redirect_if_not_logged();
-start_session();
 
-$tituloPagina = 'Dashboard';
-$paginaAtiva  = 'dashboard';
+$tituloPagina  = 'Dashboard';
+$paginaAtiva   = 'dashboard';
+$nomeCompleto  = $_SESSION['sessao']['nomeCompleto'] ?? $_SESSION['utilizador'];
 
 $success_message = $_SESSION['success_message'] ?? '';
 unset($_SESSION['success_message']);
@@ -167,6 +167,11 @@ $taxaOperacional = $totalEquipamentos > 0 ? round($totalAtivos / $totalEquipamen
 </style>
 
 <div class="page">
+
+    <div class="mb-3">
+        <h5 class="fw-semibold text-secondary mb-0">Bem-vindo, <?= htmlspecialchars($nomeCompleto) ?></h5>
+        <small class="text-muted">Resumo do estado atual do inventário hospitalar</small>
+    </div>
 
     <!-- KPIs -->
     <div class="kpi-grid">

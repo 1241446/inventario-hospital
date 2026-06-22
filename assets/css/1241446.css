@@ -748,4 +748,13 @@ table tbody tr:nth-child(even) {
     .container-texto-generico .icon {
         font-size: 2em;
     }
+
+    .hero-section {
+        grid-template-columns: 1fr;
+        padding: 40px 20px;
+    }
+
+    .hero-section img {
+        display: none;
+    }
 }
