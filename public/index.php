@@ -24,34 +24,60 @@ try {
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/css/1241446.css">
     <style>
         .hero-home {
-            background: linear-gradient(135deg, #0a2540 0%, #0d3d5c 60%, #0a2540 100%);
-            padding: 80px 60px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            position: relative;
+            min-height: 540px;
+            display: flex;
             align-items: center;
-            gap: 50px;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            padding: 100px 40px;
         }
-        .hero-home h1 { font-size: 2.8em; color: white; font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
+        .hero-home .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('<?= APP_BASE ?>/assets/img/hospital.jpg');
+            background-size: cover;
+            background-position: center;
+            transform: scale(1.04);
+            transition: transform 8s ease;
+        }
+        .hero-home:hover .hero-bg { transform: scale(1); }
+        .hero-home .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                rgba(6,18,30,.88) 0%,
+                rgba(10,37,64,.82) 50%,
+                rgba(13,61,92,.75) 100%);
+        }
+        .hero-home .hero-content { position: relative; z-index: 2; max-width: 760px; }
+        .hero-home .hero-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(79,195,247,.12); border: 1px solid rgba(79,195,247,.3);
+            color: #4fc3f7; padding: 6px 16px; border-radius: 30px;
+            font-size: .82em; font-weight: 600; letter-spacing: .06em;
+            text-transform: uppercase; margin-bottom: 24px;
+        }
+        .hero-home h1 { font-size: 3em; color: white; font-weight: 800; line-height: 1.15; margin-bottom: 20px; letter-spacing: -.03em; }
         .hero-home h1 span { color: #4fc3f7; }
-        .hero-home p { color: #b0c4de; font-size: 1.1em; line-height: 1.8; margin-bottom: 30px; }
-        .hero-home img { width: 100%; max-width: 500px; height: 340px; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-        .hero-btns { display: flex; gap: 15px; flex-wrap: wrap; }
-        .btn-hero-primary { background: #4fc3f7; color: #0a2540; padding: 14px 32px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 1em; border: none; transition: background .2s; }
-        .btn-hero-primary:hover { background: #81d4fa; color: #0a2540; }
-        .btn-hero-outline { border: 2px solid rgba(255,255,255,0.4); color: white; padding: 13px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 1em; transition: all .2s; }
-        .btn-hero-outline:hover { border-color: #4fc3f7; color: #4fc3f7; }
-        .trust-bar { background: #061e33; padding: 14px 60px; display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
-        .trust-item { display: flex; align-items: center; gap: 10px; color: #b0c4de; font-size: 0.88em; }
-        .trust-item i { color: #4fc3f7; font-size: 1em; }
-        .cta-section { background: linear-gradient(135deg, #0a2540 0%, #0d3d5c 100%); padding: 70px 40px; text-align: center; }
-        .cta-section h2 { color: white; font-size: 1.9em; margin-bottom: 12px; }
-        .cta-section p { color: #b0c4de; margin-bottom: 30px; font-size: 1.05em; }
-        .cta-btns { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .hero-home p { color: rgba(176,196,222,.9); font-size: 1.1em; line-height: 1.8; margin-bottom: 36px; max-width: 580px; margin-left: auto; margin-right: auto; }
+        .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+        .btn-hero-primary { background: #4fc3f7; color: #0a2540; padding: 14px 32px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: .95em; transition: all .2s; display:inline-flex; align-items:center; gap:8px; }
+        .btn-hero-primary:hover { background: #81d4fa; color: #0a2540; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,195,247,.4); }
+        .btn-hero-outline { border: 1.5px solid rgba(255,255,255,.35); color: white; padding: 13px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: .95em; transition: all .2s; display:inline-flex; align-items:center; gap:8px; }
+        .btn-hero-outline:hover { border-color: #4fc3f7; color: #4fc3f7; background: rgba(79,195,247,.08); }
+        .trust-bar { background: #061e33; padding: 16px 60px; display: flex; gap: 40px; align-items: center; flex-wrap: wrap; border-top: 1px solid rgba(79,195,247,.1); }
+        .trust-item { display: flex; align-items: center; gap: 9px; color: rgba(176,196,222,.8); font-size: .86em; font-weight: 500; }
+        .trust-item i { color: #4fc3f7; }
+        .cta-section { background: linear-gradient(135deg, #0a2540 0%, #0d3d5c 100%); padding: 80px 40px; text-align: center; }
+        .cta-section h2 { color: white; font-size: 2em; margin-bottom: 14px; font-weight: 800; letter-spacing: -.02em; }
+        .cta-section p { color: rgba(176,196,222,.85); margin-bottom: 34px; font-size: 1.05em; }
+        .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
         @media (max-width: 768px) {
-            .hero-home { grid-template-columns: 1fr; padding: 50px 24px; }
-            .hero-home img { display: none; }
+            .hero-home { min-height: 420px; padding: 70px 24px; }
             .hero-home h1 { font-size: 2em; }
-            .trust-bar { padding: 14px 24px; gap: 20px; }
+            .trust-bar { padding: 16px 24px; gap: 20px; }
         }
     </style>
 </head>
@@ -83,20 +109,22 @@ try {
 
 <!-- Hero -->
 <div class="hero-home">
-    <div>
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="hero-tag">
+            <i class="fa-solid fa-circle-dot"></i> Sistema de Gestão Hospitalar
+        </div>
         <h1>Gestão Inteligente do<br><span>Inventário Hospitalar</span></h1>
-        <p>Desenvolvemos soluções web especializadas para a gestão centralizada de equipamentos médicos, garantindo rastreabilidade, segurança e eficiência operacional em instituições de saúde.</p>
+        <p>Plataforma web especializada para a gestão centralizada de equipamentos médicos, com rastreabilidade total, controlo de garantias e acesso seguro por perfis.</p>
         <div class="hero-btns">
             <a href="<?= APP_BASE ?>/public/solucao.php" class="btn-hero-primary">
-                <i class="fa-solid fa-circle-play" style="margin-right:8px;"></i>Ver a Solução
+                <i class="fa-solid fa-circle-play"></i>Ver a Solução
             </a>
             <a href="<?= APP_BASE ?>/public/contacto.php" class="btn-hero-outline">
-                <i class="fa-solid fa-envelope" style="margin-right:8px;"></i>Contacte-nos
+                <i class="fa-solid fa-envelope"></i>Contacte-nos
             </a>
         </div>
-    </div>
-    <div style="display:flex; justify-content:center;">
-        <img src="<?= APP_BASE ?>/assets/img/hospital.jpg" alt="Hospital moderno com equipamentos médicos">
     </div>
 </div>
 
