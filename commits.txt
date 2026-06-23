@@ -1,3 +1,5 @@
+873f664 - 1241446 - 2026-06-23 13:34:00 +0100 - Corrigir nome do estudante no README
+4ff5de0 - 1241446 - 2026-06-23 13:33:28 +0100 - commits.txt final
 3dfa222 - 1241446 - 2026-06-23 13:33:28 +0100 - Atualizar commits.txt para entrega
 91d91f9 - 1241446 - 2026-06-23 13:24:46 +0100 - commits.txt final
 0002cd2 - 1241446 - 2026-06-23 13:24:31 +0100 - Regenerar commits.txt com formato exato do guia de submissao

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($tituloPagina) ? sanitizar($tituloPagina) . ' | ' : '' ?><?= APP_NAME ?></title>
+    <link rel="icon" type="image/svg+xml" href="<?= APP_BASE ?>/assets/favicon.svg">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/bootstrap/css/bootstrap.min.css">

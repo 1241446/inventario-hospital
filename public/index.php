@@ -18,6 +18,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="MedControl — Plataforma de gestão de inventário hospitalar. Controlo total de equipamentos médicos, fornecedores, garantias e documentação.">
     <title><?= APP_NAME ?> — Gestão de Inventário Hospitalar</title>
+    <link rel="icon" type="image/svg+xml" href="<?= APP_BASE ?>/assets/favicon.svg">
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="<?= APP_BASE ?>/assets/css/1241446.css">
