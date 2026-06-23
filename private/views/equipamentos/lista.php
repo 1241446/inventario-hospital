@@ -58,16 +58,32 @@ try {
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="mb-0"><i class="fa-solid fa-hospital-user me-2"></i>Lista de Equipamentos</h4>
-    <div class="d-flex gap-2">
+    <div class="d-flex gap-2 flex-wrap">
+        <?php $perfilAtual = strtoupper($_SESSION['sessao']['tipoUtilizador'] ?? ''); ?>
+        <?php if (in_array($perfilAtual, ['ADMINISTRADOR', 'GESTOR', 'TECNICO'])): ?>
         <a href="<?= APP_BASE ?>/private/views/equipamentos/exportar.php"
            class="btn btn-success btn-sm"
            data-bs-toggle="tooltip" title="Exportar lista para CSV">
-            <i class="fa-solid fa-file-csv me-1"></i>Exportar CSV
+            <i class="fa-solid fa-file-csv me-1"></i>CSV
         </a>
+        <a href="<?= APP_BASE ?>/private/views/equipamentos/exportar_json.php"
+           class="btn btn-warning btn-sm"
+           data-bs-toggle="tooltip" title="Exportar lista para JSON">
+            <i class="fa-solid fa-code me-1"></i>JSON
+        </a>
+        <a href="<?= APP_BASE ?>/private/views/equipamentos/exportar_pdf.php"
+           target="_blank"
+           class="btn btn-danger btn-sm"
+           data-bs-toggle="tooltip" title="Exportar lista para PDF">
+            <i class="fa-solid fa-file-pdf me-1"></i>PDF
+        </a>
+        <?php endif; ?>
+        <?php if (in_array($perfilAtual, ['ADMINISTRADOR', 'GESTOR', 'TECNICO'])): ?>
         <a href="<?= APP_BASE ?>/private/views/equipamentos/novo.php" class="btn btn-primary btn-sm"
            data-bs-toggle="tooltip" title="Registar novo equipamento">
             <i class="fa-solid fa-plus me-1"></i>Novo Equipamento
         </a>
+        <?php endif; ?>
     </div>
 </div>
 

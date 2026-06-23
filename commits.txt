@@ -1,3 +1,8 @@
+﻿d963616 - 1241446 - 2026-06-23 16:26:41 +0100 - Aplicar verificarPerfil em todos os modulos com acesso restrito
+a069235 - 1241446 - 2026-06-23 16:24:59 +0100 - Bloquear acesso de Consultor a criar/editar/desativar equipamentos
+16a3249 - 1241446 - 2026-06-23 16:17:04 +0100 - Redesenhar hero com imagem de fundo e overlay harmonioso
+a6ea92d - 1241446 - 2026-06-23 16:11:25 +0100 - Melhorar estetica publica: novo CSS, favicon SVG e imagem hospitalar
+a45ca07 - 1241446 - 2026-06-23 13:34:00 +0100 - Atualizar commits.txt com entrega final
 873f664 - 1241446 - 2026-06-23 13:34:00 +0100 - Corrigir nome do estudante no README
 4ff5de0 - 1241446 - 2026-06-23 13:33:28 +0100 - commits.txt final
 3dfa222 - 1241446 - 2026-06-23 13:33:28 +0100 - Atualizar commits.txt para entrega

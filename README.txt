@@ -27,7 +27,7 @@ inventario-hospital/
 │   ├── includes/         Componentes reutilizáveis (header, footer, sidebar)
 │   ├── logs/             Ficheiros de log da aplicação (app.log)
 │   └── views/            Vistas organizadas por módulo
-│       ├── equipamentos/ CRUD de equipamentos + exportação CSV
+│       ├── equipamentos/ CRUD de equipamentos + exportação CSV/JSON/PDF
 │       ├── fornecedores/ Listagem e detalhe de fornecedores
 │       ├── localizacoes/ Gestão de localizações
 │       ├── documentos/   Listagem de documentos
@@ -97,7 +97,7 @@ Autenticação:
 Área Privada (após login):
   - Dashboard: verificar KPIs, gráficos de estado e criticidade, alertas de garantia
   - Equipamentos: listar, criar, editar, ver detalhes, desativar (soft delete + confirmação)
-  - Exportar CSV: botão "Exportar CSV" na lista de equipamentos
+  - Exportar dados: botões CSV, JSON e PDF na lista de equipamentos
   - Fornecedores: listar e ver detalhes
   - Localizações: listar e criar
   - Documentos: listar documentos associados a equipamentos
