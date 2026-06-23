@@ -6,7 +6,7 @@ Projeto Individual - SIBDAS LEBIOM 2025-2026
 Instituto Superior de Engenharia do Porto (ISEP)
 
 Nome do Projeto  : MedControl
-Nome do Estudante: 1241446
+Nome do Estudante: Carlota Santos
 Número do Estudante: 1241446
 
 --------------------------------------------------------------------------------
