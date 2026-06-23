@@ -10,6 +10,7 @@ require_once __DIR__ . '/../../includes/validacoes.php';
 require_once __DIR__ . '/../../includes/sessao.php';
 
 redirect_if_not_logged();
+verificarPerfil(['ADMINISTRADOR', 'GESTOR', 'TECNICO']);
 
 $tituloPagina = 'Novo Equipamento';
 $paginaAtiva  = 'equipamentos';

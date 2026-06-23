@@ -69,6 +69,22 @@ function utilizadorSessao(): ?array
 }
 
 /**
+ * Verifica se o utilizador tem um dos perfis permitidos.
+ * Se não tiver, redireciona para o dashboard com acesso negado.
+ *
+ * @param  array $perfisPermitidos  Lista de perfis com acesso (ex: ['ADMINISTRADOR','GESTOR'])
+ * @return void
+ */
+function verificarPerfil(array $perfisPermitidos): void
+{
+    $perfil = strtoupper($_SESSION['sessao']['tipoUtilizador'] ?? '');
+    if (!in_array($perfil, $perfisPermitidos)) {
+        $_SESSION['server_error'] = 'Não tem permissão para aceder a esta página.';
+        redirecionar(APP_BASE . '/private/home.php');
+    }
+}
+
+/**
  * Termina a sessão e redireciona para o login.
  *
  * @return void
