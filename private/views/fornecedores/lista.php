@@ -9,6 +9,7 @@ require_once __DIR__ . '/../../includes/funcoes.php';
 require_once __DIR__ . '/../../includes/sessao.php';
 
 redirect_if_not_logged();
+verificarPerfil(['ADMINISTRADOR', 'GESTOR']);
 
 $tituloPagina = 'Fornecedores';
 $paginaAtiva  = 'fornecedores';
