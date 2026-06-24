@@ -43,7 +43,6 @@ inventario-hospital/
 ├── database/
 │   ├── schema.dbml       Representação DBML do modelo físico
 │   ├── schema.sql        Script DDL de criação da base de dados
-│   ├── dados.sql         Script de inserção de dados de teste
 │   └── db1241446.sql     Exportação completa da BD (estrutura + dados)
 ├── config/
 │   └── config.php        Configurações da aplicação (BD, constantes)
@@ -69,7 +68,6 @@ Passos de instalação:
    - Ligar ao servidor vsgate-s1.dei.isep.ipp.pt:10464 com HeidiSQL
      (utilizador = numero de estudante, password indicada na aula PL)
    - Executar o script: database/schema.sql (cria as tabelas e estrutura)
-   - Executar o script: database/dados.sql (insere os dados de teste)
    - Alternativa: importar database/db1241446.sql (estrutura + dados completos)
 
 3. Verificar as configurações em config/config.php:
@@ -141,7 +139,6 @@ INFORMAÇÃO ADICIONAL
 - Logs da aplicação em: private/logs/app.log
 - Ficheiro DBML disponível em: database/schema.dbml
 - Script DDL disponível em: database/schema.sql
-- Dados de teste disponíveis em: database/dados.sql
 - Exportação completa da BD: database/db1241446.sql
 - Histórico de commits: commits.txt
 

@@ -325,37 +325,17 @@ tbody tr:hover { background: #f8fafc; }
     margin-top: 8px;
 }
 
-/* ─── TABS ────────────────────────────────────────── */
-.tab-buttons {
-    display: flex;
-    gap: 4px;
-    border-bottom: 2px solid var(--border);
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-}
-
-.tab-btn {
-    background: none;
-    border: none;
-    padding: 12px 20px;
-    font-size: 0.88em;
-    font-weight: 600;
+/* ─── TABS (Bootstrap nav-tabs override) ─────────── */
+.nav-tabs .nav-link {
     color: var(--text-muted);
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    margin-bottom: -2px;
-    transition: color 0.15s, border-color 0.15s;
-    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.88em;
 }
 
-.tab-btn:hover,
-.tab-btn.active {
+.nav-tabs .nav-link.active {
     color: var(--primary);
     border-bottom-color: var(--primary);
 }
-
-.tab-content { display: none; }
-.tab-content.active { display: block; }
 
 /* ─── SECÇÃO DE BREADCRUMB ─────────────────────────── */
 .breadcrumb {

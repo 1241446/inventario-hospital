@@ -111,20 +111,27 @@ $totalMensagens   = count(array_filter($mensagens, fn($m) => !$m->lida));
 <div class="alert alert-success"><?= htmlspecialchars($sucesso) ?></div>
 <?php endif; ?>
 
+<style>
+.mc-pane { display: none; }
+.mc-pane.mc-active { display: block; }
+.mc-tab-link { cursor: pointer; }
+.mc-tab-link.active { color: #0ea5e9 !important; border-bottom: 3px solid #0ea5e9; }
+</style>
+
 <div class="page">
 
     <ul class="nav nav-tabs mb-4" id="tabConteudos">
-        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#resumo">Resumo</a></li>
-        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#noticias">Notícias <span class="badge bg-secondary"><?= $totalNoticias ?></span></a></li>
-        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#destaques">Destaques <span class="badge bg-secondary"><?= $totalDestaques ?></span></a></li>
-        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#testemunhos">Testemunhos <span class="badge bg-secondary"><?= $totalTestemunhos ?></span></a></li>
-        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#mensagens">Mensagens <?php if ($totalMensagens > 0): ?><span class="badge bg-danger"><?= $totalMensagens ?></span><?php endif; ?></a></li>
+        <li class="nav-item"><a class="nav-link mc-tab-link active" onclick="mcTab('resumo',this)">Resumo</a></li>
+        <li class="nav-item"><a class="nav-link mc-tab-link" onclick="mcTab('noticias',this)">Notícias <span class="badge bg-secondary"><?= $totalNoticias ?></span></a></li>
+        <li class="nav-item"><a class="nav-link mc-tab-link" onclick="mcTab('destaques',this)">Destaques <span class="badge bg-secondary"><?= $totalDestaques ?></span></a></li>
+        <li class="nav-item"><a class="nav-link mc-tab-link" onclick="mcTab('testemunhos',this)">Testemunhos <span class="badge bg-secondary"><?= $totalTestemunhos ?></span></a></li>
+        <li class="nav-item"><a class="nav-link mc-tab-link" onclick="mcTab('mensagens',this)">Mensagens <?php if ($totalMensagens > 0): ?><span class="badge bg-danger"><?= $totalMensagens ?></span><?php endif; ?></a></li>
     </ul>
 
-    <div class="tab-content">
+    <div>
 
         <!-- RESUMO -->
-        <div class="tab-pane fade show active" id="resumo">
+        <div class="mc-pane mc-active" id="resumo">
             <div class="row g-3 mb-3">
                 <div class="col-md-3">
                     <div class="card border-start border-primary border-4 shadow-sm">
@@ -167,7 +174,7 @@ $totalMensagens   = count(array_filter($mensagens, fn($m) => !$m->lida));
         </div>
 
         <!-- NOTÍCIAS -->
-        <div class="tab-pane fade" id="noticias">
+        <div class="mc-pane" id="noticias">
             <div class="content-box mb-3">
                 <h6 class="fw-bold mb-3">Adicionar Notícia</h6>
                 <form method="post" action="#">
@@ -209,7 +216,7 @@ $totalMensagens   = count(array_filter($mensagens, fn($m) => !$m->lida));
         </div>
 
         <!-- DESTAQUES -->
-        <div class="tab-pane fade" id="destaques">
+        <div class="mc-pane" id="destaques">
             <div class="content-box mb-3">
                 <h6 class="fw-bold mb-3">Adicionar Destaque</h6>
                 <form method="post" action="#">
@@ -251,7 +258,7 @@ $totalMensagens   = count(array_filter($mensagens, fn($m) => !$m->lida));
         </div>
 
         <!-- TESTEMUNHOS -->
-        <div class="tab-pane fade" id="testemunhos">
+        <div class="mc-pane" id="testemunhos">
             <div class="content-box mb-3">
                 <h6 class="fw-bold mb-3">Adicionar Testemunho</h6>
                 <form method="post" action="#">
@@ -301,7 +308,7 @@ $totalMensagens   = count(array_filter($mensagens, fn($m) => !$m->lida));
         </div>
 
         <!-- MENSAGENS -->
-        <div class="tab-pane fade" id="mensagens">
+        <div class="mc-pane" id="mensagens">
             <?php foreach ($mensagens as $m): ?>
             <div class="card mb-2 shadow-sm <?= $m->lida ? 'opacity-75' : 'border-warning' ?>">
                 <div class="card-body py-2">
@@ -334,5 +341,14 @@ $totalMensagens   = count(array_filter($mensagens, fn($m) => !$m->lida));
     </div>
 </div><!-- /page -->
 
-<?php $scriptsExtra = ''; ?>
+<?php $scriptsExtra = '
+<script>
+function mcTab(id, el) {
+    document.querySelectorAll(".mc-pane").forEach(function(p){ p.classList.remove("mc-active"); });
+    document.querySelectorAll(".mc-tab-link").forEach(function(a){ a.classList.remove("active"); });
+    document.getElementById(id).classList.add("mc-active");
+    el.classList.add("active");
+}
+</script>
+'; ?>
 <?php include __DIR__ . '/../../includes/footer.php'; ?>
