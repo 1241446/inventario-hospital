@@ -1,9 +1,0 @@
-.claude/
-.DS_Store
-Thumbs.db
-*.bak
-*.tmp
-private/logs/app.log
-logs/
-.env
-rewrite_history.sh
