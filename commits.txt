@@ -1,18 +1,13 @@
-a76fe27 - Carlota Santos - 2026-06-24 16:17:03 +0100 - Corrigir tabs de conteudos e remover CSS conflituante com Bootstrap
-d661f44 - Carlota Santos - 2026-06-24 15:16:03 +0100 - Remover ficheiros SQL de desenvolvimento desnecessarios
-cb044ac - Carlota Santos - 2026-06-23 17:31:01 +0100 - Adicionar BD local como fallback automatico sem internet
-68d1448 - Carlota Santos - 2026-06-23 17:23:55 +0100 - Adicionar exportacao JSON e PDF de equipamentos e atualizar commits.txt
-1773f95 - Carlota Santos - 2026-06-23 16:26:41 +0100 - Aplicar verificarPerfil em todos os modulos com acesso restrito
-6355891 - Carlota Santos - 2026-06-23 16:24:59 +0100 - Bloquear acesso de Consultor a criar/editar/desativar equipamentos
-eb588e7 - Carlota Santos - 2026-06-23 16:17:04 +0100 - Redesenhar hero com imagem de fundo e overlay harmonioso
-d9a7f97 - Carlota Santos - 2026-06-23 16:11:25 +0100 - Melhorar estetica publica: novo CSS, favicon SVG e imagem hospitalar
-fe3bed7 - Carlota Santos - 2026-06-23 13:34:00 +0100 - Atualizar commits.txt com entrega final
-181ef30 - Carlota Santos - 2026-06-23 13:34:00 +0100 - Corrigir nome do estudante no README
-185d644 - Carlota Santos - 2026-06-23 13:33:28 +0100 - commits.txt final
-9cc4c67 - Carlota Santos - 2026-06-23 13:33:28 +0100 - Atualizar commits.txt para entrega
-4f9dc39 - Carlota Santos - 2026-06-23 13:24:46 +0100 - commits.txt final
-e7d0bc6 - Carlota Santos - 2026-06-23 13:24:31 +0100 - Regenerar commits.txt com formato exato do guia de submissao
-74f0557 - Carlota Santos - 2026-06-23 13:24:20 +0100 - Atualizar historico de commits para entrega final
+08ddbf3 - Carlota Santos - 2026-06-24 16:42:48 +0100 - Atualizar commits.txt com nome correto do autor
+e7809a2 - Carlota Santos - 2026-06-24 16:17:03 +0100 - Corrigir tabs de conteudos e remover CSS conflituante com Bootstrap
+8bf97f9 - Carlota Santos - 2026-06-24 15:16:03 +0100 - Remover ficheiros SQL de desenvolvimento desnecessarios
+ec96b82 - Carlota Santos - 2026-06-23 17:31:01 +0100 - Adicionar BD local como fallback automatico sem internet
+98500c0 - Carlota Santos - 2026-06-23 17:23:55 +0100 - Adicionar exportacao JSON e PDF de equipamentos e atualizar commits.txt
+06335f3 - Carlota Santos - 2026-06-23 16:26:41 +0100 - Aplicar verificarPerfil em todos os modulos com acesso restrito
+7c248bc - Carlota Santos - 2026-06-23 16:24:59 +0100 - Bloquear acesso de Consultor a criar/editar/desativar equipamentos
+bca3aff - Carlota Santos - 2026-06-23 16:17:04 +0100 - Redesenhar hero com imagem de fundo e overlay harmonioso
+0a6b862 - Carlota Santos - 2026-06-23 16:11:25 +0100 - Melhorar estetica publica: novo CSS, favicon SVG e imagem hospitalar
+bad7363 - Carlota Santos - 2026-06-23 13:34:00 +0100 - Corrigir nome do estudante no README
 7719eff - Carlota Santos - 2026-06-22 19:28:34 +0100 - Melhorar estetica e textos da area publica
 6d6d5fe - Carlota Santos - 2026-06-22 17:04:57 +0100 - Atualizar lista de commits e gitignore
 ec42e12 - Carlota Santos - 2026-06-18 14:16:38 +0100 - Atualizar exportacao completa da base de dados
